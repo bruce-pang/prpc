@@ -2,18 +2,21 @@
 目前发布第一版：
 
 ## 介绍
-该框架是一个采用Netty实现的Rpc框架，适用于Spring Boot项目，计划更新支持SpringCloud，SpringCloudAlibaba。 目前支持的版本为Spring Boot 2.5.x。核心代码模块都有清晰的注解，主要是用于学习之用。
+该框架是一个采用Netty实现的Rpc框架，适用于Spring Boot项目，计划更新支持SpringCloud，SpringCloudAlibaba。 核心代码模块都有清晰的注解，主要是用于学习之用。
 
 ### 开发环境介绍
     JDK：1.8
-    Spring Boot：2.5.3
+    maven：3.8.6
+    Spring Boot：2.1.2.RELEASE
     Netty：4.1.66.Final
     zookeeper：3.4.10
     nacos：1.3.0
     lombok：1.16.18
+    fastjson：1.2.76
 
 ### 工程结构
-![image](https://github.com/bruce-pang/pRPC/assets/125526597/c06744ac-0a12-4520-998e-1fd309983201)
+![image](https://github.com/bruce-pang/pRPC/assets/125526597/82903f41-5ee9-4fcc-b6fc-cbc7abf8cd85)
+
 
 
 ## 安装教程
@@ -40,6 +43,7 @@
     prpc-api ---> demo：公共代码
     prpc-provider ---> demo：服务提供方
     prpc-consumer ---> demo：服务调用方
+    prpc-registry ---> 服务发现与注册
     
 快速体验【纯体验，不写代码篇】：
 
@@ -80,11 +84,18 @@ com:
 #         registryType: 2 # 注册中心类型 0：zookeeper 1：eureka 2：nacos
 ```
     5.若不需要编写业务代码，直接运行PrpcConsumerApplication.java，即可启动服务调用方。
-    6.启动完成后，
+
+    
+6.启动完成后，
     访问http://localhost:8080/hello?name=BrucePang，您能够看到：
+    
+![image](https://github.com/bruce-pang/pRPC/assets/125526597/be4768f0-ad3c-49d7-9069-d7770a47578f)
 
     访问http://localhost:8080/fire?name=刘三石，您能够看到：
     
+    
+![image](https://github.com/bruce-pang/pRPC/assets/125526597/51ea4a6b-b5b8-4791-aace-98fb16fdafea)
+
 框架目前只是功能基础实现版，尚有很多优化点，
 例如：
 
