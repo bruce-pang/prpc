@@ -1,0 +1,6 @@
+com:
+  brucepang:
+    prpc:
+      client:
+        serviceAddress: 192.168.56.1
+        servicePort: 20880

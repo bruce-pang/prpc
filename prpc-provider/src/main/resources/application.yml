@@ -1,0 +1,7 @@
+com:
+  brucepang:
+    prpc:
+      server:
+        servicePort: 20880
+        # 服务注册中心地址
+#        registry-address: zookeeper://

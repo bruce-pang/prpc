@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 /**
  * @author BrucePang
  */
+@Deprecated
 @Component
 public class SpringBeanManager implements ApplicationContextAware {
 
