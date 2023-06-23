@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 public class PersonServiceImpl implements IPersonService {
     @Override
     public String save(String name) {
-        log.info("save person name:{}", name);
-        return "save User success: " + name;
+        log.info("Hello,{},您好！", name);
+        return "Hello," + name + "您好!";
     }
 }

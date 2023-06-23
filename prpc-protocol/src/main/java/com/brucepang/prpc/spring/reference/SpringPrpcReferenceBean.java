@@ -1,6 +1,12 @@
 package com.brucepang.prpc.spring.reference;
 
+import com.brucepang.prpc.registry.IRegistryService;
+import com.brucepang.prpc.registry.RegistryFactory;
+import com.brucepang.prpc.registry.RegistryType;
 import org.springframework.beans.factory.FactoryBean;
+import org.springframework.context.EnvironmentAware;
+import org.springframework.core.env.Environment;
+import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Proxy;
 
@@ -8,17 +14,33 @@ import java.lang.reflect.Proxy;
  * @author BrucePang
  * 消费端动态代理工厂Bean
  */
-public class SpringPrpcReferenceBean implements FactoryBean<Object> {
+public class SpringPrpcReferenceBean implements FactoryBean<Object>, EnvironmentAware {
+    private Environment environment;
 
     private Object object;
     private String serviceAddress;
     private int servicePort;
     private Class<?> interfaceClass;
 
+    private String registryAddress;
+
+    private byte registryType;
+
     public void init(){
-        this.object = Proxy.newProxyInstance(SpringPrpcReferenceBean.class.getClassLoader(),
-                new Class<?>[]{interfaceClass},
-                new PrpcInvokerProxy(serviceAddress, servicePort));
+        String flagStr = this.environment.getProperty("com.brucepang.prpc.client.enableRegistry");
+        if (StringUtils.isEmpty(flagStr) || Boolean.parseBoolean(flagStr)) {
+            IRegistryService registryService = RegistryFactory.createRegistry(this.registryAddress, RegistryType.findByCode(this.registryType));
+            this.object = Proxy.newProxyInstance(SpringPrpcReferenceBean.class.getClassLoader(),
+                    new Class<?>[]{interfaceClass},
+                    new PrpcInvokerProxy(registryService));
+        } else if (!Boolean.parseBoolean(flagStr)) {
+            this.object = Proxy.newProxyInstance(SpringPrpcReferenceBean.class.getClassLoader(),
+                    new Class<?>[]{interfaceClass},
+                    new PrpcInvokerProxy(this.serviceAddress, this.servicePort, Boolean.parseBoolean(flagStr)));
+        } else {
+            throw new RuntimeException("com.brucepang.prpc.client.enableRegistry must be true or false");
+        }
+
     }
 
     @Override
@@ -32,7 +54,7 @@ public class SpringPrpcReferenceBean implements FactoryBean<Object> {
         return this.interfaceClass;
     }
 
-    public String getServiceAddress() {
+     public String getServiceAddress() {
         return serviceAddress;
     }
 
@@ -54,5 +76,31 @@ public class SpringPrpcReferenceBean implements FactoryBean<Object> {
 
     public void setInterfaceClass(Class<?> interfaceClass) {
         this.interfaceClass = interfaceClass;
+    }
+
+    public void setObject(Object object) {
+        this.object = object;
+    }
+
+    public void setRegistryAddress(String registryAddress) {
+        this.registryAddress = registryAddress;
+    }
+
+    public void setRegistryType(byte registryType) {
+        this.registryType = registryType;
+    }
+
+
+    public String getRegistryAddress() {
+        return registryAddress;
+    }
+
+    public byte getRegistryType() {
+        return registryType;
+    }
+
+    @Override
+    public void setEnvironment(Environment environment) {
+        this.environment=environment;
     }
 }

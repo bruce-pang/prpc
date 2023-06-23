@@ -10,11 +10,15 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
  */
 @Data
 public class PrpcClientProperties {
+    // 本地调用使用
     private String serviceAddress;
     private int servicePort;
 
- /*   private byte registryType;
-    private String registryAddress;*/
+    // 注册中心使用
+    private byte registryType;
+    private String registryAddress;
 
+    // 启用注册中心的开关
+    private boolean enableRegistry;
 
 }

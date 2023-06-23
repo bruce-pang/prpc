@@ -1,8 +1,11 @@
 package com.brucepang.prpc.spring.service;
 
+import com.brucepang.prpc.registry.IRegistryService;
+import com.brucepang.prpc.registry.RegistryType;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import com.brucepang.prpc.registry.RegistryFactory;
 
 import java.net.UnknownHostException;
 
@@ -16,9 +19,15 @@ public class PrpcProviderAutoConfiguration {
 
     @Bean
     public SpringPrpcProviderBean springPrpcProviderBean(PrpcServerProperties prpcServerProperties) throws UnknownHostException {
+
         if (prpcServerProperties.getServiceAddress() == null || "".equals(prpcServerProperties.getServiceAddress().trim())) {
-            return new SpringPrpcProviderBean(Integer.parseInt(prpcServerProperties.getServicePort()));
+            if (RegistryType.NACOS.code() == prpcServerProperties.getRegistryType()) {
+                return new SpringPrpcProviderBean(prpcServerProperties);
+            } else {
+                return new SpringPrpcProviderBean(prpcServerProperties.getServicePort());
+            }
         }
-        return new SpringPrpcProviderBean(prpcServerProperties.getServiceAddress(), Integer.parseInt(prpcServerProperties.getServicePort()));
+        IRegistryService registryService = RegistryFactory.createRegistry(prpcServerProperties.getServiceAddress(), RegistryType.findByCode(prpcServerProperties.getRegistryType()));
+        return new SpringPrpcProviderBean(prpcServerProperties.getServiceAddress(), prpcServerProperties.getServicePort(), registryService);
     }
 }

@@ -15,6 +15,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Field;
 import java.util.Map;
@@ -80,10 +81,14 @@ public class SpringPrpcReferencePostProcessor implements ApplicationContextAware
             BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(SpringPrpcReferenceBean.class);
             builder.setInitMethodName("init");
             builder.addPropertyValue("interfaceClass", field.getType());
-            builder.addPropertyValue("serviceAddress", prpcClientProperties.getServiceAddress());
-            builder.addPropertyValue("servicePort", prpcClientProperties.getServicePort());
-            /*builder.addPropertyValue("registryAddress",prpcClientProperties.getServiceAddress());
-            builder.addPropertyValue("registryType",prpcClientProperties.getRegistryType());*/
+            if (!StringUtils.isEmpty(prpcClientProperties.getServiceAddress())) {
+                builder.addPropertyValue("serviceAddress", prpcClientProperties.getServiceAddress());
+                builder.addPropertyValue("servicePort", prpcClientProperties.getServicePort());
+            } else {
+                builder.addPropertyValue("registryAddress",prpcClientProperties.getRegistryAddress());
+                builder.addPropertyValue("registryType",prpcClientProperties.getRegistryType());
+            }
+
             BeanDefinition beanDefinition = builder.getBeanDefinition();
             prpcRefBeanDefinition.put(field.getName(), beanDefinition);
         }

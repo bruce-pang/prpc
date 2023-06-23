@@ -5,6 +5,7 @@ import com.brucepang.prpc.constants.RpcConstant;
 import com.brucepang.prpc.constants.SerialType;
 import com.brucepang.prpc.core.*;
 import com.brucepang.prpc.protocol.NettyClient;
+import com.brucepang.prpc.registry.IRegistryService;
 import io.netty.channel.DefaultEventLoop;
 import io.netty.util.concurrent.DefaultPromise;
 import lombok.extern.slf4j.Slf4j;
@@ -20,10 +21,20 @@ public class PrpcInvokerProxy implements InvocationHandler {
     private String host;
     private int port;
 
-    public PrpcInvokerProxy(String host, int port) {
+    // 本地调用使用开关
+    private boolean enableRegistry;
+
+    public PrpcInvokerProxy(String host, int port, boolean enableRegistry) {
         this.host = host;
         this.port = port;
+        this.enableRegistry = enableRegistry;
     }
+    IRegistryService registryService;
+
+    public PrpcInvokerProxy(IRegistryService registryService) {
+        this.registryService = registryService;
+    }
+
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -39,6 +50,18 @@ public class PrpcInvokerProxy implements InvocationHandler {
         request.setParams(args);
         reqProtocol.setContent(request);
 
+
+        //TODO 短链接，用完就关闭了，需要改造成长链接
+        // 注册中心走无参构造方法
+        if (this.enableRegistry){
+            NettyClient nettyClient=new NettyClient();
+            RpcFuture<RpcResponse> future=new RpcFuture<>(new DefaultPromise<RpcResponse>(new DefaultEventLoop()));
+            RequestHolder.REQUEST_MAP.put(requestId,future);
+            nettyClient.sendRequest(reqProtocol,registryService);
+            return future.getPromise().get().getData();
+        }
+
+        // 本地调用走有参构造方法
         NettyClient nettyClient=new NettyClient(host,port);
         RpcFuture<RpcResponse> future=new RpcFuture<>(new DefaultPromise<RpcResponse>(new DefaultEventLoop()));
         RequestHolder.REQUEST_MAP.put(requestId,future);

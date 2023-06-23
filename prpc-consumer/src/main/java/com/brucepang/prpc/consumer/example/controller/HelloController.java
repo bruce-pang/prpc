@@ -18,7 +18,7 @@ public class HelloController {
     @PrpcRemoteReference
     IFireService fireService;
 
-    @GetMapping("/save")
+    @GetMapping("/hello")
     public String save(String name) {
         return personService.save(name);
     }

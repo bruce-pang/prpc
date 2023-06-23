@@ -7,6 +7,7 @@ import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.util.StringUtils;
 
 import java.net.UnknownHostException;
 import java.util.Objects;
@@ -27,9 +28,14 @@ public class PrpcReferenceAutoConfiguration implements EnvironmentAware {
     @Bean
     public SpringPrpcReferencePostProcessor postProcessor(){
         PrpcClientProperties rc=new PrpcClientProperties();
-        rc.setServiceAddress(this.environment.getProperty("com.brucepang.prpc.client.serviceAddress"));
-        int port = Integer.parseInt(this.environment.getProperty("com.brucepang.prpc.client.servicePort"));
-        rc.setServicePort(port);
+        if (!StringUtils.isEmpty(this.environment.getProperty("com.brucepang.prpc.client.serviceAddress"))){
+            rc.setServiceAddress(this.environment.getProperty("com.brucepang.prpc.client.serviceAddress"));
+            int port = Integer.parseInt(this.environment.getProperty("com.brucepang.prpc.client.servicePort"));
+            rc.setServicePort(port);
+        } else {
+            rc.setRegistryAddress(this.environment.getProperty("com.brucepang.prpc.client.registryAddress"));
+            rc.setRegistryType(Byte.parseByte(this.environment.getProperty("com.brucepang.prpc.client.registryType")));
+        }
         return new SpringPrpcReferencePostProcessor(rc);
     }
 
