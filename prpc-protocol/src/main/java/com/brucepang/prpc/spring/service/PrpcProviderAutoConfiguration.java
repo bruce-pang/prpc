@@ -20,7 +20,7 @@ public class PrpcProviderAutoConfiguration {
 
     @Bean
     public SpringPrpcProviderBean springPrpcProviderBean(PrpcServerProperties prpcServerProperties) throws UnknownHostException {
-
+        // TODO 本地调用与远程调用的bug
         if (prpcServerProperties.getServiceAddress() == null || "".equals(prpcServerProperties.getServiceAddress().trim())) {
             Assert.notNull(prpcServerProperties.getRegistryAddress(), "registryAddress must not be null");
             byte registryType = prpcServerProperties.getRegistryType();
@@ -30,6 +30,9 @@ public class PrpcProviderAutoConfiguration {
                 return new SpringPrpcProviderBean(prpcServerProperties.getServicePort());
             }
         }
+
+       /* IRegistryService registryService = RegistryFactory.createRegistry(prpcServerProperties.getServiceAddress(), RegistryType.findByCode(prpcServerProperties.getRegistryType()));
+        return new SpringPrpcProviderBean(prpcServerProperties.getServiceAddress(), prpcServerProperties.getServicePort(), registryService);*/
         IRegistryService registryService = RegistryFactory.createRegistry(prpcServerProperties.getServiceAddress(), RegistryType.findByCode(prpcServerProperties.getRegistryType()));
         return new SpringPrpcProviderBean(prpcServerProperties.getServiceAddress(), prpcServerProperties.getServicePort(), registryService);
     }
