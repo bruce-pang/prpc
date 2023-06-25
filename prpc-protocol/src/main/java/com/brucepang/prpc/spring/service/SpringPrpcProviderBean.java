@@ -10,20 +10,27 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.context.EnvironmentAware;
+import org.springframework.core.env.Environment;
+import org.springframework.util.Assert;
 
 import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author BrucePang
  */
 @Slf4j
-public class SpringPrpcProviderBean implements InitializingBean, BeanPostProcessor {
+public class SpringPrpcProviderBean implements InitializingBean, BeanPostProcessor, EnvironmentAware {
     // 主机地址
     private final String serverAddress;
     // 端口号
     private final int serverPort;
+
+    private Environment environment;
     private final IRegistryService registryService; // 服务注册中心
 
     public SpringPrpcProviderBean(int serverPort) throws UnknownHostException {
@@ -34,11 +41,27 @@ public class SpringPrpcProviderBean implements InitializingBean, BeanPostProcess
     }
 
     public SpringPrpcProviderBean(PrpcServerProperties prpcServerProperties) throws UnknownHostException {
-        this.serverPort = prpcServerProperties.getServicePort();
-        this.serverAddress = InetAddress.getLocalHost().getHostAddress();
+        int localServicePort = prpcServerProperties.getServicePort();
+        List<String> list = Arrays.asList(prpcServerProperties.getRegistryAddress().split(":"));
+        this.serverPort = localServicePort;
+        this.serverAddress = list.get(0) == null ? InetAddress.getLocalHost().getHostAddress() : list.get(0);
         log.info("serverAddress: {}", serverAddress);
-        this.registryService = RegistryFactory.createRegistry(prpcServerProperties.getRegistryAddress(), RegistryType.NACOS);
+        switch (prpcServerProperties.getRegistryType()) {
+            case 0:
+                this.registryService = RegistryFactory.createRegistry(prpcServerProperties.getRegistryAddress(), RegistryType.NACOS);
+                break;
+            /*case 1:
+                break;*/
+            case 2:
+                this.registryService = RegistryFactory.createRegistry(prpcServerProperties.getRegistryAddress(), RegistryType.ZOOKEEPER);
+                break;
+            default:
+                this.registryService = RegistryFactory.createRegistry(prpcServerProperties.getRegistryAddress(), RegistryType.NACOS);
+                break;
+        }
+
     }
+
 
     public SpringPrpcProviderBean(String serverAddress, int serverPort, IRegistryService registryService) {
         this.serverAddress = serverAddress;
@@ -87,21 +110,28 @@ public class SpringPrpcProviderBean implements InitializingBean, BeanPostProcess
                 beanMethod.setMethod(method);
                 Mediator.beanMethodMap.put(key, beanMethod);
 
-                // 将服务注册到注册中心
-                ServiceInfo serviceInfo = new ServiceInfo();
-                serviceInfo.setServiceAddress(this.serverAddress);
-                serviceInfo.setServicePort(this.serverPort);
-                serviceInfo.setServiceName(serviceName);
+//                如果注册中心开关为开启状态，则将服务注册到注册中心
+                if (environment.getProperty("com.brucepang.prpc.server.enableRegistry", Boolean.class, true)) {
+                    // 将服务注册到注册中心
+                    ServiceInfo serviceInfo = new ServiceInfo();
+                    serviceInfo.setServiceAddress(this.serverAddress);
+                    serviceInfo.setServicePort(this.serverPort);
+                    serviceInfo.setServiceName(serviceName);
 
-                try {
-                    registryService.register(serviceInfo); // 住的服务
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    log.error("register service {} failed serviceName", serviceName);
+                    try {
+                        registryService.register(serviceInfo); // 住的服务
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        log.error("register service {} failed serviceName", serviceName);
+                    }
                 }
-
             }
         }
         return bean;
+    }
+
+    @Override
+    public void setEnvironment(Environment environment) {
+        this.environment = environment;
     }
 }

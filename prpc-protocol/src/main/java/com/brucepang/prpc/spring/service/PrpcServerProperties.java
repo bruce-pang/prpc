@@ -14,6 +14,9 @@ public class PrpcServerProperties {
     private byte registryType; // 注册中心的类型
     private String registryAddress; // 注册中心的地址
 
+    // 启用注册中心的开关
+    private boolean enableRegistry;
+
     public String getServiceAddress() {
         return serviceAddress;
     }

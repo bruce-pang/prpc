@@ -26,14 +26,20 @@ public class PrpcProviderAutoConfiguration {
             byte registryType = prpcServerProperties.getRegistryType();
             if (RegistryType.NACOS.code() == prpcServerProperties.getRegistryType()) { // 如果是nacos注册中心
                 return new SpringPrpcProviderBean(prpcServerProperties);
+            } else if (RegistryType.ZOOKEEPER.code() == prpcServerProperties.getRegistryType()) { // 如果是zookeeper注册中心
+                IRegistryService registryService = RegistryFactory.createRegistry(prpcServerProperties.getRegistryAddress(), RegistryType.findByCode(prpcServerProperties.getRegistryType()));
+                return new SpringPrpcProviderBean(prpcServerProperties);
+            } else if (RegistryType.EUREKA.code() == prpcServerProperties.getRegistryType()) { // 如果是EUREKA注册中心
+                /*IRegistryService registryService = RegistryFactory.createRegistry(prpcServerProperties.getServiceAddress(), RegistryType.findByCode(prpcServerProperties.getRegistryType()));
+                return new SpringPrpcProviderBean(prpcServerProperties.getServiceAddress(), prpcServerProperties.getServicePort(), registryService);*/
+                throw new RuntimeException("Eureka Registry will support later versions");
             } else {
-                return new SpringPrpcProviderBean(prpcServerProperties.getServicePort());
+                throw new RuntimeException("registryType is not support");
             }
+        } else{
+            // 本地调用
+            return new SpringPrpcProviderBean(prpcServerProperties.getServiceAddress(),prpcServerProperties.getServicePort(),null);
         }
 
-       /* IRegistryService registryService = RegistryFactory.createRegistry(prpcServerProperties.getServiceAddress(), RegistryType.findByCode(prpcServerProperties.getRegistryType()));
-        return new SpringPrpcProviderBean(prpcServerProperties.getServiceAddress(), prpcServerProperties.getServicePort(), registryService);*/
-        IRegistryService registryService = RegistryFactory.createRegistry(prpcServerProperties.getServiceAddress(), RegistryType.findByCode(prpcServerProperties.getRegistryType()));
-        return new SpringPrpcProviderBean(prpcServerProperties.getServiceAddress(), prpcServerProperties.getServicePort(), registryService);
     }
 }
