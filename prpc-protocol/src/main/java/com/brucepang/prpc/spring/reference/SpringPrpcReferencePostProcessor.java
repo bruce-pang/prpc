@@ -74,6 +74,10 @@ public class SpringPrpcReferencePostProcessor implements ApplicationContextAware
 
     }
 
+    /**
+     * 解析PrpcRemoteReference注解，将被注解的字段的beanDefinition注册到spring容器中
+     * @param field
+     */
     private void parsePrpcReference(Field field){
         PrpcRemoteReference getRemoteReference = AnnotationUtils.getAnnotation(field, PrpcRemoteReference.class);
         if (getRemoteReference != null){

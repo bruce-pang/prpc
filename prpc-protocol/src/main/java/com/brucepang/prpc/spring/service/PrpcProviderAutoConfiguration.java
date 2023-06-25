@@ -6,6 +6,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import com.brucepang.prpc.registry.RegistryFactory;
+import org.springframework.util.Assert;
 
 import java.net.UnknownHostException;
 
@@ -21,7 +22,9 @@ public class PrpcProviderAutoConfiguration {
     public SpringPrpcProviderBean springPrpcProviderBean(PrpcServerProperties prpcServerProperties) throws UnknownHostException {
 
         if (prpcServerProperties.getServiceAddress() == null || "".equals(prpcServerProperties.getServiceAddress().trim())) {
-            if (RegistryType.NACOS.code() == prpcServerProperties.getRegistryType()) {
+            Assert.notNull(prpcServerProperties.getRegistryAddress(), "registryAddress must not be null");
+            byte registryType = prpcServerProperties.getRegistryType();
+            if (RegistryType.NACOS.code() == prpcServerProperties.getRegistryType()) { // 如果是nacos注册中心
                 return new SpringPrpcProviderBean(prpcServerProperties);
             } else {
                 return new SpringPrpcProviderBean(prpcServerProperties.getServicePort());

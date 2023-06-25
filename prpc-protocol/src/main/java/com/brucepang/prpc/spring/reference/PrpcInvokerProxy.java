@@ -15,6 +15,7 @@ import java.lang.reflect.Method;
 
 /**
  * @author BrucePang
+ * 动态代理具体实现
  */
 @Slf4j
 public class PrpcInvokerProxy implements InvocationHandler {

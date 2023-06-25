@@ -7,3 +7,6 @@ com:
         servicePort: 20880 # 服务端口【本地调用使用】
 #         registryAddress: 192.168.56.1:8848 # 注册中心地址 zookeeper默认端口2181， eureka默认端口8761， nacos默认端口8848
 #         registryType: 2 # 注册中心类型 0：zookeeper 1：eureka 2：nacos
+spring:
+  autoconfigure:
+    exclude: com.brucepang.prpc.spring.service.PrpcProviderAutoConfiguration
