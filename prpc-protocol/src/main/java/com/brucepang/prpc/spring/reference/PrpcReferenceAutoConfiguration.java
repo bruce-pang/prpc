@@ -1,9 +1,11 @@
 package com.brucepang.prpc.spring.reference;
 
 import com.brucepang.prpc.annotation.PrpcRemoteReference;
+import com.brucepang.prpc.spring.service.PrpcProviderAutoConfiguration;
 import com.brucepang.prpc.spring.service.PrpcServerProperties;
 import com.brucepang.prpc.spring.service.SpringPrpcProviderBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -22,6 +24,7 @@ import java.util.Objects;
  */
 @Configuration
 @ConditionalOnClass({PrpcRemoteReference.class}) // 项目中要存在指定的类 自动装配才生效
+@EnableAutoConfiguration(exclude = PrpcProviderAutoConfiguration.class)
 // 由于Spring执行顺序问题，这里的EnableConfigurationProperties注解无用，BeanFactoryPostProcessor在执行之前就得拿到配置文件中的配置信息，所以这里使用EnvironmentAware
 public class PrpcReferenceAutoConfiguration implements EnvironmentAware {
 

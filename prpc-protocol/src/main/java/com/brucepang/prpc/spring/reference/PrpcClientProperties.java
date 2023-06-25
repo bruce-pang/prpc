@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
+import java.util.List;
+
 /**
  * @author BrucePang
  */
@@ -20,6 +22,8 @@ public class PrpcClientProperties {
 
     // 启用注册中心的开关
     private boolean enableRegistry;
+
+
 
     public String getServiceAddress() {
         return serviceAddress;

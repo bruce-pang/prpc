@@ -2,6 +2,8 @@ package com.brucepang.prpc.spring.service;
 
 import com.brucepang.prpc.registry.IRegistryService;
 import com.brucepang.prpc.registry.RegistryType;
+import com.brucepang.prpc.spring.reference.PrpcReferenceAutoConfiguration;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +18,7 @@ import java.net.UnknownHostException;
  */
 @Configuration
 @EnableConfigurationProperties(PrpcServerProperties.class)
+@EnableAutoConfiguration(exclude = PrpcReferenceAutoConfiguration .class) // 扫描到PrpcReferenceAutoConfiguration类时，不自动配置
 public class PrpcProviderAutoConfiguration {
 
     @Bean
