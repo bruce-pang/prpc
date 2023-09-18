@@ -15,7 +15,8 @@
     fastjson：1.2.76
 
 ### 工程结构
-![image](https://github.com/bruce-pang/pRPC/assets/125526597/82903f41-5ee9-4fcc-b6fc-cbc7abf8cd85)
+![image](https://github.com/bruce-pang/pRPC/assets/125526597/74f6c101-df52-4328-ae7c-e8b4e5cd20d0)
+
 
 
 
