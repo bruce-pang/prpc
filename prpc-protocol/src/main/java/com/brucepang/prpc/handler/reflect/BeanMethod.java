@@ -1,4 +1,4 @@
-package com.brucepang.prpc.spring.service;
+package com.brucepang.prpc.handler.reflect;
 
 import lombok.Data;
 
