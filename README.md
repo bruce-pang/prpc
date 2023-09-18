@@ -7,7 +7,7 @@
 ### 开发环境介绍
     JDK：1.8
     maven：3.8.6
-    Spring Boot：2.1.2.RELEASE
+    Spring Boot：2.5.6
     Netty：4.1.66.Final
     zookeeper：3.4.10
     nacos：1.3.0
@@ -26,24 +26,26 @@
             <dependency>
                 <groupId>com.brucepang.prpc</groupId>
                 <artifactId>prpc-protocol</artifactId>
-                <version>1.3.0</version>
+                <version>1.4.0</version>
             </dependency>
 ```
 
 ## 使用说明
 该工程中:
-
+    
+    prpc-common为框架公共组件部分，存放后续的诸多配置类与工具类
     prpc-protocol为prpc框架本身，可以导出jar包作为使用；
     prpc-registry为服务发现工程，目前支持zookeeper和nacos；
 
 其余子工程分别对应为demo：
-
-    prpc-protocol ---> 框架本身
-    prpc-registry ---> 注册中心与服务发现
-    prpc-api ---> demo：公共代码
-    prpc-provider ---> demo：服务提供方
-    prpc-consumer ---> demo：服务调用方
-    prpc-registry ---> 服务发现与注册
+    
+    prpc-common     ---> 公共组件
+    prpc-demo       ---> 示例代码（下面三部分组成）
+      prpc-api      ---> 存放公共接口部分
+      prpc-consumer ---> 服务消费方
+      prpc-provider ---> 服务提供方
+    prpc-protocol   ---> 框架本身
+    prpc-registry   ---> 注册中心与服务发现
     
 快速体验【纯体验，不写代码篇】：
 
@@ -65,10 +67,9 @@
 com:
   brucepang:
     prpc:
-      server:
-        servicePort: 20880 # 服务端口【本地调用使用】
-        registryType: 0 # 注册中心类型 0：zookeeper 1：eureka 2：nacos
-        registryAddress: 192.168.56.1:2181 # 注册中心地址 zookeeper默认端口2181， eureka默认端口8761， nacos默认端口8848
+      applicationName: prpc-provider
+      port: 20880 # 服务端口【prpc启动端口号】
+      address: nacos://127.0.0.1:8848 # 注册中心地址 zookeeper默认端口2181， eureka默认端口8761， nacos默认端口8848
 ```
     3.若不需要编写业务代码，直接运行PrpcProviderApplication.java，即可启动服务提供方。
     4.打开prpc-consumer工程，配置application.yml，如下是参数配置：
@@ -76,12 +77,9 @@ com:
 com:
   brucepang:
     prpc:
-      client:
-        enableRegistry: false # 是否启用注册中心, 默认true
-        serviceAddress: 192.168.56.1 # 服务地址【本地调用使用】
-        servicePort: 20880 # 服务端口【本地调用使用】
-#         registryAddress: 192.168.56.1:8848 # 注册中心地址 zookeeper默认端口2181， eureka默认端口8761， nacos默认端口8848
-#         registryType: 2 # 注册中心类型 0：zookeeper 1：eureka 2：nacos
+      applicationName: prpc-provider
+      port: 20880 # 服务端口【prpc启动端口号】
+      address: nacos://127.0.0.1:8848 # 注册中心地址 zookeeper默认端口2181， eureka默认端口8761， nacos默认端口8848
 ```
     5.若不需要编写业务代码，直接运行PrpcConsumerApplication.java，即可启动服务调用方。
 
@@ -111,6 +109,12 @@ com:
     1.基于netty实现了基本的rpc功能；
     2.期间对于spring生命周期的理解更加深刻，并且对于spring的底层组件使用场景有了更深刻的印象；
     3.实现了最基本的负载均衡，目前只支持随机负载均衡；
+1.4.0优化点：
+    
+    1.解决被打成jar包启动时出现循环依赖问题；
+    2.服务提供方接口注册时机实现采用 懒汉式 实现；
+    3.服务提供方与服务消费方yml配置统一，不再显示区分提供方与消费方；
+    4.不再提供regitryType来区分注册中心，改为address地址区分；
 
 ### 天涯何处无芳草，给颗星星好不好┭┮﹏┭┮]
 
