@@ -1,6 +1,6 @@
-package com.brucepang.prpc.registry.loadbalance;
+package com.brucepang.prpc.loadbalance;
 
-import com.brucepang.prpc.registry.ServiceInfo;
+import com.brucepang.prpc.common.ServiceInfo;
 import org.apache.curator.x.discovery.ServiceInstance;
 
 import java.util.List;

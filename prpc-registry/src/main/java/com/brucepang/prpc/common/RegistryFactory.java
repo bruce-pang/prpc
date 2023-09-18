@@ -1,9 +1,8 @@
-package com.brucepang.prpc.registry;
+package com.brucepang.prpc.common;
 
-import com.brucepang.prpc.registry.eureka.EurekaRegistryService;
-import com.brucepang.prpc.registry.nacos.NacoasRegistryService;
-import com.brucepang.prpc.registry.zookeeper.ZookeeperRegistryService;
-import com.sun.xml.internal.bind.v2.TODO;
+import com.brucepang.prpc.eureka.EurekaRegistryService;
+import com.brucepang.prpc.nacos.NacoasRegistryService;
+import com.brucepang.prpc.zookeeper.ZookeeperRegistryService;
 
 /**
  * @author BrucePang

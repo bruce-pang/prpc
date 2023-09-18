@@ -22,6 +22,7 @@
         <module>prpc-provider</module>
         <module>prpc-consumer</module>
         <module>prpc-registry</module>
+        <module>prpc-common</module>
     </modules>
 
     <properties>

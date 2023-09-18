@@ -1,4 +1,4 @@
-package com.brucepang.prpc.registry;
+package com.brucepang.prpc.common;
 
 /**
  * @author BrucePang

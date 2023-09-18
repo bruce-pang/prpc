@@ -5,7 +5,7 @@ import com.brucepang.prpc.constants.RpcConstant;
 import com.brucepang.prpc.constants.SerialType;
 import com.brucepang.prpc.core.*;
 import com.brucepang.prpc.protocol.NettyClient;
-import com.brucepang.prpc.registry.IRegistryService;
+import com.brucepang.prpc.common.IRegistryService;
 import io.netty.channel.DefaultEventLoop;
 import io.netty.util.concurrent.DefaultPromise;
 import lombok.extern.slf4j.Slf4j;
@@ -15,26 +15,32 @@ import java.lang.reflect.Method;
 
 /**
  * @author BrucePang
- * 动态代理具体实现
  */
 @Slf4j
 public class PrpcInvokerProxy implements InvocationHandler {
     private String host;
     private int port;
 
+    private IRegistryService registryService;
+
     // 本地调用使用开关
-    private boolean enableRegistry = true;
+    private boolean enableRegistry;
 
     public PrpcInvokerProxy(String host, int port, boolean enableRegistry) {
         this.host = host;
         this.port = port;
         this.enableRegistry = enableRegistry;
     }
-    IRegistryService registryService;
 
-    public PrpcInvokerProxy(IRegistryService registryService) {
+    public PrpcInvokerProxy(String host, int port, IRegistryService registryService, boolean enableRegistry) {
+        this.host = host;
+        this.port = port;
         this.registryService = registryService;
+        this.enableRegistry = enableRegistry;
     }
+
+
+
 
 
     @Override
@@ -69,4 +75,5 @@ public class PrpcInvokerProxy implements InvocationHandler {
         nettyClient.sendRequest(reqProtocol);
         return future.getPromise().get().getData();
     }
+
 }

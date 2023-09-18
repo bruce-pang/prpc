@@ -1,10 +1,8 @@
 package com.brucepang.prpc.protocol;
 
-import com.brucepang.prpc.handler.RpcServerHandler;
 import com.brucepang.prpc.handler.RpcServerInitializer;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import lombok.extern.slf4j.Slf4j;
@@ -14,8 +12,7 @@ import lombok.extern.slf4j.Slf4j;
  * Netty的服务
  */
 @Slf4j
-public class NettyServer {
-
+public class NettyServer{
     private String serverAddress; // 服务的地址
     private int serverPort; // 服务的端口
 
@@ -35,7 +32,7 @@ public class NettyServer {
                 .childHandler(new RpcServerInitializer());
         try {
             ChannelFuture future = bootstrap.bind(serverAddress, serverPort).sync();
-            log.info("NettyServer start success on port:{}", serverPort);
+            log.info("NettyServer start success on ip:{} port:{}", serverAddress, serverPort);
             future.channel().closeFuture().sync(); // 确认客户端断开链接才关闭服务器
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -46,4 +43,5 @@ public class NettyServer {
         }
 
     }
+
 }

@@ -1,4 +1,4 @@
-package com.brucepang.prpc.registry.loadbalance;
+package com.brucepang.prpc.loadbalance;
 
 import java.util.List;
 

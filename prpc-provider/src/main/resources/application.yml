@@ -1,10 +1,12 @@
+server:
+  port: 8096
+spring:
+  application:
+    name: prpc-provider
 com:
   brucepang:
     prpc:
-      server:
-        enableRegistry: true # 是否开启注册中心
-#        serviceAddress: 192.168.56.1
-        servicePort: 20880 # 服务端口【prpc启动端口号】
-        registryType: 0 # 注册中心类型 0：nacos 1：eureka 2：zookeeper
-        registryAddress: 192.168.56.1:8848 # 注册中心地址 zookeeper默认端口2181， eureka默认端口8761， nacos默认端口8848
+      applicationName: prpc-provider
+      port: 20880 # 服务端口【prpc启动端口号】
+      address: nacos://127.0.0.1:8848 # 注册中心地址 zookeeper默认端口2181， eureka默认端口8761， nacos默认端口8848
 

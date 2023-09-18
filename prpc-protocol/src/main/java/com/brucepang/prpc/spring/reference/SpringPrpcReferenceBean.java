@@ -1,14 +1,16 @@
 package com.brucepang.prpc.spring.reference;
 
-import com.brucepang.prpc.registry.IRegistryService;
-import com.brucepang.prpc.registry.RegistryFactory;
-import com.brucepang.prpc.registry.RegistryType;
+import com.brucepang.prpc.util.YamlToMap;
+import com.brucepang.prpc.common.IRegistryService;
+import com.brucepang.prpc.spring.facade.RegistryFacade;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
-import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Proxy;
+import java.net.InetAddress;
+import java.util.Map;
+
 
 /**
  * @author BrucePang
@@ -22,23 +24,30 @@ public class SpringPrpcReferenceBean implements FactoryBean<Object>, Environment
     private int servicePort;
     private Class<?> interfaceClass;
 
-    private String registryAddress;
 
-    private byte registryType;
+//    private IRegistryService iRegistryService;
+
 
     public void init(){
-        String flagStr = this.environment.getProperty("com.brucepang.prpc.client.enableRegistry");
-        if (StringUtils.isEmpty(flagStr) || Boolean.parseBoolean(flagStr)) { // 使用注册中心
-            IRegistryService registryService = RegistryFactory.createRegistry(this.registryAddress, RegistryType.findByCode(this.registryType));
-            this.object = Proxy.newProxyInstance(SpringPrpcReferenceBean.class.getClassLoader(),
-                    new Class<?>[]{interfaceClass},
-                    new PrpcInvokerProxy(registryService));
-        } else if (!Boolean.parseBoolean(flagStr)) { // 本地调用
-            this.object = Proxy.newProxyInstance(SpringPrpcReferenceBean.class.getClassLoader(),
-                    new Class<?>[]{interfaceClass},
-                    new PrpcInvokerProxy(this.serviceAddress, this.servicePort, Boolean.parseBoolean(flagStr)));
-        } else {
-            throw new RuntimeException("com.brucepang.prpc.client.enableRegistry must be true or false");
+        try {
+            Map<String, Object> map = YamlToMap.yamlToMap("application.yml");
+            IRegistryService registryService = RegistryFacade.registrySelector(map);
+            String address = registryService == null ? InetAddress.getByName("localhost").getHostAddress() : RegistryFacade.getRegistryHostAndPort((String) map.get("com.brucepang.prpc.address")).getHost();
+            int port = registryService == null ? 20880 : (int) map.get("com.brucepang.prpc.port");
+            if (registryService != null){
+                this.object = Proxy.newProxyInstance(SpringPrpcReferenceBean.class.getClassLoader(),
+                        new Class<?>[]{interfaceClass},
+                        new PrpcInvokerProxy(address,port,registryService,true));
+            } else { // 本地调用
+                this.object = Proxy.newProxyInstance(SpringPrpcReferenceBean.class.getClassLoader(),
+                        new Class<?>[]{interfaceClass},
+                        new PrpcInvokerProxy(address,port,false));
+
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }
@@ -80,23 +89,6 @@ public class SpringPrpcReferenceBean implements FactoryBean<Object>, Environment
 
     public void setObject(Object object) {
         this.object = object;
-    }
-
-    public void setRegistryAddress(String registryAddress) {
-        this.registryAddress = registryAddress;
-    }
-
-    public void setRegistryType(byte registryType) {
-        this.registryType = registryType;
-    }
-
-
-    public String getRegistryAddress() {
-        return registryAddress;
-    }
-
-    public byte getRegistryType() {
-        return registryType;
     }
 
     @Override

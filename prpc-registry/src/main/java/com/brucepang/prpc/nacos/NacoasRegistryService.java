@@ -1,12 +1,12 @@
-package com.brucepang.prpc.registry.nacos;
+package com.brucepang.prpc.nacos;
 
 import com.alibaba.nacos.api.NacosFactory;
 import com.alibaba.nacos.api.config.ConfigService;
 import com.alibaba.nacos.api.exception.NacosException;
 import com.alibaba.nacos.api.naming.NamingService;
 import com.alibaba.nacos.api.naming.pojo.Instance;
-import com.brucepang.prpc.registry.IRegistryService;
-import com.brucepang.prpc.registry.ServiceInfo;
+import com.brucepang.prpc.common.IRegistryService;
+import com.brucepang.prpc.common.ServiceInfo;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;

@@ -28,6 +28,13 @@
             <optional>true</optional>
         </dependency>
 
+        <!--公共依赖-->
+        <dependency>
+            <groupId>com.brucepang.prpc</groupId>
+            <artifactId>prpc-common</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
         <!--服务发现与注册中心依赖-->
         <dependency>
             <groupId>com.brucepang.prpc</groupId>
@@ -43,6 +50,8 @@
         </dependency>
 
     </dependencies>
+
+
 
 
 </project>
