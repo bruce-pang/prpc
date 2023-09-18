@@ -13,23 +13,20 @@
 
     <groupId>com.brucepang.prpc</groupId>
     <artifactId>prpc-oringin</artifactId>
-    <version>${revision}</version>
+    <version>1.4.0</version>
     <packaging>pom</packaging>
 
     <modules>
-        <module>prpc-api</module>
         <module>prpc-protocol</module>
-        <module>prpc-provider</module>
-        <module>prpc-consumer</module>
         <module>prpc-registry</module>
         <module>prpc-common</module>
+        <module>prpc-demo</module>
     </modules>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <revision>1.4.0-SNAPSHOT</revision>
-        <spring-cloud.version>Greenwich.RELEASE</spring-cloud.version>
+        <revision>1.4.0</revision>
     </properties>
 
 <!--   提供统一管理的API -->
@@ -67,6 +64,22 @@
                 <artifactId>prpc-consumer</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.brucepang.prpc</groupId>
+                <artifactId>prpc-registry</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.brucepang.prpc</groupId>
+                <artifactId>prpc-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.brucepang.prpc</groupId>
+                <artifactId>prpc-demo</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -103,11 +116,13 @@
     </dependencies>
 
     <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 </project>

@@ -3,8 +3,8 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.brucepang.prpc</groupId>
-        <artifactId>prpc-oringin</artifactId>
-        <version>${revision}</version>
+        <artifactId>prpc-demo</artifactId>
+        <version>1.4.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 

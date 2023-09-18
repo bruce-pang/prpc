@@ -51,8 +51,8 @@ public class RegistryFacade  {
 
     /**
      *
-     * @param objectMap
-     * @return
+     * @param objectMap 被YamlToMap读取application.yml后转换的map对象
+     * @return 注册中心的实现类
      */
     public static IRegistryService registrySelector(Map<String,Object> objectMap) {
         if (objectMap == null) {
