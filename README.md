@@ -1,5 +1,5 @@
 # pRPC
-目前发布第一版：
+prpc 1.4.0
 
 ## 介绍
 该框架是一个采用Netty实现的Rpc框架，适用于Spring Boot项目，计划更新支持SpringCloud，SpringCloudAlibaba。 核心代码模块都有清晰的注解，主要是用于学习之用。
