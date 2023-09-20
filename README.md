@@ -1,5 +1,5 @@
 # pRPC
-prpc 1.4.0
+prpc 1.4.1
 
 ## 介绍
 该框架是一个采用Netty实现的Rpc框架，适用于Spring Boot项目，计划更新支持SpringCloud，SpringCloudAlibaba。 核心代码模块都有清晰的注解，主要是用于学习之用。
@@ -27,7 +27,7 @@ prpc 1.4.0
             <dependency>
                 <groupId>com.brucepang.prpc</groupId>
                 <artifactId>prpc-protocol</artifactId>
-                <version>1.4.0</version>
+                <version>1.4.1</version>
             </dependency>
 ```
 
@@ -110,7 +110,7 @@ com:
     1.基于netty实现了基本的rpc功能；
     2.期间对于spring生命周期的理解更加深刻，并且对于spring的底层组件使用场景有了更深刻的印象；
     3.实现了最基本的负载均衡，目前只支持随机负载均衡；
-1.4.0优化点：
+1.4.1优化点：
     
     1.解决被打成jar包启动时出现循环依赖问题；
     2.服务提供方接口注册时机实现采用 懒汉式 实现；
