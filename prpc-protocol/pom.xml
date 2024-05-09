@@ -18,6 +18,26 @@
         <java.version>1.8</java.version>
     </properties>
     <dependencies>
+        <!--引入自动装配的jar-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <scope>compile</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure-processor</artifactId>
+            <scope>compile</scope>
+            <optional>true</optional>
+        </dependency>
+        <!--服务发现与注册中心依赖-->
         <dependency>
             <groupId>com.brucepang</groupId>
             <artifactId>prpc-registry</artifactId>

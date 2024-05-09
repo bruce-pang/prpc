@@ -6,9 +6,9 @@ package com.brucepang.prpc.registry;
  **/
 public enum RegistryType {
 
-    ZOOKEEPER((byte)0),
+    NACOS((byte)0),
     EUREKA((byte)1),
-    NACOS ((byte)2);
+    ZOOKEEPER ((byte)2);
     private byte code;
 
     RegistryType(byte code){

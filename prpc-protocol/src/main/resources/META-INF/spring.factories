@@ -1,0 +1,4 @@
+# EnableAutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.brucepang.prpc.spring.service.PrpcProviderAutoConfiguration, \
+com.brucepang.prpc.spring.reference.PrpcReferenceAutoConfiguration

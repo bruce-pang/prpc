@@ -15,6 +15,7 @@ import java.lang.reflect.Method;
 
 /**
  * @author BrucePang
+ * 动态代理具体实现
  */
 @Slf4j
 public class PrpcInvokerProxy implements InvocationHandler {
@@ -22,7 +23,7 @@ public class PrpcInvokerProxy implements InvocationHandler {
     private int port;
 
     // 本地调用使用开关
-    private boolean enableRegistry;
+    private boolean enableRegistry = true;
 
     public PrpcInvokerProxy(String host, int port, boolean enableRegistry) {
         this.host = host;

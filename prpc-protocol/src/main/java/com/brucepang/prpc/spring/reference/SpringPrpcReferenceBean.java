@@ -28,12 +28,12 @@ public class SpringPrpcReferenceBean implements FactoryBean<Object>, Environment
 
     public void init(){
         String flagStr = this.environment.getProperty("com.brucepang.prpc.client.enableRegistry");
-        if (StringUtils.isEmpty(flagStr) || Boolean.parseBoolean(flagStr)) {
+        if (StringUtils.isEmpty(flagStr) || Boolean.parseBoolean(flagStr)) { // 使用注册中心
             IRegistryService registryService = RegistryFactory.createRegistry(this.registryAddress, RegistryType.findByCode(this.registryType));
             this.object = Proxy.newProxyInstance(SpringPrpcReferenceBean.class.getClassLoader(),
                     new Class<?>[]{interfaceClass},
                     new PrpcInvokerProxy(registryService));
-        } else if (!Boolean.parseBoolean(flagStr)) {
+        } else if (!Boolean.parseBoolean(flagStr)) { // 本地调用
             this.object = Proxy.newProxyInstance(SpringPrpcReferenceBean.class.getClassLoader(),
                     new Class<?>[]{interfaceClass},
                     new PrpcInvokerProxy(this.serviceAddress, this.servicePort, Boolean.parseBoolean(flagStr)));
