@@ -1,0 +1,62 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.brucepang.prpc</groupId>
+        <artifactId>prpc-oringin</artifactId>
+        <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>prpc-spring-boot</artifactId>
+    <packaging>pom</packaging>
+    <description>Prpc Spring Boot Parent</description>
+
+    <name>prpc-spring-boot</name>
+
+    <modules>
+        <module>prpc-spring-boot-compatible</module>
+    </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spring-boot.version>2.7.8</spring-boot.version>
+        <prpc.version>${revision}</prpc.version>
+        <!-- 受限于Springboot版本本身,只能显示的去声明buddy的版本 -->
+        <byte-buddy.version>1.14.7</byte-buddy.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- Spring Boot -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy</artifactId>
+            <version>${byte-buddy.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy-agent</artifactId>
+            <version>${byte-buddy.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>

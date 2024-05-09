@@ -3,16 +3,15 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.brucepang.prpc</groupId>
-        <artifactId>prpc-oringin</artifactId>
+        <artifactId>prpc-config</artifactId>
         <version>${revision}</version>
-        <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>prpc-api</artifactId>
+    <artifactId>prpc-config-api</artifactId>
     <packaging>jar</packaging>
+    <name>${project.artifactId}</name>
+    <description>The config api module of prpc project</description>
 
-    <name>prpc-api</name>
-    <url>http://maven.apache.org</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -20,10 +19,14 @@
 
     <dependencies>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>3.8.1</version>
-            <scope>test</scope>
+            <groupId>com.brucepang.prpc</groupId>
+            <artifactId>prpc-common</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.brucepang.prpc</groupId>
+            <artifactId>prpc-registry</artifactId>
+            <version>${project.parent.version}</version>
         </dependency>
     </dependencies>
 </project>

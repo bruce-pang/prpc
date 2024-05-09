@@ -1,0 +1,20 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.brucepang.prpc</groupId>
+        <artifactId>prpc-demo-api</artifactId>
+        <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <artifactId>prpc-demo-api-provider</artifactId>
+    <packaging>jar</packaging>
+    <name>prpc-demo-api-provider</name>
+    <url>http://maven.apache.org</url>
+    <dependencies>
+
+    </dependencies>
+    <build>
+        <finalName>prpc-demo-api-provider</finalName>
+    </build>
+</project>

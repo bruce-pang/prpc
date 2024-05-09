@@ -8,11 +8,14 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>prpc-api</artifactId>
-    <packaging>jar</packaging>
+    <artifactId>prpc-demo</artifactId>
+    <packaging>pom</packaging>
 
-    <name>prpc-api</name>
-    <url>http://maven.apache.org</url>
+    <name>prpc-demo</name>
+    <description>The demo module of prpc project</description>
+    <modules>
+        <module>prpc-demo-api</module>
+    </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

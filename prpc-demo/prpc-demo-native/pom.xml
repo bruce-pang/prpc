@@ -4,14 +4,14 @@
     <parent>
         <groupId>com.brucepang.prpc</groupId>
         <artifactId>prpc-oringin</artifactId>
-        <version>${revision}</version>
-        <relativePath>../pom.xml</relativePath>
+        <version>1.4.0-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>prpc-api</artifactId>
+    <artifactId>prpc-demo-native</artifactId>
     <packaging>jar</packaging>
 
-    <name>prpc-api</name>
+    <name>prpc-demo-native</name>
     <url>http://maven.apache.org</url>
 
     <properties>
