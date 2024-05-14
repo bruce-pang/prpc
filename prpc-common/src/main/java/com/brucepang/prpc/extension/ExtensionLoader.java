@@ -156,6 +156,11 @@ public class ExtensionLoader<T> {
 
 
     private void loadClass(Map<String, Class<?>> extensionClasses, URL url, Class<?> clazz, String name, boolean overridden) {
+        if (!type.isAssignableFrom(clazz)) {
+            throw new IllegalStateException("Error when load extension class(interface: " +
+                    type + ", class line: " + clazz.getName() + "), class "
+                    + clazz.getName() + "is not subtype of interface.");
+        }
         Class<?> c = extensionClasses.get(name);
         if (c == null || overridden){
             extensionClasses.put(name, clazz);
