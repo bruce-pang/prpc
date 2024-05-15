@@ -169,4 +169,21 @@ public class ExtensionLoader<T> {
         }
     }
 
+    public T getExtension(String cacheLoaderClassName) {
+        try {
+            // load the extension classes
+            Map<String, Class<?>> extensionClasses = loadExtensionClasses();
+            // get the extension class
+            Class<?> extensionClass = extensionClasses.get(cacheLoaderClassName);
+            if (extensionClass == null) {
+                throw new IllegalArgumentException("No such extension of name " + cacheLoaderClassName);
+            }
+            // create the extension instance
+            return (T) extensionClass.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException("Failed to create extension instance.", e);
+        }
+    }
+
+
 }
