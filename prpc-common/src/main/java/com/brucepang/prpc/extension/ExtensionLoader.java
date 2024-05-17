@@ -38,6 +38,10 @@ public class ExtensionLoader<T> {
         this.type = type;
     }
 
+    public static ExtensionLoader create(Class<?> type) {
+        return new ExtensionLoader(type);
+    }
+
     public static <T> ExtensionLoader<T> getExtensionLoader(Class<T> type){
         // check the type
         if (type == null) {
