@@ -14,4 +14,9 @@ public @interface SPI {
      * 默认加载的扩展名
      */
     String value() default "";
+
+    /**
+     * 扩展点的范围
+     */
+    ExtensionScope scope() default ExtensionScope.GLOBAL;
 }
