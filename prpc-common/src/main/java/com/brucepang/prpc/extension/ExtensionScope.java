@@ -8,5 +8,5 @@ public enum ExtensionScope {
     GLOBAL,
     APPLICATION,
     MODULE,
-    LOCAL
+    SELF
 }
