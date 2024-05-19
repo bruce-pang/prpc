@@ -250,7 +250,6 @@
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                 </configuration>
             </plugin>
-            <!-- 其他插件配置 -->
         </plugins>
     </build>
 </project>
