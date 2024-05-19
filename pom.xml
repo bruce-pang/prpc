@@ -5,18 +5,17 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.5.6</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <groupId>com.brucepang</groupId>
+        <artifactId>brucepang</artifactId>
+        <version>1.0</version>
     </parent>
 
     <groupId>com.brucepang.prpc</groupId>
-    <artifactId>prpc-oringin</artifactId>
-    <version>1.4.1</version>
+    <artifactId>prpc-parent</artifactId>
+    <version>${revision}</version>
     <packaging>pom</packaging>
-    <description>The oringin module of prpc parent</description>
-    <url>https://github.com/bruce-pang/pRPC</url>
+
+    <name>${project.artifactId}</name>
 
     <developers>
         <developer>
@@ -43,101 +42,91 @@
     </scm>
 
     <modules>
-        <module>prpc-protocol</module>
-        <module>prpc-registry</module>
         <module>prpc-common</module>
-        <module>prpc-demo</module>
+        <module>prpc-test</module>
     </modules>
 
     <properties>
+        <!-- for maven compiler plugin -->
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <revision>1.4.1</revision>
+        <!-- Test libs -->
+        <junit_jupiter_version>5.9.3</junit_jupiter_version>
+        <awaitility_version>4.2.0</awaitility_version>
+        <hazelcast_version>3.12.13</hazelcast_version>
+        <hamcrest_version>2.2</hamcrest_version>
+        <hibernate_validator_version>5.2.4.Final</hibernate_validator_version>
+        <el_api_version>2.2.5</el_api_version>
+        <jaxb_api_version>2.2.7</jaxb_api_version>
+        <cglib_version>2.2.2</cglib_version>
+        <mockito_version>4.11.0</mockito_version>
+        <!-- Maven plugins -->
+        <maven_jar_version>3.3.0</maven_jar_version>
     </properties>
 
     <!--   提供统一管理的API -->
     <dependencyManagement>
         <dependencies>
-            <!--            <dependency>
-                            <groupId>org.springframework.cloud</groupId>
-                            <artifactId>spring-cloud-dependencies</artifactId>
-                            <version>${spring-cloud.version}</version>
-                            <type>pom</type>
-                            <scope>import</scope>
-                        </dependency>
-                        <dependency>
-                            <groupId>com.alibaba.cloud</groupId>
-                            <artifactId>spring-cloud-alibaba</artifactId>
-                            <version>2.1.2.RELEASE</version>
-                        </dependency>-->
             <dependency>
                 <groupId>com.brucepang.prpc</groupId>
-                <artifactId>prpc-api</artifactId>
-                <version>${project.version}</version>
+                <artifactId>prpc-dependencies-bom</artifactId>
+                <version>1.4.1</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
-            <dependency>
-                <groupId>com.brucepang.prpc</groupId>
-                <artifactId>prpc-protocol</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.brucepang.prpc</groupId>
-                <artifactId>prpc-provider</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.brucepang.prpc</groupId>
-                <artifactId>prpc-consumer</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.brucepang.prpc</groupId>
-                <artifactId>prpc-registry</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.brucepang.prpc</groupId>
-                <artifactId>prpc-common</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.brucepang.prpc</groupId>
-                <artifactId>prpc-demo</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
         </dependencies>
     </dependencyManagement>
 
     <dependencies>
+        <!--JUnit Jupiter Engine to depend on the JUnit5 engine and JUnit 5 API -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit_jupiter_version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit_jupiter_version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.16.18</version>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>${junit_jupiter_version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.83</version>
+            <groupId>org.awaitility</groupId>
+            <artifactId>awaitility</artifactId>
+            <version>${awaitility_version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>1.2.9</version>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest</artifactId>
+            <version>${hamcrest_version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito_version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-inline</artifactId>
+            <version>${mockito_version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib-nodep</artifactId>
+            <version>${cglib_version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -234,13 +223,34 @@
 
 
     <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-maven-plugin</artifactId>
-                </plugin>
-            </plugins>
-        </pluginManagement>
+        <plugins>
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${maven_jar_version}</version>
+                <configuration>
+                    <archive>
+                        <addMavenDescriptor>true</addMavenDescriptor>
+                        <index>true</index>
+                        <manifest>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                        </manifest>
+                        <manifestEntries>
+                            <Specification-Version>${project.version}</Specification-Version>
+                            <Implementation-Version>${project.version}</Implementation-Version>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.4.1</version>
+                <configuration>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                </configuration>
+            </plugin>
+            <!-- 其他插件配置 -->
+        </plugins>
     </build>
 </project>
