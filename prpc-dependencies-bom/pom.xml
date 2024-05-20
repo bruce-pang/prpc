@@ -12,14 +12,30 @@
 
   <groupId>com.brucepang.prpc</groupId>
   <artifactId>prpc-dependencies-bom</artifactId>
-  <version>1.4.1</version>
+  <version>${revision}</version>
   <packaging>pom</packaging>
 
   <name>prpc-dependencies-bom</name>
   <url>https://github.com/bruce-pang/pRPC</url>
+  <inceptionYear>2023</inceptionYear>
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <scm>
+    <url>https://github.com/bruce-pang/pRPC</url>
+    <connection>scm:git:https://github.com/bruce-pang/pRPC.git</connection>
+    <developerConnection>scm:git:https://github.com/bruce-pang/pRPC.git</developerConnection>
+    <tag>HEAD</tag>
+  </scm>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <revision>1.5.0</revision>
   </properties>
 
   <profiles>

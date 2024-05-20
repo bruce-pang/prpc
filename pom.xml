@@ -38,7 +38,9 @@
     </licenses>
     <scm>
         <url>https://github.com/bruce-pang/pRPC</url>
-        <connection>https://github.com/bruce-pang/pRPC.git</connection>
+        <connection>scm:git:https://github.com/bruce-pang/pRPC.git</connection>
+        <developerConnection>scm:git:https://github.com/bruce-pang/pRPC.git</developerConnection>
+        <tag>HEAD</tag>
     </scm>
 
     <modules>
@@ -50,7 +52,7 @@
         <!-- for maven compiler plugin -->
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <revision>1.4.1</revision>
+        <revision>1.5.0</revision>
         <!-- Test libs -->
         <junit_jupiter_version>5.9.3</junit_jupiter_version>
         <awaitility_version>4.2.0</awaitility_version>
@@ -71,7 +73,7 @@
             <dependency>
                 <groupId>com.brucepang.prpc</groupId>
                 <artifactId>prpc-dependencies-bom</artifactId>
-                <version>1.4.1</version>
+                <version>${revision}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
