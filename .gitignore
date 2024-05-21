@@ -62,4 +62,4 @@ Thumbs.db
 *.sublime-*
 
 # JUnit
-*/test/
+**/test/**
