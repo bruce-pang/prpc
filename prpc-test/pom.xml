@@ -11,6 +11,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>prpc-dependencies-all</module>
+        <module>prpc-serialization-test</module>
     </modules>
 
 
