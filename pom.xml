@@ -46,6 +46,7 @@
     <modules>
         <module>prpc-common</module>
         <module>prpc-test</module>
+        <module>prpc-serialization</module>
     </modules>
 
     <properties>
