@@ -1,8 +1,8 @@
 package com.brucepang.prpc.extension;
 
+import com.brucepang.prpc.logger.Logger;
+import com.brucepang.prpc.logger.LoggerFactory;
 import com.brucepang.prpc.util.StrUtil;
-import com.sun.org.slf4j.internal.Logger;
-import com.sun.org.slf4j.internal.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
