@@ -33,7 +33,6 @@ hs_err_pid*
 
 # Editor directories and files
 .idea
-*.class
 
 
 .classpath
@@ -60,3 +59,9 @@ Thumbs.db
 *#
 *~
 *.sublime-*
+
+# Ignore all junit test directories
+**/junit test/*
+
+# Do not ignore junit test directory in prpc-test
+!/prpc-test/junit test/*
