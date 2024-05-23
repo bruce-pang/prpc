@@ -45,6 +45,7 @@
 
     <modules>
         <module>prpc-common</module>
+        <module>prpc-dependencies-bom</module>
         <module>prpc-test</module>
         <module>prpc-serialization</module>
     </modules>
@@ -74,7 +75,7 @@
             <dependency>
                 <groupId>com.brucepang.prpc</groupId>
                 <artifactId>prpc-dependencies-bom</artifactId>
-                <version>${revision}</version>
+                <version>${project.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
