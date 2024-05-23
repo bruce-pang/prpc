@@ -19,6 +19,10 @@
     </properties>
 
     <dependencies>
-
+        <dependency>
+            <groupId>com.brucepang.prpc</groupId>
+            <artifactId>prpc-serialization-api</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
     </dependencies>
 </project>
