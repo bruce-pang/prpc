@@ -36,7 +36,23 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <revision>1.5.0</revision>
+    <protobuf-java_version>3.6.0</protobuf-java_version>
   </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.google.protobuf</groupId>
+      <artifactId>protobuf-java</artifactId>
+      <version>${protobuf-java_version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.protobuf</groupId>
+      <artifactId>protobuf-java-util</artifactId>
+      <version>${protobuf-java_version}</version>
+    </dependency>
+  </dependencies>
+
+
 
   <profiles>
     <profile>
