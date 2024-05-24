@@ -14,16 +14,16 @@ public interface Serialization {
      * @return the byte array representation of the object
      * @throws IOException if any IO errors occur
      */
-    byte[] serialize(Object obj) throws IOException;
+    <T> byte[] serialize(T obj) throws IOException;
 
     /**
      * Deserialize the given byte array to an object.
      *
      * @param data the byte array to deserialize
-     * @param clazz the class of the object
+     * @param cls the class of the object
      * @return the deserialized object
      * @throws IOException if any IO errors occur
      * @throws ClassNotFoundException if the class of the object is not found
      */
-    <T> T deserialize(byte[] data, Class<T> clazz) throws IOException, ClassNotFoundException;
+    <T> T deserialize(byte[] data, Class<T> cls) throws IOException, ClassNotFoundException;;
 }
