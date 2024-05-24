@@ -1,11 +1,13 @@
 package com.brucepang.prpc.common.serialize;
 
+import com.brucepang.prpc.common.serialize.support.Serialization;
+
 import java.io.*;
 
 /**
  * Java serialization
  */
-public class JavaSerialization implements Serialization  {
+public class JavaSerialization implements Serialization {
 
     /**
      * Serialize object to byte array
