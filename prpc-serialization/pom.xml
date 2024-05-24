@@ -14,6 +14,7 @@
     <modules>
         <module>prpc-serialization-jdk</module>
         <module>prpc-serialization-protobuf</module>
+        <module>prpc-serialization-api</module>
     </modules>
 
     <properties>
