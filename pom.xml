@@ -48,6 +48,7 @@
         <module>prpc-dependencies-bom</module>
         <module>prpc-test</module>
         <module>prpc-serialization</module>
+        <module>prpc-remoting</module>
     </modules>
 
     <properties>
