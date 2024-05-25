@@ -3,24 +3,31 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.brucepang.prpc</groupId>
-        <artifactId>prpc-parent</artifactId>
+        <artifactId>prpc-remoting</artifactId>
         <version>${revision}</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>prpc-remoting</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>prpc-remoting-api</artifactId>
+    <packaging>jar</packaging>
     <name>${project.artifactId}</name>
-    <description>The remoting module of dubbo project</description>
-    <modules>
-        <module>prpc-remoting-api</module>
-    </modules>
+    <description>The remoting module of prpc project</description>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <skip_maven_deploy>false</skip_maven_deploy>
     </properties>
 
-
     <dependencies>
+        <dependency>
+            <groupId>com.brucepang.prpc</groupId>
+            <artifactId>prpc-common</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.brucepang.prpc</groupId>
+            <artifactId>prpc-serialization-api</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
     </dependencies>
 </project>
