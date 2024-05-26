@@ -22,5 +22,15 @@
 
 
     <dependencies>
+        <dependency>
+            <groupId>com.brucepang.prpc</groupId>
+            <artifactId>prpc-common</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.brucepang.prpc</groupId>
+            <artifactId>prpc-serialization-protobuf</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
     </dependencies>
 </project>
