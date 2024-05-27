@@ -2,7 +2,7 @@ package com.brucepang.prpc.client;
 
 import com.brucepang.prpc.Request;
 
-import javax.xml.ws.Response;
+import com.brucepang.prpc.Response;
 import java.io.IOException;
 
 public interface Client {
