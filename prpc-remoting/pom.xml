@@ -7,20 +7,31 @@
         <version>${revision}</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-    <artifactId>prpc-serialization</artifactId>
+
+    <artifactId>prpc-remoting</artifactId>
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
-    <description>The serialization module of prpc project</description>
+    <description>The remoting module of dubbo project</description>
     <modules>
-        <module>prpc-serialization-jdk</module>
-        <module>prpc-serialization-protobuf</module>
-        <module>prpc-serialization-api</module>
+        <module>prpc-remoting-api</module>
+        <module>prpc-remoting-netty4</module>
     </modules>
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <skip_maven_deploy>false</skip_maven_deploy>
     </properties>
 
 
+    <dependencies>
+        <dependency>
+            <groupId>com.brucepang.prpc</groupId>
+            <artifactId>prpc-common</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.brucepang.prpc</groupId>
+            <artifactId>prpc-serialization-protobuf</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+    </dependencies>
 </project>

@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
@@ -36,7 +35,31 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <revision>1.5.0</revision>
+    <protobuf-java_version>3.6.0</protobuf-java_version>
+    <netty4_version>4.1.99.Final</netty4_version>
   </properties>
+
+<dependencyManagement>
+  <dependencies>
+  <dependency>
+    <groupId>com.google.protobuf</groupId>
+    <artifactId>protobuf-java</artifactId>
+    <version>${protobuf-java_version}</version>
+  </dependency>
+  <dependency>
+    <groupId>com.google.protobuf</groupId>
+    <artifactId>protobuf-java-util</artifactId>
+    <version>${protobuf-java_version}</version>
+  </dependency>
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-bom</artifactId>
+      <version>${netty4_version}</version>
+      <type>pom</type>
+      <scope>import</scope>
+    </dependency>
+  </dependencies>
+</dependencyManagement>
 
   <profiles>
     <profile>
