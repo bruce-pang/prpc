@@ -3,19 +3,24 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.brucepang.prpc</groupId>
-        <artifactId>prpc-parent</artifactId>
+        <artifactId>prpc-registry</artifactId>
         <version>${revision}</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-    <artifactId>prpc-registry</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>prpc-registry-api</artifactId>
+    <packaging>jar</packaging>
     <name>${project.artifactId}</name>
     <description>The registry module of prpc project</description>
-    <modules>
-        <module>prpc-registry-api</module>
-    </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <skip_maven_deploy>false</skip_maven_deploy>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.brucepang.prpc</groupId>
+            <artifactId>prpc-common</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+    </dependencies>
 </project>
