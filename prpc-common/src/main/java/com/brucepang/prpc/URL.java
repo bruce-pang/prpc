@@ -4,6 +4,7 @@ import com.brucepang.prpc.util.StrUtil;
 
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Map;
 
@@ -58,6 +59,17 @@ public class URL implements Serializable {
         }
         try {
             return URLEncoder.encode(value, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
+
+    public static String decode(String value) {
+        if (StrUtil.isEmpty(value)) {
+            return "";
+        }
+        try {
+            return URLDecoder.decode(value, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e.getMessage(), e);
         }
