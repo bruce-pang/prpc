@@ -1,6 +1,10 @@
 package com.brucepang.prpc;
 
+import com.brucepang.prpc.util.StrUtil;
+
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Map;
 
 /**
@@ -20,7 +24,7 @@ public class URL implements Serializable {
 
     private final Map<String,String> params;
 
-    private final Map<String, Map<String, String>> parameterTypes; //参数类型
+    private final Map<String, Map<String, String>> methodParameters;
 
     protected URL() {
         this.protocol = null;
@@ -28,7 +32,7 @@ public class URL implements Serializable {
         this.port = 0;
         this.path = null;
         this.params = null;
-        this.parameterTypes = null;
+        this.methodParameters = null;
     }
 
     public URL(String protocol, String host, int port) {
@@ -39,13 +43,24 @@ public class URL implements Serializable {
         this(protocol, host, port, path, null, null);
     }
 
-    public URL(String protocol, String host, int port, String path, Map<String, String> params, Map<String, Map<String, String>> parameterTypes) {
+    public URL(String protocol, String host, int port, String path, Map<String, String> params, Map<String, Map<String, String>> methodParameters) {
         this.protocol = protocol;
         this.host = host;
         this.port = port;
         this.path = path;
         this.params = params;
-        this.parameterTypes = parameterTypes;
+        this.methodParameters = methodParameters;
+    }
+
+    public static String encode(String value) {
+        if (StrUtil.isEmpty(value)) {
+            return "";
+        }
+        try {
+            return URLEncoder.encode(value, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
     }
 
 }
