@@ -53,6 +53,15 @@ public class URL implements Serializable {
         this.methodParameters = methodParameters;
     }
 
+    public URL(String protocol, String host, int port, String path, Map<String, String> params) {
+        this(protocol, host, port, path, params, null);
+    }
+
+    /**
+     * encode the URL encoded string using UTF-8.
+     * @param value URL encoded string
+     * @return  URL encoded string
+     */
     public static String encode(String value) {
         if (StrUtil.isEmpty(value)) {
             return "";
@@ -64,6 +73,12 @@ public class URL implements Serializable {
         }
     }
 
+    /**
+     * Decode the URL encoded string using UTF-8.
+     *
+     * @param value URL encoded string
+     * @return URL decoded string
+     */
     public static String decode(String value) {
         if (StrUtil.isEmpty(value)) {
             return "";
@@ -74,5 +89,18 @@ public class URL implements Serializable {
             throw new RuntimeException(e.getMessage(), e);
         }
     }
+
+    public String getProtocol() {
+        return protocol;
+    }
+
+    public URL setProtocol(String protocol){
+        return new URL(protocol,host,port,path,getParams());
+    }
+
+    public Map<String, String> getParams() {
+        return params;
+    }
+
 
 }
