@@ -124,7 +124,17 @@ Summary of this version:
     4. No longer provide regitryType to distinguish between registration centers, use the address to distinguish instead;
 
 1.4.2 SPI extension plugin:
-    
+
+### How to participate in PRPC open source contribution
+
+    1. Fork the project to your own warehouse
+    2. Clone the project to your local
+    3. Modify the code and submit it to your own warehouse
+    4. Submit a pull request to the original project
+
+>Add 'WeChat brucepang0618' to the PRPC to communicate with the author
+
+> Illegal projects are not allowed to be used at your own risk
 
 ### Wherever you go, there will always be beautiful scenery. How about giving me a little star?┭┮﹏┭┮]
 

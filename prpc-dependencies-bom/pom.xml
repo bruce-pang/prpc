@@ -37,6 +37,8 @@
     <revision>1.5.0</revision>
     <protobuf-java_version>3.6.0</protobuf-java_version>
     <netty4_version>4.1.99.Final</netty4_version>
+    <!-- Log libs -->
+    <slf4j_version>2.0.13</slf4j_version>
   </properties>
 
 <dependencyManagement>
@@ -57,6 +59,12 @@
       <version>${netty4_version}</version>
       <type>pom</type>
       <scope>import</scope>
+    </dependency>
+    <!-- Log libs -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4j_version}</version>
     </dependency>
   </dependencies>
 </dependencyManagement>

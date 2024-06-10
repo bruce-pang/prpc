@@ -1,8 +1,8 @@
 package com.brucepang.prpc.server;
 
 import com.brucepang.prpc.Request;
+import com.brucepang.prpc.Response;
 
-import javax.xml.ws.Response;
 import java.io.IOException;
 
 public interface Server {
