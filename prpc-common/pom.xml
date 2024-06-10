@@ -10,10 +10,22 @@
 
     <artifactId>prpc-common</artifactId>
     <packaging>jar</packaging>
-
-    <name>prpc-common</name>
-    <description>prpc-公共组件</description>
+    <name>${project.artifactId}</name>
+    <description>The common module of prpc project</description>
     <url>https://github.com/bruce-pang/pRPC</url>
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <skip_maven_deploy>false</skip_maven_deploy>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 
     <developers>
         <developer>
@@ -38,12 +50,6 @@
         <url>https://github.com/bruce-pang/pRPC</url>
         <connection>https://github.com/bruce-pang/pRPC.git</connection>
     </scm>
-
-    <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
 
 
 
