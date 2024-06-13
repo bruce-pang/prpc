@@ -33,6 +33,7 @@ public abstract class ScopeModel implements ExtensionAccessor {
     }
 
     protected void initialize() {
-        this.extensionMgt = new ExtensionMgt(scope);
+        // prepare to build Parent Delegation Mechanism
+        this.extensionMgt = new ExtensionMgt(scope, parent != null ? parent.getExtensionMgt() : null, this);
     }
 }
