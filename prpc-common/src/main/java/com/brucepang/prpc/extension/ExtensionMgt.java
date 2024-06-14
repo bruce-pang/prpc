@@ -1,5 +1,7 @@
 package com.brucepang.prpc.extension;
 
+import com.brucepang.prpc.scope.ScopeModel;
+
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -12,8 +14,14 @@ public class ExtensionMgt implements ExtensionAccessor {
 
     private final ExtensionScope scope;
 
-    public ExtensionMgt(ExtensionScope scope) {
+    private final ExtensionMgt parent;
+
+    private final ScopeModel scopeModel;
+
+    public ExtensionMgt(ExtensionScope scope, ExtensionMgt parent, ScopeModel scopeModel) {
         this.scope = scope;
+        this.parent = parent;
+        this.scopeModel = scopeModel;
     }
 
 
