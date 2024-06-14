@@ -6,6 +6,7 @@ import com.brucepang.prpc.extension.ExtensionScope;
 import com.brucepang.prpc.logger.Logger;
 import com.brucepang.prpc.logger.LoggerFactory;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -27,6 +28,8 @@ public abstract class ScopeModel implements ExtensionAccessor {
 
     private ExtensionMgt extensionMgt;
 
+    private final Object lock = new Object();
+
     protected ScopeModel(ScopeModel parent, ExtensionScope scope) {
         this.parent = parent;
         this.scope = scope;
@@ -34,6 +37,22 @@ public abstract class ScopeModel implements ExtensionAccessor {
 
     protected void initialize() {
         // prepare to build Parent Delegation Mechanism
-        this.extensionMgt = new ExtensionMgt(scope, parent != null ? parent.getExtensionMgt() : null, this);
+        synchronized (lock) {
+            this.extensionMgt = new ExtensionMgt(scope, parent != null ? parent.getExtensionMgt() : null, this);
+            ClassLoader classLoader = ScopeModel.class.getClassLoader();
+            if(classLoaders != null) {
+                this.addClassLoader(classLoader);
+            }
+        }
     }
+
+    public void addClassLoader(ClassLoader classLoader) {
+        synchronized (lock) {
+           this.classLoaders.add(classLoader);
+           if (parent != null) {
+               parent.addClassLoader(classLoader);
+           }
+        }
+    }
+
 }
