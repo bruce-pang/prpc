@@ -1,5 +1,6 @@
 package com.brucepang.prpc.scope;
 
+import com.brucepang.prpc.beans.factory.ScopeBeanFactory;
 import com.brucepang.prpc.extension.ExtensionAccessor;
 import com.brucepang.prpc.extension.ExtensionMgt;
 import com.brucepang.prpc.extension.ExtensionScope;
@@ -27,6 +28,8 @@ public abstract class ScopeModel implements ExtensionAccessor {
     private final ExtensionScope scope;
 
     private ExtensionMgt extensionMgt;
+
+    private volatile ScopeBeanFactory beanFactory;
 
     private final Object lock = new Object();
 
