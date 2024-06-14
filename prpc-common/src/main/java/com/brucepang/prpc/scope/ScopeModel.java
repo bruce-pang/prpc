@@ -55,4 +55,8 @@ public abstract class ScopeModel implements ExtensionAccessor {
         }
     }
 
+    public void destroy(){
+        classLoaders.clear();
+    }
+
 }
