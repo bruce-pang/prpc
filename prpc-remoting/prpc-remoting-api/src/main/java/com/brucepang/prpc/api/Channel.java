@@ -1,8 +1,8 @@
 package com.brucepang.prpc.api;
 
 import com.brucepang.prpc.Request;
+import com.brucepang.prpc.Response;
 
-import javax.xml.ws.Response;
 import java.io.IOException;
 
 public interface Channel {

@@ -1,6 +1,7 @@
 package com.brucepang.prpc.transport.netty4;
 
 import com.brucepang.prpc.Request;
+import com.brucepang.prpc.Response;
 import com.brucepang.prpc.server.Server;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -8,7 +9,6 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
-import javax.xml.ws.Response;
 import java.io.IOException;
 
 public class NettyServer implements Server {

@@ -49,6 +49,8 @@
         <module>prpc-test</module>
         <module>prpc-serialization</module>
         <module>prpc-remoting</module>
+        <module>prpc-registry</module>
+        <module>prpc-rpc</module>
     </modules>
 
     <properties>
