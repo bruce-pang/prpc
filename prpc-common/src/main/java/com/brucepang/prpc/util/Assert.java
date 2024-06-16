@@ -31,4 +31,11 @@ public class Assert {
             throw new AssertionError("Expected object to be null");
         }
     }
+
+    public static void notNull(Object obj, String message) {
+        if (obj == null) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
 }

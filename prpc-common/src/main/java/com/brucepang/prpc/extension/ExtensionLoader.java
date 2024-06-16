@@ -2,6 +2,8 @@ package com.brucepang.prpc.extension;
 
 import com.brucepang.prpc.logger.Logger;
 import com.brucepang.prpc.logger.LoggerFactory;
+import com.brucepang.prpc.scope.ApplicationModel;
+import com.brucepang.prpc.scope.ScopeModel;
 import com.brucepang.prpc.util.StrUtil;
 
 import java.io.BufferedReader;
@@ -31,33 +33,21 @@ public class ExtensionLoader<T> {
 
     // ============================== Fields ==============================
     private final Class<?> type;
+    private final ExtensionMgt extensionMgt;
+    private final ScopeModel scopeModel;
 
     private String cacheLoaderClassName;
 
-    private ExtensionLoader(Class<?> type){
+    public ExtensionLoader(Class<?> type, ExtensionMgt extensionMgt, ScopeModel scopeModel) {
         this.type = type;
+        this.extensionMgt = extensionMgt;
+        this.scopeModel = scopeModel;
     }
 
-    public static ExtensionLoader create(Class<?> type) {
-        return new ExtensionLoader(type);
-    }
 
-    public static <T> ExtensionLoader<T> getExtensionLoader(Class<T> type){
-        // check the type
-        if (type == null) {
-            throw new IllegalArgumentException("Extension type == null");
-        }
-        // check the annotation
-        if (!withExtensionAnnotation(type)) {
-            throw new IllegalArgumentException("Extension type(" + type + ") is not extension, because WITHOUT @" + SPI.class.getSimpleName() + " Annotation");
-        }
-        // get the extension loader
-        ExtensionLoader<T> loader = (ExtensionLoader<T>) EXTENSION_LOADERS.get(type);
-        if (loader == null) {
-            EXTENSION_LOADERS.putIfAbsent(type, new ExtensionLoader<>(type));
-            loader = (ExtensionLoader<T>) EXTENSION_LOADERS.get(type);
-        }
-        return loader;
+
+    public static <T> ExtensionLoader<T> getExtensionLoader(Class<T> type) {
+        return ApplicationModel.defaultModel().getDefaultModule().getExtensionLoader(type);
     }
 
     /**
