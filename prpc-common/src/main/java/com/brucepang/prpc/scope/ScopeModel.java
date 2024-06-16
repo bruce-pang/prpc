@@ -7,7 +7,6 @@ import com.brucepang.prpc.extension.ExtensionScope;
 import com.brucepang.prpc.logger.Logger;
 import com.brucepang.prpc.logger.LoggerFactory;
 
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -60,6 +59,10 @@ public abstract class ScopeModel implements ExtensionAccessor {
 
     public void destroy(){
         classLoaders.clear();
+    }
+
+    public ExtensionMgt getExtensionMgt() {
+        return extensionMgt;
     }
 
 }
