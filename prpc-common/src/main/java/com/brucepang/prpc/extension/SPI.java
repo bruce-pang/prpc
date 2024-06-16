@@ -11,12 +11,12 @@ import java.lang.annotation.*;
 public @interface SPI {
     /**
      *
-     * 默认加载的扩展名
+     * default loader extension name
      */
     String value() default "";
 
     /**
-     * 扩展点的范围
+     * SPI Extension Scope
      */
     ExtensionScope scope() default ExtensionScope.GLOBAL;
 }
