@@ -65,3 +65,4 @@ Thumbs.db
 
 # Do not ignore junit test directory in prpc-test
 !/prpc-test/junit test/*
+.fastRequest/**
