@@ -102,4 +102,8 @@ public class ExtensionMgt implements ExtensionAccessor {
     private static boolean hasExtensionAnnotation(Class<?> type) {
         return type.isAnnotationPresent(SPI.class);
     }
+
+    public ExtensionInjector getExtensionInjector() { // todo: to delete
+        return null;
+    }
 }

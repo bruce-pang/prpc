@@ -4,6 +4,7 @@ import com.brucepang.prpc.logger.Logger;
 import com.brucepang.prpc.logger.LoggerFactory;
 import com.brucepang.prpc.scope.ApplicationModel;
 import com.brucepang.prpc.scope.ScopeModel;
+import com.brucepang.prpc.util.Holder;
 import com.brucepang.prpc.util.StrUtil;
 
 import java.io.BufferedReader;
@@ -11,6 +12,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -35,12 +37,21 @@ public class ExtensionLoader<T> {
     private final Class<?> type;
     private final ExtensionMgt extensionMgt;
     private final ScopeModel scopeModel;
-
+    private final ExtensionInjector injector;
     private String cacheLoaderClassName;
+    private List<ExtensionPostProcessor> extensionPostProcessors;
+    //=============================== Caches ================================
+    private final ConcurrentMap<String, Holder<Object>> cachedInstances = new ConcurrentHashMap<>();
+
+    private final Holder<Map<String, Class<?>>> cachedClasses = new Holder<>();
 
     public ExtensionLoader(Class<?> type, ExtensionMgt extensionMgt, ScopeModel scopeModel) {
-        this.type = type;
-        this.extensionMgt = extensionMgt;
+        this.type = type; // the extension type
+        this.extensionMgt = extensionMgt; // the extension management
+        // todo: post process load
+        // todo: initialize strategy
+        // todo: injector
+        this.injector = extensionMgt.getExtensionInjector();
         this.scopeModel = scopeModel;
     }
 
@@ -82,6 +93,7 @@ public class ExtensionLoader<T> {
         }
 
             Map<String, Class<?>> extensionClasses = new ConcurrentHashMap<>();
+            // todo: strategy to load the extension classes
             loadDirectory(extensionClasses, SERVICES_DIRECTORY);
             loadDirectory(extensionClasses, PRPC_DIRECTORY);
             return extensionClasses;
@@ -177,6 +189,111 @@ public class ExtensionLoader<T> {
         } catch (InstantiationException | IllegalAccessException e) {
             throw new RuntimeException("Failed to create extension instance.", e);
         }
+    }
+
+    /**
+     * get the extension instance
+     * @param name the extension name
+     * @param wrap whether to wrap the extension
+     * @return
+     */
+    public T getExtension(String name, boolean wrap) {
+        final Holder<Object> holder = getOrCreateHolder(name);
+        Object instance = holder.get();
+        if (null == instance){
+            synchronized (holder){
+                instance = holder.get();
+                if (null == instance){
+                    instance = createExtension(name, wrap);
+                    holder.set(instance);
+                }
+            }
+        }
+        return (T) instance;
+    }
+
+    private T createExtension(String name, boolean wrap) {
+        // getExtensionClasses(): Loads all implementations of the current type extendpoint
+        // then get the extension class by name
+        Class<?> clazz = getExtensionClasses().get(name);
+        if (clazz == null){
+            throw new IllegalArgumentException("No such extension of name " + name);
+        }
+        // Create an extension instance
+        T instance = null;
+        try {
+            instance = (T) clazz.newInstance();
+        } catch (Exception e) {
+            throw new IllegalStateException("Extension instance(name: " + name + ", class: " +
+                    clazz + ") could not be instantiated: " + e.getMessage(), e);
+        }
+
+        // Inject dependencies
+        injectExtension(instance);
+
+        // perform post processing
+        if (wrap) {
+            instance = postProcessAfterInitialization(instance, name);
+        }
+
+        return instance;
+    }
+
+    private T injectExtension(T instance) {
+        try {
+            // todo: inject extension instance
+
+        } catch (Exception e) {
+            throw new IllegalStateException("Failed to inject extension instance(name: " + "name" + ", class: " +
+                    instance.getClass() + "): " + e.getMessage(), e);
+        }
+        return instance;
+    }
+
+    private T postProcessAfterInitialization(T instance, String name) {
+        // ExtensionPostProcessor is responsible for post-processing
+        try {
+            if (extensionPostProcessors != null) {
+                for (ExtensionPostProcessor processor : extensionPostProcessors) {
+                    instance = (T) processor.postProcessAfterInitialization(instance, name);
+                }
+            }
+            return instance;
+        } catch (Exception e) {
+            throw new IllegalStateException("Failed to post process extension instance(name: " + name + ", class: " +
+                    instance.getClass() + "): " + e.getMessage(), e);
+        }
+    }
+
+    private Map<String, Class<?>> getExtensionClasses() {
+        // Once the extension point is loaded, it is cached into cachedClasses
+        Map<String, Class<?>> classes = cachedClasses.get();
+        if (classes == null){
+            synchronized (classes){
+                classes = cachedClasses.get();
+                if (classes == null){
+                    // Load all implementations of the current type extension point
+                    classes = loadExtensionClasses();
+                    // Cache the loaded extension point
+                    cachedClasses.set(classes);
+                }
+            }
+        }
+        return classes;
+    }
+
+    /**
+     * get the extension instance
+     * @param name the extension name
+     * @return the extension instance in Holder
+     */
+    private Holder<Object> getOrCreateHolder(String name){
+        Holder<Object> holder = cachedInstances.get(name);
+        if (holder == null){
+            cachedInstances.putIfAbsent(name, new Holder<>());
+            holder = cachedInstances.get(name);
+        }
+        return holder;
     }
 
 
