@@ -11,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
@@ -111,10 +112,7 @@ public class ExtensionLoader<T> {
             ClassLoader classLoader = ExtensionLoader.class.getClassLoader();
             Enumeration<URL> urls = classLoader.getResources(classFileName);
             if (urls != null) {
-                while (urls.hasMoreElements()) {
-                    URL url = urls.nextElement();
-                    loadResource(extensionClasses, classLoader, url, false);
-                }
+                Collections.list(urls).stream().forEach(url -> loadResource(extensionClasses, classLoader, url, false));
             }
         } catch (Throwable t) {
             log.error("Exception when load extension class(interface: " + type + ", description file: " + classFileName + ").", t);
