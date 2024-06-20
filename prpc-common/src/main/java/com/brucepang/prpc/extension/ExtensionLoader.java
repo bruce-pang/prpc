@@ -49,14 +49,15 @@ public class ExtensionLoader<T> {
 
     private AtomicBoolean destroyed = new AtomicBoolean();
 
+    private final Holder<Object> cachedAdaptiveInstance = new Holder<>();
+    private volatile Class<?> cachedAdaptiveClass = null;
+
     public ExtensionLoader(Class<?> type, ExtensionMgt extensionMgt, ScopeModel scopeModel) {
         this.type = type; // the extension type
         this.extensionMgt = extensionMgt; // the extension management
         // todo: post process load
         // todo: initialize strategy
-        // todo: injector
-
-        this.injector = extensionMgt.getExtensionInjector();
+        this.injector = (type == ExtensionInjector.class) ? null : ExtensionLoader.getExtensionLoader(ExtensionInjector.class).getAdaptiveExtension();
         this.scopeModel = scopeModel;
     }
 
@@ -242,6 +243,9 @@ public class ExtensionLoader<T> {
     }
 
     private T injectExtension(T instance) {
+        if (injector == null) {
+            return instance;
+        }
         try {
             // todo: inject extension instance
 
@@ -297,6 +301,53 @@ public class ExtensionLoader<T> {
         }
         return holder;
     }
+
+    @SuppressWarnings("unchecked")
+    public T getAdaptiveExtension() {
+        checkDestroyed();
+        Object instance = cachedAdaptiveInstance.get();
+        if (instance == null) {
+            synchronized (cachedAdaptiveInstance) {
+                instance = cachedAdaptiveInstance.get();
+                if (instance == null) {
+                    try {
+                        instance = createAdaptiveExtension();
+                        cachedAdaptiveInstance.set(instance);
+                    } catch (Throwable t) {
+                        throw new IllegalStateException("Failed to create adaptive instance: " + t.toString(), t);
+                    }
+                }
+            }
+        }
+
+        return (T) instance;
+    }
+
+    private T createAdaptiveExtension() {
+        try {
+            T instance = (T) getAdaptiveExtensionClass().newInstance();
+            // todo: Inject dependencies
+            return instance;
+        } catch (Exception e) {
+            throw new IllegalStateException("Can't create adaptive extension " + type + ", cause: " + e.getMessage(), e);
+        }
+    }
+
+    private Class<?> getAdaptiveExtensionClass() {
+        getExtensionClasses();
+        if (cachedAdaptiveClass != null) {
+            return cachedAdaptiveClass;
+        }
+        return cachedAdaptiveClass = createAdaptiveExtensionClass();
+    }
+
+    private Class<?> createAdaptiveExtensionClass() {
+        // Adaptive Classes' ClassLoader should be the same with Real SPI interface classes' ClassLoader
+        ClassLoader classLoader = type.getClassLoader();
+        // todo: strategy to create adaptive extension class
+        return null;
+    }
+
 
     /**
      * Check whether the current ExtensionLoader has been destroyed
