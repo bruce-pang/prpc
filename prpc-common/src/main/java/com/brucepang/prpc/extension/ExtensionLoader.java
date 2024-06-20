@@ -9,6 +9,8 @@ import com.brucepang.prpc.util.StrUtil;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
@@ -358,5 +360,15 @@ public class ExtensionLoader<T> {
         }
     }
 
+    /**
+     * check whether the method is setter
+     * @param method the method
+     * @return true if the method is setter
+     */
+    private boolean isSetter(Method method) {
+        return method.getName().startsWith("set")
+                && method.getParameterTypes().length == 1
+                && Modifier.isPublic(method.getModifiers());
+    }
 
 }
