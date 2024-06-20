@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * load prpc extensions
@@ -46,12 +47,15 @@ public class ExtensionLoader<T> {
 
     private final Holder<Map<String, Class<?>>> cachedClasses = new Holder<>();
 
+    private AtomicBoolean destroyed = new AtomicBoolean();
+
     public ExtensionLoader(Class<?> type, ExtensionMgt extensionMgt, ScopeModel scopeModel) {
         this.type = type; // the extension type
         this.extensionMgt = extensionMgt; // the extension management
         // todo: post process load
         // todo: initialize strategy
         // todo: injector
+
         this.injector = extensionMgt.getExtensionInjector();
         this.scopeModel = scopeModel;
     }
@@ -292,6 +296,15 @@ public class ExtensionLoader<T> {
             holder = cachedInstances.get(name);
         }
         return holder;
+    }
+
+    /**
+     * Check whether the current ExtensionLoader has been destroyed
+     */
+    private void checkDestroyed() {
+        if (destroyed.get()) {
+            throw new IllegalStateException("ExtensionLoader is destroyed: " + this.type);
+        }
     }
 
 
