@@ -16,10 +16,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -57,6 +54,9 @@ public class ExtensionLoader<T> {
     private final Holder<Object> cachedAdaptiveInstance = new Holder<>();
     private volatile Class<?> cachedAdaptiveClass = null;
 
+    private static final List<String> ignoredInjectMethodsDesc = getIgnoredInjectMethodsDesc();
+
+
     public ExtensionLoader(Class<?> type, ExtensionMgt extensionMgt, ScopeModel scopeModel) {
         this.type = type; // the extension type
         this.extensionMgt = extensionMgt; // the extension management
@@ -66,7 +66,14 @@ public class ExtensionLoader<T> {
         this.scopeModel = scopeModel;
     }
 
-
+    private static List<String> getIgnoredInjectMethodsDesc() {
+        List<String> ignoreInjectMethodsDesc = new ArrayList<>();
+        Arrays.stream(ScopeModelAware.class.getMethods()).map(ReflectUtils::getDesc)
+                .forEach(ignoreInjectMethodsDesc::add);
+        Arrays.stream(ExtensionAccessorAware.class.getMethods()).map(ReflectUtils::getDesc)
+                .forEach(ignoreInjectMethodsDesc::add);
+        return ignoreInjectMethodsDesc;
+    }
 
     public static <T> ExtensionLoader<T> getExtensionLoader(Class<T> type) {
         return ApplicationModel.defaultModel().getDefaultModule().getExtensionLoader(type);
@@ -264,7 +271,9 @@ public class ExtensionLoader<T> {
                     continue;
                 }
                 if (instance instanceof ScopeModelAware || instance instanceof ExtensionAccessorAware) {
-                    // todo: Skip the list of methods that the user manually configures to ignore injections
+                    if (ignoredInjectMethodsDesc.contains(ReflectUtils.getDesc(method))) {
+                        continue;
+                    }
                 }
                 Class<?> pt = method.getParameterTypes()[0];
                 if (ReflectUtils.isPrimitives(pt)) {
