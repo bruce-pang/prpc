@@ -1,5 +1,7 @@
 package com.brucepang.prpc.util;
 
+import java.lang.reflect.Method;
+
 /**
  * A utility class for reflection.
  * @author BrucePang
@@ -23,5 +25,23 @@ public final class ReflectUtils {
                     || clazz == Float.class
                     || clazz == Double.class;
         }
+    }
+
+    /**
+     * Get a description of the Java method. This description includes the name of the method and the type of arguments
+     * @param method method
+     * @return
+     */
+    public static String getDesc(Method method) {
+        StringBuilder desc = new StringBuilder(method.getName() + "(");
+        Class<?>[] parameterTypes = method.getParameterTypes();
+        for (int i = 0; i < parameterTypes.length; ++i) {
+            desc.append(parameterTypes[i].getSimpleName());
+            if (i != parameterTypes.length - 1) {
+                desc.append(", ");
+            }
+        }
+        desc.append(")");
+        return desc.toString();
     }
 }
