@@ -1,10 +1,13 @@
 package com.brucepang.prpc.extension;
 
+import com.brucepang.prpc.extension.inject.DisableInject;
+import com.brucepang.prpc.extension.inject.ScopeModelAware;
 import com.brucepang.prpc.logger.Logger;
 import com.brucepang.prpc.logger.LoggerFactory;
 import com.brucepang.prpc.scope.ApplicationModel;
 import com.brucepang.prpc.scope.ScopeModel;
 import com.brucepang.prpc.util.Holder;
+import com.brucepang.prpc.util.ReflectUtils;
 import com.brucepang.prpc.util.StrUtil;
 
 import java.io.BufferedReader;
@@ -249,13 +252,55 @@ public class ExtensionLoader<T> {
             return instance;
         }
         try {
-            // todo: inject extension instance
+            for (Method method : instance.getClass().getMethods()) {
+                if (!isSetter(method)) {
+                    continue;
+                }
+                if (method.isAnnotationPresent(DisableInject.class)) {
+                    continue;
+                }
+                // Skip the methods in the ScopeModelAware interface， Because the ScopeModelAware interface is used to inject the ScopeModel
+                if (method.getDeclaringClass() == ScopeModelAware.class) {
+                    continue;
+                }
+                if (instance instanceof ScopeModelAware || instance instanceof ExtensionAccessorAware) {
+                    // todo: Skip the list of methods that the user manually configures to ignore injections
+                }
+                Class<?> pt = method.getParameterTypes()[0];
+                if (ReflectUtils.isPrimitives(pt)) {
+                    continue;
+                }
+                try {
+                    String property = getSetterProperty(method);
+                    Object object = injector.getInstance(pt, property);
+                    if (object != null) {
+                        method.invoke(instance, object);
+                    }
+                } catch (Exception e) {
+                   log.error("Failed to inject via method " + method.getName() + " of interface " + type.getName() + ": " + e.getMessage(),
+                           e);
+                }
+
+            }
 
         } catch (Exception e) {
             throw new IllegalStateException("Failed to inject extension instance(name: " + "name" + ", class: " +
                     instance.getClass() + "): " + e.getMessage(), e);
         }
         return instance;
+    }
+
+    /**
+     * get the setter property
+     * @param method the method
+     * @return the setter property
+     */
+    private String getSetterProperty(Method method) {
+        String methodName = method.getName();
+        if (methodName.startsWith("set")) {
+            return Character.toLowerCase(methodName.charAt(3)) + methodName.substring(4);
+        }
+        return null;
     }
 
     private T postProcessAfterInitialization(T instance, String name) {
