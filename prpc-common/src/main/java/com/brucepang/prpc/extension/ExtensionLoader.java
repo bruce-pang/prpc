@@ -4,8 +4,8 @@ import com.brucepang.prpc.extension.inject.DisableInject;
 import com.brucepang.prpc.extension.inject.ScopeModelAware;
 import com.brucepang.prpc.logger.Logger;
 import com.brucepang.prpc.logger.LoggerFactory;
-import com.brucepang.prpc.scope.ApplicationModel;
-import com.brucepang.prpc.scope.ScopeModel;
+import com.brucepang.prpc.scope.model.ApplicationModel;
+import com.brucepang.prpc.scope.model.ScopeModel;
 import com.brucepang.prpc.util.Holder;
 import com.brucepang.prpc.util.ReflectUtils;
 import com.brucepang.prpc.util.StrUtil;
@@ -258,43 +258,18 @@ public class ExtensionLoader<T> {
         if (injector == null) {
             return instance;
         }
-        try {
-            for (Method method : instance.getClass().getMethods()) {
-                if (!isSetter(method)) {
-                    continue;
-                }
-                if (method.isAnnotationPresent(DisableInject.class)) {
-                    continue;
-                }
-                // Skip the methods in the ScopeModelAware interface， Because the ScopeModelAware interface is used to inject the ScopeModel
-                if (method.getDeclaringClass() == ScopeModelAware.class) {
-                    continue;
-                }
-                if (instance instanceof ScopeModelAware || instance instanceof ExtensionAccessorAware) {
-                    if (ignoredInjectMethodsDesc.contains(ReflectUtils.getDesc(method))) {
-                        continue;
-                    }
-                }
-                Class<?> pt = method.getParameterTypes()[0];
-                if (ReflectUtils.isPrimitives(pt)) {
-                    continue;
-                }
+        for (Method method : instance.getClass().getMethods()) {
+            if (isSetter(method) && !method.isAnnotationPresent(DisableInject.class)) {
                 try {
                     String property = getSetterProperty(method);
-                    Object object = injector.getInstance(pt, property);
+                    Object object = injector.getInstance(method.getParameterTypes()[0], property);
                     if (object != null) {
                         method.invoke(instance, object);
                     }
                 } catch (Exception e) {
-                   log.error("Failed to inject via method " + method.getName() + " of interface " + type.getName() + ": " + e.getMessage(),
-                           e);
+                    log.error("Failed to inject via method " + method.getName() + " of interface " + type.getName() + ": " + e.getMessage(), e);
                 }
-
             }
-
-        } catch (Exception e) {
-            throw new IllegalStateException("Failed to inject extension instance(name: " + "name" + ", class: " +
-                    instance.getClass() + "): " + e.getMessage(), e);
         }
         return instance;
     }
