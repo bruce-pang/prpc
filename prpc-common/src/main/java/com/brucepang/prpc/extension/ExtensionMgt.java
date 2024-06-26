@@ -1,6 +1,6 @@
 package com.brucepang.prpc.extension;
 
-import com.brucepang.prpc.scope.ScopeModel;
+import com.brucepang.prpc.scope.model.ScopeModel;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -103,7 +103,5 @@ public class ExtensionMgt implements ExtensionAccessor {
         return type.isAnnotationPresent(SPI.class);
     }
 
-    public ExtensionInjector getExtensionInjector() { // todo: to delete
-        return null;
-    }
+
 }

@@ -1,9 +1,9 @@
 package com.brucepang.prpc.extension.inject;
 
-import com.brucepang.prpc.scope.ApplicationModel;
-import com.brucepang.prpc.scope.GlobalModule;
-import com.brucepang.prpc.scope.ModuleModel;
-import com.brucepang.prpc.scope.ScopeModel;
+import com.brucepang.prpc.scope.model.ApplicationModel;
+import com.brucepang.prpc.scope.model.GlobalModel;
+import com.brucepang.prpc.scope.model.ModuleModel;
+import com.brucepang.prpc.scope.model.ScopeModel;
 
 /**
  * An interface to inject GlobalModule/ApplicationModel/ModuleModel for SPI extensions and internal beans.
@@ -19,9 +19,9 @@ public interface ScopeModelAware {
 
     /**
      * Override this method if you just need GlobalModule
-     * @param globalModule the GlobalModule
+     * @param globalModel the GlobalModule
      */
-    default void setGlobalModule(GlobalModule globalModule) {
+    default void setGlobalModule(GlobalModel globalModel) {
     }
 
     /**
