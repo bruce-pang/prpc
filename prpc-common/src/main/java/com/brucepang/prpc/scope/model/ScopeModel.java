@@ -1,4 +1,4 @@
-package com.brucepang.prpc.scope;
+package com.brucepang.prpc.scope.model;
 
 import com.brucepang.prpc.beans.factory.ScopeBeanFactory;
 import com.brucepang.prpc.extension.ExtensionAccessor;
@@ -32,10 +32,14 @@ public abstract class ScopeModel implements ExtensionAccessor {
 
     private final Object lock = new Object();
 
-    protected ScopeModel(ScopeModel parent, ExtensionScope scope) {
+    private final boolean internalScope;
+
+    protected ScopeModel(ScopeModel parent, ExtensionScope scope, boolean isInternal) {
         this.parent = parent;
         this.scope = scope;
+        this.internalScope = isInternal;
     }
+
 
     protected void initialize() {
         // prepare to build Parent Delegation Mechanism
