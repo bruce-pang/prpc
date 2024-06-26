@@ -1,4 +1,4 @@
-package com.brucepang.prpc.scope;
+package com.brucepang.prpc.scope.model;
 
 import com.brucepang.prpc.extension.ExtensionMgt;
 import com.brucepang.prpc.extension.ExtensionScope;
@@ -19,14 +19,21 @@ public class ModuleModel extends ScopeModel{
     private final ApplicationModel applicationModel;
 
 
-    public ModuleModel(ApplicationModel applicationModel) {
-        super(applicationModel, ExtensionScope.MODULE);
+    protected ModuleModel(ApplicationModel applicationModel) {
+        this(applicationModel, false);
+    }
+
+    public ModuleModel(ApplicationModel applicationModel, boolean isInternal) {
+        super(applicationModel, ExtensionScope.MODULE, isInternal);
         Assert.notNull(applicationModel, "ApplicationModel can not be null");
         this.applicationModel = applicationModel;
 
         initialize();
     }
 
+    public ApplicationModel getApplicationModel() {
+        return applicationModel;
+    }
 
     @Override
     public ExtensionMgt getExtensionMgt() {

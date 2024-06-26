@@ -1,4 +1,4 @@
-package com.brucepang.prpc.scope;
+package com.brucepang.prpc.scope.model;
 
 import com.brucepang.prpc.extension.ExtensionMgt;
 import com.brucepang.prpc.extension.ExtensionScope;
@@ -8,32 +8,29 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class GlobalModule extends ScopeModel {
+public class GlobalModel extends ScopeModel {
     private static final Object globalLock = new Object();
-    private volatile static GlobalModule defaultInstance;
-    private static List<GlobalModule> allInstances = new CopyOnWriteArrayList<>();
+    private volatile static GlobalModel defaultInstance;
+    private static List<GlobalModel> allInstances = new CopyOnWriteArrayList<>();
     private final AtomicBoolean destroyed = new AtomicBoolean(false);
     private volatile ApplicationModel defaultAppModel;
     private final Object instLock = new Object();
 
-    public GlobalModule() {
-        super(null, ExtensionScope.GLOBAL);
+    public GlobalModel() {
+        super(null, ExtensionScope.GLOBAL, false);
         synchronized (globalLock) {
             allInstances.add(this);
             resetDefaultGlobalModule();
         }
     }
 
-    public ApplicationModel newApplication() {
-        return new ApplicationModel(this);
-    }
 
     private static void resetDefaultGlobalModule() {
         synchronized (globalLock) {
             if (defaultInstance != null && !defaultInstance.isDestroyed()) {
                 return;
             }
-            GlobalModule oldDefaultFrameworkModel = defaultInstance;
+            GlobalModel oldDefaultFrameworkModel = defaultInstance;
             if (allInstances.size() > 0) {
                 defaultInstance = allInstances.get(0);
             } else {
@@ -42,13 +39,13 @@ public class GlobalModule extends ScopeModel {
         }
     }
 
-    public static GlobalModule defaultModel() {
-        GlobalModule instance = defaultInstance;
+    public static GlobalModel defaultModel() {
+        GlobalModel instance = defaultInstance;
         if (instance == null) {
             synchronized (globalLock) {
                 resetDefaultFrameworkModel();
                 if (defaultInstance == null) {
-                    defaultInstance = new GlobalModule();
+                    defaultInstance = new GlobalModel();
                 }
                 instance = defaultInstance;
             }
@@ -94,5 +91,11 @@ public class GlobalModule extends ScopeModel {
         }
         Assert.notNull(appModel, "Default ApplicationModel is null");
         return appModel;
+    }
+
+    private ApplicationModel newApplication() {
+        synchronized (instLock) {
+            return new ApplicationModel(this);
+        }
     }
 }

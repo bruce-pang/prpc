@@ -1,4 +1,4 @@
-package com.brucepang.prpc.scope;
+package com.brucepang.prpc.scope.model;
 
 import com.brucepang.prpc.extension.ExtensionLoader;
 import com.brucepang.prpc.extension.ExtensionMgt;
@@ -16,19 +16,27 @@ public class ApplicationModel extends ScopeModel {
     private final List<ModuleModel> moduleModels = new CopyOnWriteArrayList<>();
     private Object moduleLock = new Object();
     private ModuleModel internalModule;
+    private GlobalModel globalModel;
 
-    protected ApplicationModel(ScopeModel parent, ExtensionScope scope) {
-        super(parent, scope);
+
+    protected ApplicationModel(GlobalModel globalModel) {
+        this(globalModel, false);
     }
 
-    public ApplicationModel(GlobalModule globalModule) {
-        this(globalModule, ExtensionScope.APPLICATION);
-        internalModule = new ModuleModel(this);
+    public ApplicationModel(GlobalModel globalModel, boolean isInternal) {
+        super(globalModel, ExtensionScope.APPLICATION, isInternal);
+    }
+
+    public void addModule(ModuleModel moduleModel, boolean isInternal) {
+        if (isInternal) {
+            internalModule = moduleModel;
+        }
+        moduleModels.add(moduleModel);
     }
 
     public static ApplicationModel defaultModel() {
         // should get from default FrameworkModel, avoid out of sync
-        return GlobalModule.defaultModel().defaultApplication();
+        return GlobalModel.defaultModel().defaultApplication();
     }
 
     public ModuleModel newModule() {
@@ -73,5 +81,9 @@ public class ApplicationModel extends ScopeModel {
             }
         }
         return null;
+    }
+
+    public GlobalModel getGlobalModel(){
+        return this.globalModel;
     }
 }
