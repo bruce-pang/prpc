@@ -94,6 +94,7 @@ public class ExtensionLoader<T> {
      * @return the extension classes
      */
     private Map<String, Class<?>> loadExtensionClasses() {
+        checkDestroyed();
         SPI spi = type.getAnnotation(SPI.class);
         if (spi != null) {
             // get the extension name
@@ -119,7 +120,7 @@ public class ExtensionLoader<T> {
     }
 
     /**
-     * load the extension classes
+     * 5.load the extension classes
      * @param extensionClasses the extension classes
      * @param servicesDirectory the directory to load
      */
@@ -129,6 +130,7 @@ public class ExtensionLoader<T> {
             ClassLoader classLoader = ExtensionLoader.class.getClassLoader();
             Enumeration<URL> urls = classLoader.getResources(classFileName);
             if (urls != null) {
+                // 6.load the extension classes
                 Collections.list(urls).stream().forEach(url -> loadResource(extensionClasses, classLoader, url, false));
             }
         } catch (Throwable t) {
@@ -136,6 +138,13 @@ public class ExtensionLoader<T> {
         }
     }
 
+    /**
+     * 6.load the extension classes
+     * @param extensionClasses the extension classes
+     * @param classLoader the class loader
+     * @param resourceURL the resource URL
+     * @param overridden whether the extension is overridden
+     */
     private void loadResource(Map<String, Class<?>> extensionClasses, ClassLoader classLoader, URL resourceURL, boolean overridden) {
         try {
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(resourceURL.openStream(), StandardCharsets.UTF_8))) {
@@ -207,6 +216,7 @@ public class ExtensionLoader<T> {
     }
 
     /**
+     * 1. Load all the extension points at startup
      * get the extension instance
      * @param name the extension name
      * @param wrap whether to wrap the extension
@@ -219,6 +229,7 @@ public class ExtensionLoader<T> {
             synchronized (holder){
                 instance = holder.get();
                 if (null == instance){
+                    // 2. create the extension instance when needed
                     instance = createExtension(name, wrap);
                     holder.set(instance);
                 }
@@ -227,6 +238,12 @@ public class ExtensionLoader<T> {
         return (T) instance;
     }
 
+    /**
+     * create the extension instance
+     * @param name the extension name
+     * @param wrap whether to wrap the extension
+     * @return the extension instance
+     */
     private T createExtension(String name, boolean wrap) {
         // getExtensionClasses(): Loads all implementations of the current type extendpoint
         // then get the extension class by name
@@ -302,6 +319,10 @@ public class ExtensionLoader<T> {
         }
     }
 
+    /**
+     * 3.get the extension classes
+     * @return
+     */
     private Map<String, Class<?>> getExtensionClasses() {
         // Once the extension point is loaded, it is cached into cachedClasses
         Map<String, Class<?>> classes = cachedClasses.get();
@@ -309,7 +330,7 @@ public class ExtensionLoader<T> {
             synchronized (classes){
                 classes = cachedClasses.get();
                 if (classes == null){
-                    // Load all implementations of the current type extension point
+                    // 4.Load all implementations of the current type extension point
                     classes = loadExtensionClasses();
                     // Cache the loaded extension point
                     cachedClasses.set(classes);
