@@ -12,6 +12,7 @@ import com.brucepang.prpc.util.StrUtil;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.lang.ref.SoftReference;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.URL;
@@ -20,6 +21,8 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * load prpc extensions
@@ -55,7 +58,8 @@ public class ExtensionLoader<T> {
     private volatile Class<?> cachedAdaptiveClass = null;
 
     private static final List<String> ignoredInjectMethodsDesc = getIgnoredInjectMethodsDesc();
-
+    private static SoftReference<Map<URL, List<String>>> urlListMapCache = new SoftReference<>(
+            new ConcurrentHashMap<>());
 
     public ExtensionLoader(Class<?> type, ExtensionMgt extensionMgt, ScopeModel scopeModel) {
         this.type = type; // the extension type
@@ -147,6 +151,8 @@ public class ExtensionLoader<T> {
      */
     private void loadResource(Map<String, Class<?>> extensionClasses, ClassLoader classLoader, URL resourceURL, boolean overridden) {
         try {
+            // Load the resource file and parse the fully qualified class name of the extension point
+            List<String> newContentList = getResourceContent(resourceURL);
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(resourceURL.openStream(), StandardCharsets.UTF_8))) {
                 String line;
                 String clazz = null;
@@ -182,6 +188,28 @@ public class ExtensionLoader<T> {
                     type + ", class file: " + resourceURL + ") in " + resourceURL, t);
         }
 
+    }
+
+    private List<String> getResourceContent(java.net.URL resourceURL) {
+        // Get the cache, create a new one if it's null
+        Map<URL, List<String>> urlListMap;
+        if (urlListMapCache.get() == null) {
+            urlListMap = new ConcurrentHashMap<>();
+            urlListMapCache = new SoftReference<>(urlListMap);
+        } else {
+            urlListMap = urlListMapCache.get();
+        }
+
+        // Load the resource file and parse the fully qualified class name of the extension point
+        return urlListMap.computeIfAbsent(resourceURL, url -> {
+            try (Stream<String> lines = new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.UTF_8)).lines()) {
+                return lines.collect(Collectors.toList());
+            } catch (Throwable t) {
+                log.error("Exception occurred when loading extension class (interface: " +
+                        type + ", class file: " + resourceURL + ") in " + resourceURL, t);
+                return Collections.emptyList();
+            }
+        });
     }
 
 
