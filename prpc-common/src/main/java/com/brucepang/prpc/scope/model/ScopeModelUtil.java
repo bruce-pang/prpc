@@ -46,7 +46,7 @@ public class ScopeModelUtil {
         }
     }
 
-    public static GlobalModel getFrameworkModel(ScopeModel scopeModel) {
+    public static GlobalModel getGlobalModel(ScopeModel scopeModel) {
         if (scopeModel instanceof GlobalModel) {
             return (GlobalModel) scopeModel;
         } else if (scopeModel instanceof ApplicationModel) {
