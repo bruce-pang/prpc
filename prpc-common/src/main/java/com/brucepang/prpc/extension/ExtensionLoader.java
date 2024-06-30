@@ -1,11 +1,13 @@
 package com.brucepang.prpc.extension;
 
+import com.brucepang.prpc.beans.strategy.InstantiationStrategy;
 import com.brucepang.prpc.extension.inject.DisableInject;
 import com.brucepang.prpc.extension.inject.ScopeModelAware;
 import com.brucepang.prpc.logger.Logger;
 import com.brucepang.prpc.logger.LoggerFactory;
 import com.brucepang.prpc.scope.model.ApplicationModel;
 import com.brucepang.prpc.scope.model.ScopeModel;
+import com.brucepang.prpc.scope.model.ScopeModelAccessor;
 import com.brucepang.prpc.util.Holder;
 import com.brucepang.prpc.util.ReflectUtils;
 import com.brucepang.prpc.util.StrUtil;
@@ -59,16 +61,26 @@ public class ExtensionLoader<T> {
     private volatile Class<?> cachedAdaptiveClass = null;
 
     private static final List<String> ignoredInjectMethodsDesc = getIgnoredInjectMethodsDesc();
+
     private static SoftReference<Map<URL, List<String>>> urlListMapCache = new SoftReference<>(
             new ConcurrentHashMap<>());
+
+    private InstantiationStrategy instantiationStrategy;
 
     public ExtensionLoader(Class<?> type, ExtensionMgt extensionMgt, ScopeModel scopeModel) {
         this.type = type; // the extension type
         this.extensionMgt = extensionMgt; // the extension management
         this.extensionPostProcessors = extensionMgt.getExtensionPostProcessors();
-        // todo: initialize strategy
+        initInstantiationStrategy();
         this.injector = (type == ExtensionInjector.class) ? null : ExtensionLoader.getExtensionLoader(ExtensionInjector.class).getAdaptiveExtension();
         this.scopeModel = scopeModel;
+    }
+
+    private void initInstantiationStrategy() {
+        extensionPostProcessors.stream().filter(extensionPostProcessor -> extensionPostProcessor instanceof ScopeModelAccessor)
+                .map(extensionPostProcessor -> new InstantiationStrategy(
+                        (ScopeModelAccessor) extensionPostProcessor)).findFirst()
+                .orElse(new InstantiationStrategy());
     }
 
     private static List<String> getIgnoredInjectMethodsDesc() {
