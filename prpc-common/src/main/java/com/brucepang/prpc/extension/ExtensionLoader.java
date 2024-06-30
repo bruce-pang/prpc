@@ -55,6 +55,7 @@ public class ExtensionLoader<T> {
     private AtomicBoolean destroyed = new AtomicBoolean();
 
     private final Holder<Object> cachedAdaptiveInstance = new Holder<>();
+
     private volatile Class<?> cachedAdaptiveClass = null;
 
     private static final List<String> ignoredInjectMethodsDesc = getIgnoredInjectMethodsDesc();
@@ -64,7 +65,7 @@ public class ExtensionLoader<T> {
     public ExtensionLoader(Class<?> type, ExtensionMgt extensionMgt, ScopeModel scopeModel) {
         this.type = type; // the extension type
         this.extensionMgt = extensionMgt; // the extension management
-        // todo: post process load
+        this.extensionPostProcessors = extensionMgt.getExtensionPostProcessors();
         // todo: initialize strategy
         this.injector = (type == ExtensionInjector.class) ? null : ExtensionLoader.getExtensionLoader(ExtensionInjector.class).getAdaptiveExtension();
         this.scopeModel = scopeModel;
