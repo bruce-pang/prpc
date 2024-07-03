@@ -67,6 +67,9 @@ public class ExtensionLoader<T> {
 
     private InstantiationStrategy instantiationStrategy;
 
+    // cache the extension instances
+    private final ConcurrentMap<Class<?>, Object> extensionInstances = new ConcurrentHashMap<>(64);
+
     public ExtensionLoader(Class<?> type, ExtensionMgt extensionMgt, ScopeModel scopeModel) {
         this.type = type; // the extension type
         this.extensionMgt = extensionMgt; // the extension management
@@ -77,10 +80,15 @@ public class ExtensionLoader<T> {
     }
 
     private void initInstantiationStrategy() {
-        extensionPostProcessors.stream().filter(extensionPostProcessor -> extensionPostProcessor instanceof ScopeModelAccessor)
+        instantiationStrategy = extensionPostProcessors.stream()
+                .filter(extensionPostProcessor -> extensionPostProcessor instanceof ScopeModelAccessor)
                 .map(extensionPostProcessor -> new InstantiationStrategy(
                         (ScopeModelAccessor) extensionPostProcessor)).findFirst()
                 .orElse(new InstantiationStrategy());
+    }
+
+    private Object createExtensionInstance(Class<?> type) throws ReflectiveOperationException {
+        return instantiationStrategy.instantiate(type);
     }
 
     private static List<String> getIgnoredInjectMethodsDesc() {
@@ -295,14 +303,20 @@ public class ExtensionLoader<T> {
         // Create an extension instance
         T instance = null;
         try {
-            instance = (T) clazz.newInstance();
+            // Instancing (singleton)
+            instance = (T) extensionInstances.get(clazz);
+            if (instance == null) {
+                extensionInstances.putIfAbsent(clazz, createExtensionInstance(clazz));
+                instance = (T) extensionInstances.get(clazz);
+                // Inject dependencies
+                injectExtension(instance);
+            }
         } catch (Exception e) {
             throw new IllegalStateException("Extension instance(name: " + name + ", class: " +
                     clazz + ") could not be instantiated: " + e.getMessage(), e);
         }
 
-        // Inject dependencies
-        injectExtension(instance);
+
 
         // perform post processing
         if (wrap) {
