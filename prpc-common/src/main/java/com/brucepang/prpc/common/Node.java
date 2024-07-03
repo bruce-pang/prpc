@@ -1,7 +1,5 @@
 package com.brucepang.prpc.common;
 
-import com.brucepang.prpc.URL;
-
 /**
  * @author BrucePang
  */

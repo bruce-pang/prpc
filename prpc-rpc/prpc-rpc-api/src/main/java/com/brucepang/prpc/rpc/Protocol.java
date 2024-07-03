@@ -1,6 +1,6 @@
 package com.brucepang.prpc.rpc;
 
-import com.brucepang.prpc.URL;
+import com.brucepang.prpc.common.URL;
 import com.brucepang.prpc.extension.SPI;
 
 /**
