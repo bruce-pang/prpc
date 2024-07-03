@@ -29,6 +29,7 @@ import java.util.stream.Stream;
 /**
  * load prpc extensions
  * when the extension is annotated with SPI, the extension will be loaded
+ *
  * @author BrucePang
  */
 public class ExtensionLoader<T> {
@@ -106,9 +107,10 @@ public class ExtensionLoader<T> {
 
     /**
      * check {@link SPI} annotation
+     *
      * @param type the extension type
-     * @return true if the extension is annotated with {@link SPI}
      * @param <T>
+     * @return true if the extension is annotated with {@link SPI}
      */
     private static <T> boolean withExtensionAnnotation(Class<T> type) {
         return type.isAnnotationPresent(SPI.class);
@@ -116,6 +118,7 @@ public class ExtensionLoader<T> {
 
     /**
      * load the extension classes
+     *
      * @return the extension classes
      */
     private Map<String, Class<?>> loadExtensionClasses() {
@@ -124,11 +127,11 @@ public class ExtensionLoader<T> {
         if (spi != null) {
             // get the extension name
             String value = spi.value();
-            if ((value = value.trim()).length() > 0){ // String is not empty
+            if ((value = value.trim()).length() > 0) { // String is not empty
                 // get the extension classes
                 String[] names = value.split(",");
                 // check the extension classes
-                if (names.length == 1){
+                if (names.length == 1) {
                     cacheLoaderClassName = names[0];
                 } else {
                     throw new IllegalArgumentException("More than 1 extension name on extension " + type.getName());
@@ -136,17 +139,18 @@ public class ExtensionLoader<T> {
             }
         }
 
-            Map<String, Class<?>> extensionClasses = new ConcurrentHashMap<>();
-            // todo: strategy to load the extension classes
-            loadDirectory(extensionClasses, SERVICES_DIRECTORY);
-            loadDirectory(extensionClasses, PRPC_DIRECTORY);
-            return extensionClasses;
+        Map<String, Class<?>> extensionClasses = new ConcurrentHashMap<>();
+        // todo: strategy to load the extension classes
+        loadDirectory(extensionClasses, SERVICES_DIRECTORY);
+        loadDirectory(extensionClasses, PRPC_DIRECTORY);
+        return extensionClasses;
 
     }
 
     /**
      * 5.load the extension classes
-     * @param extensionClasses the extension classes
+     *
+     * @param extensionClasses  the extension classes
      * @param servicesDirectory the directory to load
      */
     private void loadDirectory(Map<String, Class<?>> extensionClasses, String servicesDirectory) {
@@ -165,10 +169,11 @@ public class ExtensionLoader<T> {
 
     /**
      * 6.load the extension classes
+     *
      * @param extensionClasses the extension classes
-     * @param classLoader the class loader
-     * @param resourceURL the resource URL
-     * @param overridden whether the extension is overridden
+     * @param classLoader      the class loader
+     * @param resourceURL      the resource URL
+     * @param overridden       whether the extension is overridden
      */
     private void loadResource(Map<String, Class<?>> extensionClasses, ClassLoader classLoader, URL resourceURL, boolean overridden) {
         try {
@@ -241,9 +246,9 @@ public class ExtensionLoader<T> {
                     + clazz.getName() + "is not subtype of interface.");
         }
         Class<?> c = extensionClasses.get(name);
-        if (c == null || overridden){
+        if (c == null || overridden) {
             extensionClasses.put(name, clazz);
-        } else if (c != clazz){
+        } else if (c != clazz) {
             throw new IllegalStateException("Duplicate extension " + type.getName() + " name " + name + " on " + c.getName() + " and " + clazz.getName());
         }
     }
@@ -267,6 +272,7 @@ public class ExtensionLoader<T> {
     /**
      * 1. Load all the extension points at startup
      * get the extension instance
+     *
      * @param name the extension name
      * @param wrap whether to wrap the extension
      * @return
@@ -274,10 +280,10 @@ public class ExtensionLoader<T> {
     public T getExtension(String name, boolean wrap) {
         final Holder<Object> holder = getOrCreateHolder(name);
         Object instance = holder.get();
-        if (null == instance){
-            synchronized (holder){
+        if (null == instance) {
+            synchronized (holder) {
                 instance = holder.get();
-                if (null == instance){
+                if (null == instance) {
                     // 2. create the extension instance when needed
                     instance = createExtension(name, wrap);
                     holder.set(instance);
@@ -289,6 +295,7 @@ public class ExtensionLoader<T> {
 
     /**
      * create the extension instance
+     *
      * @param name the extension name
      * @param wrap whether to wrap the extension
      * @return the extension instance
@@ -297,7 +304,7 @@ public class ExtensionLoader<T> {
         // getExtensionClasses(): Loads all implementations of the current type extendpoint
         // then get the extension class by name
         Class<?> clazz = getExtensionClasses().get(name);
-        if (clazz == null){
+        if (clazz == null) {
             throw new IllegalArgumentException("No such extension of name " + name);
         }
         // Create an extension instance
@@ -317,7 +324,6 @@ public class ExtensionLoader<T> {
         }
 
 
-
         // perform post processing
         if (wrap) {
             instance = postProcessAfterInitialization(instance, name);
@@ -331,16 +337,39 @@ public class ExtensionLoader<T> {
             return instance;
         }
         for (Method method : instance.getClass().getMethods()) {
-            if (isSetter(method) && !method.isAnnotationPresent(DisableInject.class)) {
-                try {
-                    String property = getSetterProperty(method);
-                    Object object = injector.getInstance(method.getParameterTypes()[0], property);
-                    if (object != null) {
-                        method.invoke(instance, object);
-                    }
-                } catch (Exception e) {
-                    log.error("Failed to inject via method " + method.getName() + " of interface " + type.getName() + ": " + e.getMessage(), e);
+            // Skip methods that don't require dependency injection
+            // 1.not a setter method
+            // 2.has a DisableInject.class annotation
+            // 3.the method is declared in ScopeModelAware
+            if (
+                    !isSetter(method)
+                            || method.isAnnotationPresent(DisableInject.class)
+                            || method.getDeclaringClass() == ScopeModelAware.class
+            ) {
+                continue;
+            }
+
+            if (
+                    instance instanceof ScopeModelAware
+                            || instance instanceof ExtensionAccessorAware
+            ) {
+                if (ignoredInjectMethodsDesc.contains(ReflectUtils.getDesc(method))) { // 4. Skip the method declared in ignoredInjectMethodsDesc list when the instance is ScopeModelAware or ExtensionAccessorAware
+                    continue;
                 }
+            }
+
+            if (ReflectUtils.isPrimitives(method.getParameterTypes()[0])){ // 5. Skip the basic data type
+                continue;
+            }
+
+            try {
+                String property = getSetterProperty(method);
+                Object object = injector.getInstance(method.getParameterTypes()[0], property);
+                if (object != null) {
+                    method.invoke(instance, object);
+                }
+            } catch (Exception e) {
+                log.error("Failed to inject via method " + method.getName() + " of interface " + type.getName() + ": " + e.getMessage(), e);
             }
         }
         return instance;
@@ -348,6 +377,7 @@ public class ExtensionLoader<T> {
 
     /**
      * get the setter property
+     *
      * @param method the method
      * @return the setter property
      */
@@ -376,15 +406,16 @@ public class ExtensionLoader<T> {
 
     /**
      * 3.get the extension classes
+     *
      * @return
      */
     private Map<String, Class<?>> getExtensionClasses() {
         // Once the extension point is loaded, it is cached into cachedClasses
         Map<String, Class<?>> classes = cachedClasses.get();
-        if (classes == null){
-            synchronized (classes){
+        if (classes == null) {
+            synchronized (classes) {
                 classes = cachedClasses.get();
-                if (classes == null){
+                if (classes == null) {
                     // 4.Load all implementations of the current type extension point
                     classes = loadExtensionClasses();
                     // Cache the loaded extension point
@@ -397,12 +428,13 @@ public class ExtensionLoader<T> {
 
     /**
      * get the extension instance
+     *
      * @param name the extension name
      * @return the extension instance in Holder
      */
-    private Holder<Object> getOrCreateHolder(String name){
+    private Holder<Object> getOrCreateHolder(String name) {
         Holder<Object> holder = cachedInstances.get(name);
-        if (holder == null){
+        if (holder == null) {
             cachedInstances.putIfAbsent(name, new Holder<>());
             holder = cachedInstances.get(name);
         }
@@ -467,6 +499,7 @@ public class ExtensionLoader<T> {
 
     /**
      * check whether the method is setter
+     *
      * @param method the method
      * @return true if the method is setter
      */
