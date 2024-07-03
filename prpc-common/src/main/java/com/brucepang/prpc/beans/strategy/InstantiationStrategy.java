@@ -1,12 +1,13 @@
 package com.brucepang.prpc.beans.strategy;
 
-import com.brucepang.prpc.scope.model.ScopeModelAccessor;
+import com.brucepang.prpc.scope.model.*;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Instantiate a policy class that creates object instances and handles dependency injection.
  * @author BrucePang
  */
 public class InstantiationStrategy {
@@ -64,8 +65,28 @@ public class InstantiationStrategy {
 
     }
 
+    /**
+     * Retrieves the specific model instance based on the provided parameter type.
+     * This method checks if the `scopeModelAccessor` is not null and then determines
+     * which model instance to return based on the class of the parameter type.
+     *
+     * @param parameterType The class type of the parameter for which the model instance is requested.
+     * @return The specific model instance corresponding to the parameter type, or null if either
+     *         `scopeModelAccessor` is null or the parameter type does not match any of the known model types.
+     */
     private Object getArgumentValueForType(Class<?> parameterType) {
-        // todo: implement this method
+        // get scope mode value
+        if (scopeModelAccessor != null) {
+            if (parameterType == ScopeModel.class) {
+                return scopeModelAccessor.getScopeModel();
+            } else if (parameterType == GlobalModel.class) {
+                return scopeModelAccessor.getGlobalModel();
+            } else if (parameterType == ApplicationModel.class) {
+                return scopeModelAccessor.getApplicationModel();
+            } else if (parameterType == ModuleModel.class) {
+                return scopeModelAccessor.getModuleModel();
+            }
+        }
         return null;
     }
 
