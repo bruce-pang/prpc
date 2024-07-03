@@ -364,7 +364,7 @@ public class ExtensionLoader<T> {
 
             try {
                 String property = getSetterProperty(method);
-                Object object = injector.getInstance(method.getParameterTypes()[0], property);
+                Object object = injector.getInstance(method.getParameterTypes()[0], property); // todo AdaptiveExtensionInjector
                 if (object != null) {
                     method.invoke(instance, object);
                 }
@@ -509,4 +509,13 @@ public class ExtensionLoader<T> {
                 && Modifier.isPublic(method.getModifiers());
     }
 
+    /**
+     * get the supported extensions
+     * @return the supported extensions
+     */
+    public Set<String> getSupportedExtensions() {
+        checkDestroyed();
+        Map<String, Class<?>> classes = getExtensionClasses();
+        return Collections.unmodifiableSet(new TreeSet<>(classes.keySet()));
+    }
 }
