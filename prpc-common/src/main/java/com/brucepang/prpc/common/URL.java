@@ -1,4 +1,4 @@
-package com.brucepang.prpc;
+package com.brucepang.prpc.common;
 
 import com.brucepang.prpc.util.StrUtil;
 
