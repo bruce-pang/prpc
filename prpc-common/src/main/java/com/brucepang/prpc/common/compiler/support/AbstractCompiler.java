@@ -40,7 +40,7 @@ public abstract class AbstractCompiler implements Compiler {
         lock.lock();
         try {
             // Compile the class
-            return doCompile(code, classLoader);
+            return doCompile(className, code, classLoader);
         } catch (Throwable e) {
             throw new RuntimeException(e);
         } finally {
@@ -57,7 +57,16 @@ public abstract class AbstractCompiler implements Compiler {
         return null;
     }
 
-    protected  Class<?> doCompile(String code, ClassLoader classLoader) throws Throwable {
+    /**
+     * 1. use the code to compile a class
+     * 2. load the class
+     * @param name class name
+     * @param code java source code
+     * @param classLoader class loader
+     * @return compiled class
+     * @throws Throwable
+     */
+    protected  Class<?> doCompile(String name ,String code, ClassLoader classLoader) throws Throwable {
         return null;
     }
 
