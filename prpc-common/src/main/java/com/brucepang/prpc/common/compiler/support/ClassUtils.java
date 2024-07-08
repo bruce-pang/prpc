@@ -1,5 +1,7 @@
 package com.brucepang.prpc.common.compiler.support;
 
+import java.net.URI;
+
 /**
  * ClassUtils. (Tool, Static, ThreadSafe)
  * @author BrucePang
@@ -39,4 +41,11 @@ public class ClassUtils {
         return clazz.getResource(resourceName).getPath();
     }
 
+    public static URI toURI(String name) {
+        try {
+            return new URI(name);
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e.getMessage(), e);
+        }
+    }
 }
