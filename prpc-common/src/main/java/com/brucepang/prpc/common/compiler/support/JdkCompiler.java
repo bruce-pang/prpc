@@ -5,7 +5,10 @@ import java.io.*;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author BrucePang
@@ -19,14 +22,31 @@ public class JdkCompiler extends AbstractCompiler{
         String className = i < 0 ? name : name.substring(i + 1);
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
         StandardJavaFileManager fileManager = compiler.getStandardFileManager(new DiagnosticCollector<>(), null, null);
-        JavaFileObject file = new JavaFileObjectImpl(className, sourceCode);
+        JavaFileObjectImpl file = new JavaFileObjectImpl(className, sourceCode);
+        fileManager.setLocation(StandardLocation.SOURCE_PATH,
+                Optional.of(classLoader)
+                        .filter(URLClassLoader.class::isInstance)
+                        .map(URLClassLoader.class::cast)
+                        .map(URLClassLoader::getURLs)
+                        .map(Arrays::stream)
+                        .orElseGet(Stream::empty)
+                        .map(URL::getFile)
+                        .map(File::new)
+                        .collect(Collectors.toList())
+                );
         Iterable<? extends JavaFileObject> compilationUnits = Arrays.asList(file);
-        JavaCompiler.CompilationTask task = compiler.getTask(null, fileManager, null, null, null, compilationUnits);
+        JavaCompiler.CompilationTask task = compiler.getTask(null, fileManager,
+                new DiagnosticCollector<JavaFileObject>(),
+                Arrays.asList(
+                        "-source", "1.8", "-target", "1.8"
+                ),
+                null,
+                compilationUnits);
         boolean success = task.call();
         if (!success) {
             throw new IllegalArgumentException("Compilation failed.");
         }
-        // loader
+        // todo
         URLClassLoader loader = URLClassLoader.newInstance(new URL[]{new File("").toURI().toURL()});
         return Class.forName(className, true, loader);
     }
