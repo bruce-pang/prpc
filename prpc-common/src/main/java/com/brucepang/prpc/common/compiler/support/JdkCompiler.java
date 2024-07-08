@@ -6,6 +6,7 @@ import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -34,21 +35,21 @@ public class JdkCompiler extends AbstractCompiler{
                         .map(File::new)
                         .collect(Collectors.toList())
                 );
-        Iterable<? extends JavaFileObject> compilationUnits = Arrays.asList(file);
-        JavaCompiler.CompilationTask task = compiler.getTask(null, fileManager,
+        JavaCompiler.CompilationTask task = compiler.getTask(
+                null,
+                        fileManager,
                 new DiagnosticCollector<JavaFileObject>(),
                 Arrays.asList(
                         "-source", "1.8", "-target", "1.8"
                 ),
                 null,
-                compilationUnits);
+                Collections.singletonList(file));
         boolean success = task.call();
         if (!success) {
             throw new IllegalArgumentException("Compilation failed.");
         }
-        // todo
-        URLClassLoader loader = URLClassLoader.newInstance(new URL[]{new File("").toURI().toURL()});
-        return Class.forName(className, true, loader);
+
+        return classLoader.loadClass(name);
     }
 
     /**
