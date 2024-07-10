@@ -23,6 +23,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -70,6 +71,10 @@ public class ExtensionLoader<T> {
 
     // cache the extension instances
     private final ConcurrentMap<Class<?>, Object> extensionInstances = new ConcurrentHashMap<>(64);
+
+    private String cachedDefaultName;
+
+    private static final Pattern NAME_SEPARATOR         = Pattern.compile("\\s*[,]+\\s*");
 
     public ExtensionLoader(Class<?> type, ExtensionMgt extensionMgt, ScopeModel scopeModel) {
         this.type = type; // the extension type
@@ -552,5 +557,21 @@ public class ExtensionLoader<T> {
         checkDestroyed();
         Map<String, Class<?>> classes = getExtensionClasses();
         return Collections.unmodifiableSet(new TreeSet<>(classes.keySet()));
+    }
+
+    /**
+     * extract and cache default extension name if exists
+     */
+    private void cacheDefaultExtensionName() {
+        SPI spi = type.getAnnotation(SPI.class);
+        if (spi != null) {
+            String value = spi.value();
+            if ((value = value.trim()).length() > 0) {
+                String[] names = NAME_SEPARATOR.split(value);
+                if (names.length == 1) {
+                    cachedDefaultName = names[0];
+                }
+            }
+        }
     }
 }
