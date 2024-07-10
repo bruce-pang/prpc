@@ -574,4 +574,16 @@ public class ExtensionLoader<T> {
             }
         }
     }
+
+    /**
+     * get default extension
+     * @return the default extension or null if not exists
+     */
+    public T getDefaultExtension() {
+        getExtensionClasses();
+        if (StrUtil.isBlank(cachedDefaultName) || "true".equals(cachedDefaultName)) {
+            return null;
+        }
+        return getExtension(cachedDefaultName);
+    }
 }
