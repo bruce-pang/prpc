@@ -2,6 +2,7 @@ package com.brucepang.prpc.extension;
 
 import com.brucepang.prpc.beans.strategy.InstantiationStrategy;
 import com.brucepang.prpc.common.compiler.Compiler;
+import com.brucepang.prpc.common.lifecycle.Lifecycle;
 import com.brucepang.prpc.extension.inject.DisableInject;
 import com.brucepang.prpc.extension.inject.ScopeModelAware;
 import com.brucepang.prpc.logger.Logger;
@@ -482,7 +483,10 @@ public class ExtensionLoader<T> {
     }
 
     private void initExtension(T instance) {
-        // todo
+        if (instance instanceof Lifecycle) {
+            Lifecycle lifecycle = (Lifecycle) instance;
+            lifecycle.initialize();
+        }
     }
 
     private T postProcessBeforeInitialization(T instance, String name) throws Exception {

@@ -1,5 +1,6 @@
 package com.brucepang.prpc.extension.inject;
 
+import com.brucepang.prpc.common.lifecycle.Lifecycle;
 import com.brucepang.prpc.extension.ExtensionAccessor;
 import com.brucepang.prpc.extension.ExtensionInjector;
 
@@ -12,7 +13,8 @@ import java.util.stream.Collectors;
  * AdaptiveExtensionInjector
  * @author BrucePang
  */
-public class AdaptiveExtensionInjector implements ExtensionInjector {
+@Adaptive
+public class AdaptiveExtensionInjector implements ExtensionInjector, Lifecycle {
     private Collection<ExtensionInjector> injectors = Collections.emptyList();
     private ExtensionAccessor extensionAccessor;
 
@@ -24,6 +26,16 @@ public class AdaptiveExtensionInjector implements ExtensionInjector {
                 .getSupportedExtensions().stream()
                 .map(name -> extensionAccessor.getExtension(ExtensionInjector.class, name))
                 .collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
+    }
+
+    @Override
+    public void start() throws IllegalStateException {
+
+    }
+
+    @Override
+    public void destroy() throws IllegalStateException {
+
     }
 
     @Override
