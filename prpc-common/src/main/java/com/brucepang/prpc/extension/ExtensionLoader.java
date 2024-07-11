@@ -370,7 +370,7 @@ public class ExtensionLoader<T> {
 
             try {
                 String property = getSetterProperty(method);
-                Object object = injector.getInstance(method.getParameterTypes()[0], property); // todo AdaptiveExtensionInjector
+                Object object = injector.getInstance(method.getParameterTypes()[0], property);
                 if (object != null) {
                     method.invoke(instance, object);
                 }
@@ -471,11 +471,27 @@ public class ExtensionLoader<T> {
     private T createAdaptiveExtension() {
         try {
             T instance = (T) getAdaptiveExtensionClass().newInstance();
-            // todo: Inject dependencies
+            instance = postProcessBeforeInitialization(instance, null);
+            injectExtension(instance);
+            instance = postProcessAfterInitialization(instance, null);
+            initExtension(instance);
             return instance;
         } catch (Exception e) {
             throw new IllegalStateException("Can't create adaptive extension " + type + ", cause: " + e.getMessage(), e);
         }
+    }
+
+    private void initExtension(T instance) {
+        // todo
+    }
+
+    private T postProcessBeforeInitialization(T instance, String name) throws Exception {
+        if (extensionPostProcessors != null) {
+            for (ExtensionPostProcessor processor : extensionPostProcessors) {
+                instance = (T) processor.postProcessBeforeInitialization(instance, name);
+            }
+        }
+        return instance;
     }
 
     private Class<?> getAdaptiveExtensionClass() {
