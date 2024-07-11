@@ -45,6 +45,7 @@ public abstract class ScopeModel implements ExtensionAccessor {
         // prepare to build Parent Delegation Mechanism
         synchronized (lock) {
             this.extensionMgt = new ExtensionMgt(scope, parent != null ? parent.getExtensionMgt() : null, this);
+            this.beanFactory = new ScopeBeanFactory(parent != null ? parent.getBeanFactory() : null, extensionMgt);
             ClassLoader classLoader = ScopeModel.class.getClassLoader();
             if(classLoaders != null) {
                 this.addClassLoader(classLoader);
@@ -69,4 +70,7 @@ public abstract class ScopeModel implements ExtensionAccessor {
         return extensionMgt;
     }
 
+    public ScopeBeanFactory getBeanFactory() {
+        return beanFactory;
+    }
 }
