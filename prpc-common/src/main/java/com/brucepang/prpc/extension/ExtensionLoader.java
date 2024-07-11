@@ -1,6 +1,7 @@
 package com.brucepang.prpc.extension;
 
 import com.brucepang.prpc.beans.strategy.InstantiationStrategy;
+import com.brucepang.prpc.common.compiler.Compiler;
 import com.brucepang.prpc.extension.inject.DisableInject;
 import com.brucepang.prpc.extension.inject.ScopeModelAware;
 import com.brucepang.prpc.logger.Logger;
@@ -491,9 +492,8 @@ public class ExtensionLoader<T> {
         ClassLoader classLoader = type.getClassLoader();
         // Generate the adaptive class
         String code = createAdaptiveExtensionClassCode();
-        // todo compile the code
-        return null;
-
+        Compiler compiler = extensionMgt.getExtensionLoader(Compiler.class).getAdaptiveExtension();
+        return compiler.compile(code, classLoader);
     }
 
     private String createAdaptiveExtensionClassCode() {
