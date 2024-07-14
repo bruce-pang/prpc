@@ -32,5 +32,20 @@ public class StrUtil {
     public static boolean isNotBlank(String str) {
         return !isBlank(str);
     }
-
+    /**
+     * if name1 is null and name2 is null, then return true
+     *
+     * @param name1 name1
+     * @param name2 name2
+     * @return equals
+     */
+    public static boolean isEquals(String name1, String name2) {
+        if (name1 == null && name2 == null) {
+            return true;
+        }
+        if (name1 == null || name2 == null) {
+            return false;
+        }
+        return name1.equals(name2);
+    }
 }
