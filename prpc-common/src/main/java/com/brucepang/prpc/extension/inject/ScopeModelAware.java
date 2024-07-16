@@ -18,10 +18,10 @@ public interface ScopeModelAware {
     }
 
     /**
-     * Override this method if you just need GlobalModule
-     * @param globalModel the GlobalModule
+     * Override this method if you just need GlobalModel
+     * @param globalModel the GlobalModel
      */
-    default void setGlobalModule(GlobalModel globalModel) {
+    default void setGlobalModel(GlobalModel globalModel) {
     }
 
     /**
