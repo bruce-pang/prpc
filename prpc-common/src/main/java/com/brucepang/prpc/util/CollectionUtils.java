@@ -128,7 +128,7 @@ public class CollectionUtils {
         for (Map.Entry<String, String> entry : map.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
-            if (StringUtils.isEmpty(value)) {
+            if (StrUtil.isEmpty(value)) {
                 list.add(key);
             } else {
                 list.add(key + separator + value);
