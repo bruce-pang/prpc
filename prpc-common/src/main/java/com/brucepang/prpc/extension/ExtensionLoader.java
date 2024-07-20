@@ -606,4 +606,24 @@ public class ExtensionLoader<T> {
         }
         return getExtension(cachedDefaultName);
     }
+
+    public boolean hasExtension(String name) {
+        checkDestroyed();
+        if (StrUtil.isEmpty(name)) {
+            throw new IllegalArgumentException("Extension name == null");
+        }
+        Class<?> c = this.getExtensionClass(name);
+        return c != null;
+    }
+
+    private Class<?> getExtensionClass(String name) {
+        if (type == null) {
+            throw new IllegalArgumentException("Extension type == null");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Extension name == null");
+        }
+        return getExtensionClasses().get(name);
+    }
+
 }
