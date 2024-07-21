@@ -1,6 +1,7 @@
 package com.brucepang.prpc.lang;
 
 import java.util.Comparator;
+
 import static java.lang.Integer.compare;
 
 /**
@@ -24,7 +25,7 @@ public interface Prioritized extends Comparable<Prioritized>{
     int NORMAL_PRIORITY = 0;
 
     /**
-     * 
+     * The {@link Comparator} of {@link Prioritized}
      */
     Comparator<Object> COMPARATOR = (arg1, arg2) -> {
         boolean b1 = arg1 instanceof Prioritized;
