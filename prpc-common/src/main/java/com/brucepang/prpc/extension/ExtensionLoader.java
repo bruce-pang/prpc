@@ -41,11 +41,6 @@ import static java.util.stream.StreamSupport.stream;
  */
 public class ExtensionLoader<T> {
     private static final Logger log = LoggerFactory.getLogger(ExtensionLoader.class);
-    // to scan the extension path
-    private static final String SERVICES_DIRECTORY = "META-INF/services/";
-
-    // to scan the extension path
-    private static final String PRPC_DIRECTORY = "META-INF/prpc/";
 
     // cache the extension loader
     private static final ConcurrentMap<Class<?>, ExtensionLoader<?>> EXTENSION_LOADERS = new ConcurrentHashMap<>();
@@ -163,9 +158,18 @@ public class ExtensionLoader<T> {
         }
 
         Map<String, Class<?>> extensionClasses = new ConcurrentHashMap<>();
-        // todo: strategy to load the extension classes
-        loadDirectory(extensionClasses, SERVICES_DIRECTORY);
-        loadDirectory(extensionClasses, PRPC_DIRECTORY);
+        Optional.ofNullable(strategies).ifPresent(strategies -> {
+            for (LoadingStrategy strategy : strategies) {
+                if (strategy == null) {
+                    continue;
+                }
+                String directory = strategy.directory();
+                if (StrUtil.isEmpty(directory)) {
+                    continue;
+                }
+                loadDirectory(extensionClasses, directory);
+            }
+        });
         return extensionClasses;
 
     }
