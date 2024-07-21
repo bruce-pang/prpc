@@ -5,6 +5,7 @@ import com.brucepang.prpc.common.compiler.Compiler;
 import com.brucepang.prpc.common.lifecycle.Lifecycle;
 import com.brucepang.prpc.extension.inject.DisableInject;
 import com.brucepang.prpc.extension.inject.ScopeModelAware;
+import com.brucepang.prpc.extension.loader_strategy.LoadingStrategy;
 import com.brucepang.prpc.logger.Logger;
 import com.brucepang.prpc.logger.LoggerFactory;
 import com.brucepang.prpc.scope.model.ApplicationModel;
@@ -28,6 +29,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static java.util.ServiceLoader.load;
+import static java.util.stream.StreamSupport.stream;
 
 /**
  * load prpc extensions
@@ -77,6 +81,18 @@ public class ExtensionLoader<T> {
     private String cachedDefaultName;
 
     private static final Pattern NAME_SEPARATOR         = Pattern.compile("\\s*[,]+\\s*");
+
+    // loader strategy
+    private static volatile LoadingStrategy[] strategies = loadLoadingStrategies();
+
+    /**
+     * Loads and returns a list of all {@link LoadingStrategy Loading Strategies} implementations discovered through the {@link ServiceLoader} mechanism.
+     * @return an array of {@link LoadingStrategy Loading Strategies}
+     */
+    private static LoadingStrategy[] loadLoadingStrategies() {
+        return stream(load(LoadingStrategy.class).spliterator(), false).sorted()
+                .toArray(LoadingStrategy[]::new);
+    }
 
     public ExtensionLoader(Class<?> type, ExtensionMgt extensionMgt, ScopeModel scopeModel) {
         this.type = type; // the extension type
