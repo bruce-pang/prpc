@@ -6,7 +6,9 @@ import com.brucepang.prpc.extension.ExtensionMgt;
 import com.brucepang.prpc.extension.ExtensionScope;
 import com.brucepang.prpc.logger.Logger;
 import com.brucepang.prpc.logger.LoggerFactory;
+import com.brucepang.prpc.util.ConcurrentHashSet;
 
+import java.util.Collections;
 import java.util.Set;
 
 /**
@@ -21,7 +23,7 @@ public abstract class ScopeModel implements ExtensionAccessor {
 
     private String desc;
 
-    private Set<ClassLoader> classLoaders;
+    private Set<ClassLoader> classLoaders = new ConcurrentHashSet<>();
 
     private final ScopeModel parent;
     private final ExtensionScope scope;
@@ -72,5 +74,9 @@ public abstract class ScopeModel implements ExtensionAccessor {
 
     public ScopeBeanFactory getBeanFactory() {
         return beanFactory;
+    }
+
+    public Set<ClassLoader> getClassLoaders() {
+        return Collections.unmodifiableSet(classLoaders);
     }
 }
