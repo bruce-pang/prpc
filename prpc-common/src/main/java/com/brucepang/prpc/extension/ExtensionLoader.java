@@ -11,6 +11,7 @@ import com.brucepang.prpc.logger.LoggerFactory;
 import com.brucepang.prpc.scope.model.ApplicationModel;
 import com.brucepang.prpc.scope.model.ScopeModel;
 import com.brucepang.prpc.scope.model.ScopeModelAccessor;
+import com.brucepang.prpc.util.CollectionUtils;
 import com.brucepang.prpc.util.Holder;
 import com.brucepang.prpc.util.ReflectUtils;
 import com.brucepang.prpc.util.StrUtil;
@@ -187,10 +188,50 @@ public class ExtensionLoader<T> {
             Enumeration<URL> urls = classLoader.getResources(classFileName);
             if (urls != null) {
                 // 6.load the extension classes
-                Collections.list(urls).stream().forEach(url -> loadResource(extensionClasses, classLoader, url, false));
+                Collections.list(urls).stream().forEach(url -> loadResource(extensionClasses, classLoader, url, false, null, null, null));
             }
         } catch (Throwable t) {
             log.error("Exception when load extension class(interface: " + type + ", description file: " + classFileName + ").", t);
+        }
+    }
+
+    /**
+     * 5.load the extension classes
+     *
+     * @param extensionClasses  the extension classes
+     * @param strategy the loading strategy
+     * @param type the extension type
+     */
+    private void loadDirectoryInternal(Map<String, Class<?>> extensionClasses, LoadingStrategy strategy, String type) throws InterruptedException {
+        String fileName = strategy.directory() + type;
+        try{
+            List<ClassLoader> classLoadersToLoad = new LinkedList<>();
+            // Load from ExtensionClassLoader's ClassLoader first
+            if (strategy.preferExtensionClassLoader()) {
+                ClassLoader extensionClassLoader = ExtensionLoader.class.getClassLoader();
+                if (ClassLoader.getSystemClassLoader() != extensionClassLoader) {
+                    classLoadersToLoad.add(extensionClassLoader);
+                }
+            }
+
+            // Load from Scope Model
+            Set<ClassLoader> classLoaders = scopeModel.getClassLoaders();
+            if (CollectionUtils.isEmpty(classLoaders)) {
+                Enumeration<java.net.URL> resources = ClassLoader.getSystemResources(fileName);
+                if (resources != null) {
+                    while (resources.hasMoreElements()) {
+                        loadResource(extensionClasses, null, resources.nextElement(),
+                                strategy.overridden(), strategy.includedPackages(),
+                                strategy.excludedPackages(),
+                                strategy.onlyExtensionClassLoaderPackages());
+                    }
+                }
+            } else {
+                classLoadersToLoad.addAll(classLoaders);
+            }
+
+        } catch (Throwable e) {
+            log.error("Exception when load extension class(interface: " + type + ", description file: " + fileName + ").", e);
         }
     }
 
@@ -202,7 +243,8 @@ public class ExtensionLoader<T> {
      * @param resourceURL      the resource URL
      * @param overridden       whether the extension is overridden
      */
-    private void loadResource(Map<String, Class<?>> extensionClasses, ClassLoader classLoader, URL resourceURL, boolean overridden) {
+    private void loadResource(Map<String, Class<?>> extensionClasses, ClassLoader classLoader, URL resourceURL, boolean overridden,  String[] includedPackages, String[] excludedPackages,
+                              String[] onlyExtensionClassLoaderPackages) {
         try {
             // Load the resource file and parse the fully qualified class name of the extension point
             List<String> newContentList = getResourceContent(resourceURL);
