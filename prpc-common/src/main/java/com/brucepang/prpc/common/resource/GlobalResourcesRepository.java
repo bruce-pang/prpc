@@ -44,4 +44,8 @@ public class GlobalResourcesRepository {
         return executorService;
     }
 
+    public static ExecutorService getGlobalExecutorService() {
+        return getInstance().getExecutorService();
+    }
+
 }
