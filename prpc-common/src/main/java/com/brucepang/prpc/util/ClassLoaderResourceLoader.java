@@ -120,4 +120,57 @@ public class ClassLoaderResourceLoader {
         }
     }
 
+
+    public static Map<ClassLoader, Set<URL>> loadResources(String fileName, Collection<ClassLoader> classLoaders) throws InterruptedException {
+        Map<ClassLoader, Set<URL>> resources = new ConcurrentHashMap<>();
+        CountDownLatch countDownLatch = new CountDownLatch(classLoaders.size());
+        for (ClassLoader classLoader : classLoaders) {
+            GlobalResourcesRepository.getGlobalExecutorService().submit(() -> {
+                resources.put(classLoader, loadResources(fileName, classLoader));
+                countDownLatch.countDown();
+            });
+        }
+        countDownLatch.await();
+        return Collections.unmodifiableMap(new LinkedHashMap<>(resources));
+    }
+
+    public static Set<URL> loadResources(String fileName, ClassLoader currentClassLoader) {
+        Map<ClassLoader, Map<String, Set<URL>>> classLoaderCache;
+        if (classLoaderResourcesCache == null || (classLoaderCache = classLoaderResourcesCache.get()) == null) {
+            synchronized (ClassLoaderResourceLoader.class) {
+                if (classLoaderResourcesCache == null || (classLoaderCache = classLoaderResourcesCache.get()) == null) {
+                    classLoaderCache = new ConcurrentHashMap<>();
+                    classLoaderResourcesCache = new SoftReference<>(classLoaderCache);
+                }
+            }
+        }
+        if (!classLoaderCache.containsKey(currentClassLoader)) {
+            classLoaderCache.putIfAbsent(currentClassLoader, new ConcurrentHashMap<>());
+        }
+        Map<String, Set<URL>> urlCache = classLoaderCache.get(currentClassLoader);
+        if (!urlCache.containsKey(fileName)) {
+            Set<URL> set = new LinkedHashSet<>();
+            Enumeration<URL> urls;
+            try {
+                urls = currentClassLoader.getResources(fileName);
+                boolean isNative = NativeUtils.isNative();
+                if (urls != null) {
+                    while (urls.hasMoreElements()) {
+                        URL url = urls.nextElement();
+                        if (isNative) {
+                            //In native mode, the address of each URL is the same instead of different paths, so it is necessary to set the ref to make it different
+                            setRef(url);
+                        }
+                        set.add(url);
+                    }
+                }
+            } catch (IOException e) {
+                logger.error("Exception occurred when reading SPI definitions. SPI path: " + fileName + " ClassLoader name: " + currentClassLoader, e);
+            }
+            urlCache.put(fileName, set);
+        }
+        return urlCache.get(fileName);
+    }
+
+
 }
