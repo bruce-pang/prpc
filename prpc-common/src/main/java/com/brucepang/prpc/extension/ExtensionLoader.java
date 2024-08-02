@@ -285,6 +285,18 @@ public class ExtensionLoader<T> {
 
     }
 
+    private void loadFromClass(Map<String, Class<?>> extensionClasses, boolean overridden,
+                               Set<java.net.URL> urls, ClassLoader classLoader,
+                               String[] includedPackages, String[] excludedPackages,
+                               String[] onlyExtensionClassLoaderPackages) {
+        if (CollectionUtils.isNotEmpty(urls)) {
+            for (java.net.URL url : urls) {
+                loadResource(extensionClasses, classLoader, url, overridden, includedPackages,
+                        excludedPackages, onlyExtensionClassLoaderPackages);
+            }
+        }
+    }
+
     private List<String> getResourceContent(java.net.URL resourceURL) {
         // Get the cache, create a new one if it's null
         Map<URL, List<String>> urlListMap;
