@@ -11,10 +11,7 @@ import com.brucepang.prpc.logger.LoggerFactory;
 import com.brucepang.prpc.scope.model.ApplicationModel;
 import com.brucepang.prpc.scope.model.ScopeModel;
 import com.brucepang.prpc.scope.model.ScopeModelAccessor;
-import com.brucepang.prpc.util.CollectionUtils;
-import com.brucepang.prpc.util.Holder;
-import com.brucepang.prpc.util.ReflectUtils;
-import com.brucepang.prpc.util.StrUtil;
+import com.brucepang.prpc.util.*;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -229,6 +226,14 @@ public class ExtensionLoader<T> {
             } else {
                 classLoadersToLoad.addAll(classLoaders);
             }
+
+            Map<ClassLoader, Set<java.net.URL>> resources = ClassLoaderResourceLoader.loadResources(
+                    fileName, classLoadersToLoad);
+            resources.forEach(((classLoader, urls) -> {
+                loadFromClass(extensionClasses, strategy.overridden(), urls, classLoader,
+                        strategy.includedPackages(), strategy.excludedPackages(),
+                        strategy.onlyExtensionClassLoaderPackages());
+            }));
 
         } catch (Throwable e) {
             log.error("Exception when load extension class(interface: " + type + ", description file: " + fileName + ").", e);
