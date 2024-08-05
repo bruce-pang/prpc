@@ -121,4 +121,16 @@ public class ClassUtils {
                 ? "[L" + className.substring(0, className.length() - 2) + ";"
                 : className, true, Thread.currentThread().getContextClassLoader());
     }
+
+    /**
+     * get simple class name from qualified class name
+     */
+    public static String getSimpleClassName(String qualifiedName) {
+        if (null == qualifiedName) {
+            return null;
+        }
+        int i = qualifiedName.lastIndexOf('.');
+        return i < 0 ? qualifiedName : qualifiedName.substring(i + 1);
+    }
+
 }
