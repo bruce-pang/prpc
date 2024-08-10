@@ -37,7 +37,7 @@ public class GlobalResourcesRepository {
                     if (logger.isInfoEnabled()) {
                         logger.info("Creating global shared handler ...");
                     }
-                    executorService = Executors.newCachedThreadPool(new NamedThreadFactory("Dubbo-global-shared-handler", true));
+                    executorService = Executors.newCachedThreadPool(new NamedThreadFactory("global-shared-handler", true));
                 }
             }
         }
