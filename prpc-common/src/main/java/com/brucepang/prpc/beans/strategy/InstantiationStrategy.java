@@ -99,7 +99,7 @@ public class InstantiationStrategy {
     private boolean isMatched(Constructor<?> constructor) {
         Class<?>[] parameterTypes = constructor.getParameterTypes();
         for (Class<?> parameterType : parameterTypes) {
-            if (!ScopeModelAccessor.class.isAssignableFrom(parameterType)) {
+            if (!ScopeModel.class.isAssignableFrom(parameterType)) {
                 return false;
             }
         }

@@ -24,4 +24,8 @@ public class ExBeanWithGlobalModel implements Disposable {
     public void destroy() {
         this.destroyed = true;
     }
+
+    public boolean isDestroyed() {
+        return destroyed;
+    }
 }
