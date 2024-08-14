@@ -1,7 +1,9 @@
 package com.brucepang.prpc.common.beans;
 
 import com.brucepang.prpc.beans.strategy.InstantiationStrategy;
+import com.brucepang.prpc.common.beans.model.ExBeanWithApplicationModel;
 import com.brucepang.prpc.common.beans.model.ExBeanWithGlobalModel;
+import com.brucepang.prpc.common.beans.model.ExBeanWithModuleModel;
 import com.brucepang.prpc.scope.model.ApplicationModel;
 import com.brucepang.prpc.scope.model.ScopeModel;
 import com.brucepang.prpc.scope.model.ScopeModelAccessor;
@@ -23,6 +25,12 @@ class InstantiationStrategyTest {
 
         ExBeanWithGlobalModel beanWithGlobalModel = instantiationStrategy.instantiate(ExBeanWithGlobalModel.class);
         Assertions.assertSame(scopeModelAccessor.getGlobalModel(), beanWithGlobalModel.getGlobalModel());
+
+        ExBeanWithApplicationModel beanWithApplicationModel = instantiationStrategy.instantiate(ExBeanWithApplicationModel.class);
+        Assertions.assertSame(scopeModelAccessor.getApplicationModel(), beanWithApplicationModel.getApplicationModel());
+
+        ExBeanWithModuleModel beanWithModuleModel = instantiationStrategy.instantiate(ExBeanWithModuleModel.class);
+        Assertions.assertSame(scopeModelAccessor.getModuleModel(), beanWithModuleModel.getModuleModel());
 
     }
 
