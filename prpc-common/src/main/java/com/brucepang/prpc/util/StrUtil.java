@@ -1,5 +1,8 @@
 package com.brucepang.prpc.util;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 /**
  * string util
  * @author BrucePang
@@ -47,5 +50,18 @@ public class StrUtil {
             return false;
         }
         return name1.equals(name2);
+    }
+
+    /**
+     * @param e
+     * @return string
+     */
+    public static String toString(Throwable e) {
+        if (e == null) {
+            return null;
+        }
+        StringWriter w = new StringWriter();
+        e.printStackTrace(new PrintWriter(w));
+        return w.toString();
     }
 }
