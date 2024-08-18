@@ -31,4 +31,11 @@ public interface Protocol {
      * Destroy or close the protocol.
      */
     void destroy();
+
+    /**
+     * Get default port when user doesn't config the port.
+     *
+     * @return default port
+     */
+    int getDefaultPort();
 }
