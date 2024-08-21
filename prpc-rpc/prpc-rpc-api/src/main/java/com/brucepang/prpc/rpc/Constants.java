@@ -4,6 +4,7 @@ package com.brucepang.prpc.rpc;
  * @author BrucePang
  */
 public interface Constants {
+    String CODEC_KEY = "codec";
     String DEFAULT_PROTOCOL = "prpc";
     String DEFAULT_PORT = "9527";
     String DEFAULT_TIMEOUT = "1000";
