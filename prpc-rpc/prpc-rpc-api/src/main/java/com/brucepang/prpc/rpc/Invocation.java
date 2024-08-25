@@ -1,5 +1,7 @@
 package com.brucepang.prpc.rpc;
 
+import java.util.stream.Stream;
+
 /**
  * Invocation (API)
  * @author BrucePang
@@ -27,4 +29,13 @@ public interface Invocation {
      * @serial
      */
     Class<?>[] getParameterTypes();
+
+    /**
+     * get parameter's signature, string representation of parameter types.
+     *
+     * @return parameter's signature
+     */
+    default String[] getCompatibleParamSignatures() {
+        return Stream.of(getParameterTypes()).map(Class::getName).toArray(String[]::new);
+    }
 }
