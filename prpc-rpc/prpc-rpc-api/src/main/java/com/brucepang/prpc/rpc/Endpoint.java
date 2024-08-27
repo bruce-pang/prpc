@@ -11,4 +11,10 @@ public interface Endpoint {
      * @return
      */
     URL getUrl();
+
+    /**
+     * get the service interface
+     * @return
+     */
+    Class<?> getInterface();
 }
