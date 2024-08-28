@@ -15,4 +15,11 @@ public interface ChannelHandler {
      * @param channel channel.
      */
     void connected(Channel channel) throws Exception;
+
+    /**
+     * on channel disconnected.
+     *
+     * @param channel channel.
+     */
+    void disconnected(Channel channel) throws Exception;
 }
