@@ -2,6 +2,8 @@ package com.brucepang.prpc.rpc;
 
 import com.brucepang.prpc.common.URL;
 
+import java.net.InetSocketAddress;
+
 /**
  * @author BrucePang
  */
@@ -17,4 +19,12 @@ public interface Endpoint {
      * @return
      */
     Class<?> getInterface();
+
+    /**
+     * get local address.
+     *
+     * @return local address.
+     */
+    InetSocketAddress getLocalAddress();
+
 }
