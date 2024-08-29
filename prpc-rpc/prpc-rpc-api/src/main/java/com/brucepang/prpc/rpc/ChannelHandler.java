@@ -22,4 +22,12 @@ public interface ChannelHandler {
      * @param channel channel.
      */
     void disconnected(Channel channel) throws Exception;
+
+    /**
+     * on message sent.
+     *
+     * @param channel channel.
+     * @param message message.
+     */
+    void sent(Channel channel, Object message) throws RemotingException;
 }
