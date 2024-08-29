@@ -4,6 +4,7 @@ import com.brucepang.prpc.Request;
 import com.brucepang.prpc.Response;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 
 public interface Channel {
 
@@ -29,4 +30,12 @@ public interface Channel {
      * @return true if the channel is connected, false otherwise
      */
     boolean isConnected();
+
+    /**
+     * get remote address.
+     *
+     * @return remote address.
+     */
+    InetSocketAddress getRemoteAddress();
+
 }

@@ -5,7 +5,7 @@ import java.net.InetSocketAddress;
 /**
  * Channel interface
  */
-public interface Channel {
+public interface Channel extends Endpoint {
 
     /**
      * Get the local address of the channel.
