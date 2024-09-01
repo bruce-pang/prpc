@@ -38,4 +38,12 @@ public interface Channel {
      */
     InetSocketAddress getRemoteAddress();
 
+    /**
+     * get local address.
+     *
+     * @return local address.
+     */
+    InetSocketAddress getLocalAddress();
+
+
 }
