@@ -30,4 +30,6 @@ public interface ChannelHandler {
      * @param message message.
      */
     void sent(Channel channel, Object message) throws RemotingException;
+
+    
 }

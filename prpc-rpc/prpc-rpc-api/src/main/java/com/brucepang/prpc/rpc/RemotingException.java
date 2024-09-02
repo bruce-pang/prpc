@@ -1,5 +1,7 @@
 package com.brucepang.prpc.rpc;
 
+import com.brucepang.prpc.api.Channel;
+
 import java.net.InetSocketAddress;
 
 /**
@@ -17,4 +19,13 @@ public class RemotingException extends Exception {
         this.localAddress = localAddress;
         this.remoteAddress = remoteAddress;
     }
+
+    public RemotingException(Channel channel, String msg) {
+        this(
+                channel == null ? null : channel.getLocalAddress(),
+                channel == null ? null : channel.getRemoteAddress(),
+                msg);
+    }
+
+
 }
