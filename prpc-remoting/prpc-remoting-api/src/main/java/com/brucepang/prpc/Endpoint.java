@@ -27,4 +27,12 @@ public interface Endpoint {
      */
     InetSocketAddress getLocalAddress();
 
+    /**
+     * send message.
+     *
+     * @param message
+     * @throws RemotingException
+     */
+    void send(Object message) throws RemotingException;
+
 }
