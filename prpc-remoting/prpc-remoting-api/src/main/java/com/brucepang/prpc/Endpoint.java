@@ -5,6 +5,8 @@ import com.brucepang.prpc.common.URL;
 import java.net.InetSocketAddress;
 
 /**
+ * Endpoint. (API/SPI, Prototype, ThreadSafe)
+ *
  * @author BrucePang
  */
 public interface Endpoint {
@@ -34,5 +36,15 @@ public interface Endpoint {
      * @throws RemotingException
      */
     void send(Object message) throws RemotingException;
+
+    /**
+     * close the channel.
+     */
+    void close();
+
+    /**
+     * Graceful close the channel.
+     */
+    void close(int timeout);
 
 }
