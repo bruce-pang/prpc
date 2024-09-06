@@ -1,9 +1,13 @@
 package com.brucepang.prpc;
 
+import com.brucepang.prpc.extension.ExtensionScope;
+import com.brucepang.prpc.extension.SPI;
+
 /**
  * Channel handler interface
 
  */
+@SPI(scope = ExtensionScope.GLOBAL)
 public interface ChannelHandler {
 
     /**
@@ -20,4 +24,11 @@ public interface ChannelHandler {
      */
     void disconnected(Channel channel);
 
+    /**
+     * on message sent.
+     *
+     * @param channel channel.
+     * @param message message.
+     */
+    void sent(Channel channel, Object message);
 }
