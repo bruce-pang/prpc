@@ -15,14 +15,14 @@ public interface ChannelHandler {
      *
      * @param channel channel.
      */
-    void connected(Channel channel);
+    void connected(Channel channel) throws RemotingException;
 
     /**
      * on channel disconnected.
      *
      * @param channel channel.
      */
-    void disconnected(Channel channel);
+    void disconnected(Channel channel) throws RemotingException;
 
     /**
      * on message sent.
@@ -30,5 +30,13 @@ public interface ChannelHandler {
      * @param channel channel.
      * @param message message.
      */
-    void sent(Channel channel, Object message);
+    void sent(Channel channel, Object message) throws RemotingException;
+
+    /**
+     * on message received.
+     *
+     * @param channel channel.
+     * @param message message.
+     */
+    void received(Channel channel, Object message) throws RemotingException;
 }
