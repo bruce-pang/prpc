@@ -48,4 +48,7 @@ public interface Constants {
 
     String DEFAULT_CHARSET = "UTF-8";
 
+    String SERVER_KEY = "server";
+
+    String CLIENT_KEY = "client";
 }
