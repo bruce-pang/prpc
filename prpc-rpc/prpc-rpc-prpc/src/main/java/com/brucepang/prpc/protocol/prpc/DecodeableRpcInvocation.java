@@ -1,7 +1,7 @@
 package com.brucepang.prpc.protocol.prpc;
 
-import com.brucepang.prpc.Channel;
-import com.brucepang.prpc.buffer.ChannelBuffer;
+import com.brucepang.prpc.remoting.Channel;
+import com.brucepang.prpc.remoting.buffer.ChannelBuffer;
 import com.brucepang.prpc.rpc.Codec;
 import com.brucepang.prpc.rpc.protocol.RpcInvocation;
 

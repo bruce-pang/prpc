@@ -1,8 +1,8 @@
-package com.brucepang.prpc.client;
+package com.brucepang.prpc.remoting.client;
 
-import com.brucepang.prpc.Request;
+import com.brucepang.prpc.remoting.Request;
 
-import com.brucepang.prpc.Response;
+import com.brucepang.prpc.remoting.Response;
 import java.io.IOException;
 
 public interface Client {

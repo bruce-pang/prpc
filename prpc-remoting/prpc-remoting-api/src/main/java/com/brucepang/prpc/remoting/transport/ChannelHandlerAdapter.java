@@ -1,7 +1,7 @@
-package com.brucepang.prpc.transport;
+package com.brucepang.prpc.remoting.transport;
 
-import com.brucepang.prpc.Channel;
-import com.brucepang.prpc.ChannelHandler;
+import com.brucepang.prpc.remoting.Channel;
+import com.brucepang.prpc.remoting.ChannelHandler;
 
 /**
  * @author BrucePang

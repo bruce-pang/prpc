@@ -1,7 +1,7 @@
 package com.brucepang.prpc.rpc;
 
-import com.brucepang.prpc.Channel;
-import com.brucepang.prpc.buffer.ChannelBuffer;
+import com.brucepang.prpc.remoting.Channel;
+import com.brucepang.prpc.remoting.buffer.ChannelBuffer;
 import com.brucepang.prpc.extension.ExtensionScope;
 import com.brucepang.prpc.extension.SPI;
 import com.brucepang.prpc.extension.inject.Adaptive;

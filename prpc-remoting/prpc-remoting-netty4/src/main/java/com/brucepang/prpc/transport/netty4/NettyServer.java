@@ -1,8 +1,8 @@
 package com.brucepang.prpc.transport.netty4;
 
-import com.brucepang.prpc.Request;
-import com.brucepang.prpc.Response;
-import com.brucepang.prpc.server.Server;
+import com.brucepang.prpc.remoting.Request;
+import com.brucepang.prpc.remoting.Response;
+import com.brucepang.prpc.remoting.server.Server;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;

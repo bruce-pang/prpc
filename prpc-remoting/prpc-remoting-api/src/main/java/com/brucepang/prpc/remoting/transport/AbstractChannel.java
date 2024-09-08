@@ -1,8 +1,8 @@
-package com.brucepang.prpc.transport;
+package com.brucepang.prpc.remoting.transport;
 
-import com.brucepang.prpc.Channel;
-import com.brucepang.prpc.Request;
-import com.brucepang.prpc.Response;
+import com.brucepang.prpc.remoting.Channel;
+import com.brucepang.prpc.remoting.Request;
+import com.brucepang.prpc.remoting.Response;
 
 import java.net.InetSocketAddress;
 

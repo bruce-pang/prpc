@@ -1,7 +1,7 @@
-package com.brucepang.prpc.server;
+package com.brucepang.prpc.remoting.server;
 
-import com.brucepang.prpc.Request;
-import com.brucepang.prpc.Response;
+import com.brucepang.prpc.remoting.Request;
+import com.brucepang.prpc.remoting.Response;
 
 import java.io.IOException;
 

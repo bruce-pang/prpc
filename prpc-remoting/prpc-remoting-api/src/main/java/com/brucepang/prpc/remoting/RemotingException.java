@@ -1,6 +1,6 @@
-package com.brucepang.prpc;
+package com.brucepang.prpc.remoting;
 
-import com.brucepang.prpc.api.Channel;
+import com.brucepang.prpc.remoting.api.Channel;
 
 import java.net.InetSocketAddress;
 

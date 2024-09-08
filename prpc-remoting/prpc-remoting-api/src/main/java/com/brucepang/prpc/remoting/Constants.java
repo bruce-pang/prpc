@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.brucepang.prpc;
+package com.brucepang.prpc.remoting;
 
 
 public interface Constants {

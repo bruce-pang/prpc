@@ -1,4 +1,4 @@
-package com.brucepang.prpc;
+package com.brucepang.prpc.remoting;
 
 public class Request {
 

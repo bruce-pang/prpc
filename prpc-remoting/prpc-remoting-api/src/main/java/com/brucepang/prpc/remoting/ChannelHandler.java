@@ -1,4 +1,4 @@
-package com.brucepang.prpc;
+package com.brucepang.prpc.remoting;
 
 import com.brucepang.prpc.extension.ExtensionScope;
 import com.brucepang.prpc.extension.SPI;

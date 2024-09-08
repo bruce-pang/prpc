@@ -1,8 +1,8 @@
-package com.brucepang.prpc.exchange.codec;
+package com.brucepang.prpc.remoting.exchange.codec;
 
-import com.brucepang.prpc.Codec;
-import com.brucepang.prpc.Request;
-import com.brucepang.prpc.Response;
+import com.brucepang.prpc.remoting.Codec;
+import com.brucepang.prpc.remoting.Request;
+import com.brucepang.prpc.remoting.Response;
 
 import java.io.*;
 /**

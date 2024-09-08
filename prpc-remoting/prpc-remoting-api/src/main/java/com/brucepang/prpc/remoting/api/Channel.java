@@ -1,7 +1,7 @@
-package com.brucepang.prpc.api;
+package com.brucepang.prpc.remoting.api;
 
-import com.brucepang.prpc.Request;
-import com.brucepang.prpc.Response;
+import com.brucepang.prpc.remoting.Request;
+import com.brucepang.prpc.remoting.Response;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;

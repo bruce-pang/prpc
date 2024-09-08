@@ -1,4 +1,4 @@
-package com.brucepang.prpc.buffer;
+package com.brucepang.prpc.remoting.buffer;
 
 import java.nio.ByteBuffer;
 
