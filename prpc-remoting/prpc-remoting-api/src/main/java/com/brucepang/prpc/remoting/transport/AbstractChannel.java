@@ -11,6 +11,11 @@ public abstract class AbstractChannel implements Channel {
     protected InetSocketAddress localAddress;
     protected InetSocketAddress remoteAddress;
 
+    public AbstractChannel(InetSocketAddress localAddress, InetSocketAddress remoteAddress) {
+        this.localAddress = localAddress;
+        this.remoteAddress = remoteAddress;
+    }
+
     @Override
     public InetSocketAddress getLocalAddress() {
         return localAddress;
