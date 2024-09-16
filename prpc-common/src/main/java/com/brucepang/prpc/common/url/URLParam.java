@@ -18,7 +18,18 @@ public class URLParam {
      */
     private final int[] VALUE;
 
-    public URLParam() {
+    private final String rawParam;
+
+    private final Map<String, String> EXTRA_PARAMS;
+
+    private final Map<String, Map<String, String>> METHOD_PARAMETERS;
+
+    private transient long timestamp;
+
+    public URLParam(String rawParam, Map<String, String> extraParams, Map<String, Map<String, String>> methodParameters) {
+        this.rawParam = rawParam;
+        EXTRA_PARAMS = extraParams;
+        METHOD_PARAMETERS = methodParameters;
         KEY = null;
         VALUE = null;
     }
