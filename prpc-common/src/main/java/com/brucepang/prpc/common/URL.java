@@ -1,11 +1,13 @@
 package com.brucepang.prpc.common;
 
+import com.brucepang.prpc.common.url.URLParam;
 import com.brucepang.prpc.util.StrUtil;
 
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -27,6 +29,8 @@ public class URL implements Serializable {
 
     private final Map<String, Map<String, String>> methodParameters;
 
+    private final URLParam urlParam;
+
     protected URL() {
         this.protocol = null;
         this.host = null;
@@ -34,27 +38,29 @@ public class URL implements Serializable {
         this.path = null;
         this.params = null;
         this.methodParameters = null;
+        this.urlParam = URLParam.parse(new HashMap<>());
     }
 
-    public URL(String protocol, String host, int port) {
-        this(protocol, host, port, null, null, null);
+    public URL(String protocol, String host, int port, URLParam urlParam) {
+        this(protocol, host, port, null, null, null, urlParam);
     }
 
-    public URL(String protocol, String host, int port, String path) {
-        this(protocol, host, port, path, null, null);
+    public URL(String protocol, String host, int port, String path, URLParam urlParam) {
+        this(protocol, host, port, path, null, null, urlParam);
     }
 
-    public URL(String protocol, String host, int port, String path, Map<String, String> params, Map<String, Map<String, String>> methodParameters) {
+    public URL(String protocol, String host, int port, String path, Map<String, String> params, Map<String, Map<String, String>> methodParameters, URLParam urlParam) {
         this.protocol = protocol;
         this.host = host;
         this.port = port;
         this.path = path;
         this.params = params;
         this.methodParameters = methodParameters;
+        this.urlParam = urlParam;
     }
 
-    public URL(String protocol, String host, int port, String path, Map<String, String> params) {
-        this(protocol, host, port, path, params, null);
+    public URL(String protocol, String host, int port, String path, Map<String, String> params, URLParam urlParam) {
+        this(protocol, host, port, path, params, null, urlParam);
     }
 
     /**
@@ -98,9 +104,13 @@ public class URL implements Serializable {
         return new URL(protocol,host,port,path,getParams());
     }
 
+
     public Map<String, String> getParams() {
         return params;
     }
 
+    public String getParameter(String key) {
+        return urlParam.getParameter(key);
+    }
 
 }
