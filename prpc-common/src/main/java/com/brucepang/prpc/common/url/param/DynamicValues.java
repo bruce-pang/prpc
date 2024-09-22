@@ -56,6 +56,13 @@ public class DynamicValues implements ParamValue {
         return value2Index.get(value);
     }
 
+    public DynamicValues(String defaultVal) {
+        if (defaultVal == null) {
+            indexSeq += 1;
+        } else {
+            add(defaultVal);
+        }
+    }
 
 
 
