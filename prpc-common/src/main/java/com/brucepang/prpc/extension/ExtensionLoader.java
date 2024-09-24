@@ -6,6 +6,7 @@ import com.brucepang.prpc.common.lifecycle.Lifecycle;
 import com.brucepang.prpc.extension.inject.DisableInject;
 import com.brucepang.prpc.extension.inject.ScopeModelAware;
 import com.brucepang.prpc.extension.loader_strategy.LoadingStrategy;
+import com.brucepang.prpc.lang.Prioritized;
 import com.brucepang.prpc.logger.Logger;
 import com.brucepang.prpc.logger.LoggerFactory;
 import com.brucepang.prpc.scope.model.ApplicationModel;
@@ -703,6 +704,24 @@ public class ExtensionLoader<T> {
             throw new IllegalArgumentException("Extension name == null");
         }
         return getExtensionClasses().get(name);
+    }
+
+    /**
+     * get the supported extension instances
+     * @return the supported extension instances
+     */
+    public Set<T> getSupportedExtensionInstances() {
+        checkDestroyed();
+        List<T> instances = new LinkedList<>();
+        Set<String> supportedExtensions = getSupportedExtensions();
+        if (CollectionUtils.isNotEmpty(supportedExtensions)) {
+            for (String name : supportedExtensions) {
+                instances.add(getExtension(name));
+            }
+        }
+        // sort the Prioritized instances
+        instances.sort(Prioritized.COMPARATOR);
+        return new LinkedHashSet<>(instances);
     }
 
 }
