@@ -51,4 +51,12 @@ public final class DynamicParamTable {
         }
         KEY2INDEX.putAll(key2Index);
     }
+
+    public static String getKey(int offset) {
+        return ORIGIN_KEYS[offset];
+    }
+
+    public static String getValue(int vi, int offset) {
+        return VALUES[vi].getN(offset);
+    }
 }
