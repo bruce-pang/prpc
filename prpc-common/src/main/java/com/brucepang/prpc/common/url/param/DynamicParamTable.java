@@ -59,4 +59,12 @@ public final class DynamicParamTable {
     public static String getValue(int vi, int offset) {
         return VALUES[vi].getN(offset);
     }
+
+    public static int getKeyIndex(boolean enableCompressed, String key) {
+        if (!enableCompressed) {
+            return -1;
+        }
+        Integer indexFromMap = KEY2INDEX.get(key);
+        return indexFromMap == null ? -1 : indexFromMap;
+    }
 }
