@@ -67,4 +67,15 @@ public final class DynamicParamTable {
         Integer indexFromMap = KEY2INDEX.get(key);
         return indexFromMap == null ? -1 : indexFromMap;
     }
+
+    public static int getValueIndex(String key, String value) {
+        int idx = getKeyIndex(true, key);
+        if (idx < 0) {
+            throw new IllegalArgumentException("Cannot found key in url param:" + key);
+        }
+        ParamValue paramValue = VALUES[idx];
+        return paramValue.getIndex(value);
+    }
+
+
 }
