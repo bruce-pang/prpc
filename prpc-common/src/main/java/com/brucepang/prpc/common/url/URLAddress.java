@@ -1,6 +1,7 @@
 package com.brucepang.prpc.common.url;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * @author BrucePang
@@ -25,5 +26,60 @@ public class URLAddress implements Serializable {
 
         this.rawAddress = rawAddress;
         this.timestamp = System.currentTimeMillis();
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+    public String getRawAddress() {
+        return rawAddress;
+    }
+
+    public void setRawAddress(String rawAddress) {
+        this.rawAddress = rawAddress;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        URLAddress that = (URLAddress) o;
+        return port == that.port && timestamp == that.timestamp && Objects.equals(host, that.host) && Objects.equals(rawAddress, that.rawAddress);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(host, port, rawAddress, timestamp);
+    }
+
+    @Override
+    public String toString() {
+        return "URLAddress{" +
+                "host='" + host + '\'' +
+                ", port=" + port +
+                ", rawAddress='" + rawAddress + '\'' +
+                ", timestamp=" + timestamp +
+                '}';
     }
 }
