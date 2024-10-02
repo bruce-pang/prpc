@@ -1,5 +1,6 @@
 package com.brucepang.prpc.common;
 
+import com.brucepang.prpc.common.url.ServiceConfigURL;
 import com.brucepang.prpc.common.url.URLParam;
 import com.brucepang.prpc.util.StrUtil;
 
@@ -101,16 +102,22 @@ public class URL implements Serializable {
     }
 
     public URL setProtocol(String protocol){
-        return new URL(protocol,host,port,path,getParams());
+        return new ServiceConfigURL(protocol,host,port,path,getParams());
     }
 
 
     public Map<String, String> getParams() {
-        return params;
+        return urlParam.getParameters();
     }
 
     public String getParameter(String key) {
         return urlParam.getParameter(key);
+    }
+
+    public static void putMethodParameter(
+            String method, String key, String value, Map<String, Map<String, String>> methodParameters) {
+        Map<String, String> subParameter = methodParameters.computeIfAbsent(method, k -> new HashMap<>());
+        subParameter.put(key, value);
     }
 
 }
