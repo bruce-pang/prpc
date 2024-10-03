@@ -32,16 +32,16 @@ public class URLAddress implements Serializable {
         return host;
     }
 
-    public void setHost(String host) {
-        this.host = host;
+    public URLAddress setHost(String host) {
+        return new URLAddress(host, port, null);
     }
 
     public int getPort() {
         return port;
     }
 
-    public void setPort(int port) {
-        this.port = port;
+    public URLAddress setPort(int port) {
+        return new URLAddress(host, port, null);
     }
 
     public String getRawAddress() {
@@ -58,6 +58,21 @@ public class URLAddress implements Serializable {
 
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
+    }
+
+    protected String getAddress(String host, int port) {
+        return port <= 0 ? host : host + ':' + port;
+    }
+
+    public String getAddress() {
+        if (rawAddress == null) {
+            rawAddress = getAddress(getHost(), getPort());
+        }
+        return rawAddress;
+    }
+
+    public URLAddress setAddress(String host, int port) {
+        return new URLAddress(host, port, rawAddress);
     }
 
     @Override
