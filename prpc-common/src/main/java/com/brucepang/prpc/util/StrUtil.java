@@ -7,7 +7,9 @@ import java.io.StringWriter;
  * string util
  * @author BrucePang
  */
-public class StrUtil {
+public final class StrUtil {
+
+    private static final byte[] HEX2B = new byte[128];
 
     public static boolean isEmpty(String str) {
         return str == null || str.isEmpty();
@@ -64,4 +66,24 @@ public class StrUtil {
         e.printStackTrace(new PrintWriter(w));
         return w.toString();
     }
+
+    /**
+     * Decode a 2-digit hex byte from within a string.
+     */
+    public static byte decodeHexByte(CharSequence s, int pos) {
+        int hi = decodeHexNibble(s.charAt(pos));
+        int lo = decodeHexNibble(s.charAt(pos + 1));
+        if (hi == -1 || lo == -1) {
+            throw new IllegalArgumentException(
+                    String.format("invalid hex byte '%s' at index %d of '%s'", s.subSequence(pos, pos + 2), pos, s));
+        }
+        return (byte) ((hi << 4) + lo);
+    }
+    public static int decodeHexNibble(final char c) {
+        // Character.digit() is not used here, as it addresses a larger
+        // set of characters (both ASCII and full-width latin letters).
+        byte[] hex2b = HEX2B;
+        return c < hex2b.length ? hex2b[c] : -1;
+    }
+
 }
