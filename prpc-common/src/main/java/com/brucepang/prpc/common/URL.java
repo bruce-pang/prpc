@@ -1,6 +1,7 @@
 package com.brucepang.prpc.common;
 
 import com.brucepang.prpc.common.url.ServiceConfigURL;
+import com.brucepang.prpc.common.url.URLAddress;
 import com.brucepang.prpc.common.url.URLParam;
 import com.brucepang.prpc.util.StrUtil;
 
@@ -26,43 +27,53 @@ public class URL implements Serializable {
 
     protected String path;
 
-    private final Map<String,String> params;
-
-    private final Map<String, Map<String, String>> methodParameters;
-
     private final URLParam urlParam;
 
-    protected URL() {
+    private final URLAddress urlAddress;
+
+    protected volatile Map<String, Object> attributes;
+
+    protected URL(URLAddress urlAddress) {
+        this.urlAddress = urlAddress;
         this.protocol = null;
         this.host = null;
         this.port = 0;
         this.path = null;
-        this.params = null;
-        this.methodParameters = null;
         this.urlParam = URLParam.parse(new HashMap<>());
     }
 
-    public URL(String protocol, String host, int port, URLParam urlParam) {
-        this(protocol, host, port, null, null, null, urlParam);
+    public URL(String protocol, String host, int port, URLParam urlParam, URLAddress urlAddress) {
+        this(protocol, host, port, null, null, null, urlParam, urlAddress);
     }
 
-    public URL(String protocol, String host, int port, String path, URLParam urlParam) {
-        this(protocol, host, port, path, null, null, urlParam);
+    public URL(String protocol, String host, int port, String path, URLParam urlParam, URLAddress urlAddress) {
+        this(protocol, host, port, path, null, null, urlParam, urlAddress);
     }
 
-    public URL(String protocol, String host, int port, String path, Map<String, String> params, Map<String, Map<String, String>> methodParameters, URLParam urlParam) {
+    public URL(String protocol, String host, int port, String path, Map<String, String> params, Map<String, Map<String, String>> methodParameters, URLParam urlParam, URLAddress urlAddress) {
         this.protocol = protocol;
         this.host = host;
         this.port = port;
         this.path = path;
-        this.params = params;
-        this.methodParameters = methodParameters;
         this.urlParam = urlParam;
+        this.urlAddress = urlAddress;
     }
 
-    public URL(String protocol, String host, int port, String path, Map<String, String> params, URLParam urlParam) {
-        this(protocol, host, port, path, params, null, urlParam);
+    public URL(String protocol, String host, int port, String path, Map<String, String> params, URLParam urlParam, URLAddress urlAddress) {
+        this(protocol, host, port, path, params, null, urlParam, urlAddress);
     }
+
+    public URL(URLAddress urlAddress, URLParam urlParam, Map<String, Object> attributes) {
+        this.urlAddress = urlAddress;
+        this.urlParam = null == urlParam ? URLParam.parse(new HashMap<>()) : urlParam;
+
+        if (attributes != null && !attributes.isEmpty()) {
+            this.attributes = attributes;
+        } else {
+            this.attributes = null;
+        }
+    }
+
 
     /**
      * encode the URL encoded string using UTF-8.
