@@ -9,4 +9,6 @@ public interface CommonConstants {
     String METHOD_KEY = "method";
 
     String TIMESTAMP_KEY = "timestamp";
+
+    String DEFAULT_KEY_PREFIX = "default.";
 }
