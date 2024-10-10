@@ -11,6 +11,7 @@ public class URLAddress implements Serializable {
     protected String host;
     protected int port;
 
+
     // cache
     protected transient String rawAddress;
     protected transient long timestamp;
@@ -73,6 +74,38 @@ public class URLAddress implements Serializable {
 
     public URLAddress setAddress(String host, int port) {
         return new URLAddress(host, port, rawAddress);
+    }
+
+    public String getProtocol() {
+        return "";
+    }
+
+    public URLAddress setProtocol(String protocol) {
+        return this;
+    }
+
+    public String getUsername() {
+        return "";
+    }
+
+    public URLAddress setUsername(String username) {
+        return this;
+    }
+
+    public String getPassword() {
+        return "";
+    }
+
+    public URLAddress setPassword(String password) {
+        return this;
+    }
+
+    public String getPath() {
+        return "";
+    }
+
+    public URLAddress setPath(String path) {
+        return this;
     }
 
     @Override
