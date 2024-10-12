@@ -10,6 +10,7 @@ import java.io.StringWriter;
 public final class StrUtil {
 
     private static final byte[] HEX2B = new byte[128];
+    public static final String EMPTY_STRING = "";
 
     public static boolean isEmpty(String str) {
         return str == null || str.isEmpty();
