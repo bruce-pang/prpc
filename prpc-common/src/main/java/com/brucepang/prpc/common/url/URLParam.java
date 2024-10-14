@@ -20,7 +20,7 @@ import com.brucepang.prpc.common.URL;
 import com.brucepang.prpc.common.url.param.DynamicParamTable;
 import com.brucepang.prpc.util.CollectionUtils;
 import com.brucepang.prpc.util.StrUtil;
-import com.brucepang.prpc.common.URLStrParser;
+import com.brucepang.prpc.common.url.parse.URLStrParser;
 
 import java.util.*;
 
