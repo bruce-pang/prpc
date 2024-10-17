@@ -38,4 +38,10 @@ public class Assert {
         }
     }
 
+    public static void notEmptyString(String str, String message) {
+        if (StrUtil.isEmpty(str)) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
 }
