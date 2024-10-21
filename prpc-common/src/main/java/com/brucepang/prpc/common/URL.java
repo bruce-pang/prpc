@@ -1,5 +1,6 @@
 package com.brucepang.prpc.common;
 
+import com.brucepang.prpc.common.url.PathURLAddress;
 import com.brucepang.prpc.common.url.ServiceConfigURL;
 import com.brucepang.prpc.common.url.URLAddress;
 import com.brucepang.prpc.common.url.URLParam;
@@ -72,6 +73,23 @@ public class URL implements Serializable {
         } else {
             this.attributes = null;
         }
+    }
+
+    public URL(
+            String protocol,
+            String username,
+            String password,
+            String host,
+            int port,
+            String path,
+            Map<String, String> parameters) {
+        if (StrUtil.isEmpty(username) && StrUtil.isNotEmpty(password)) {
+            throw new IllegalArgumentException("Invalid url, password without username!");
+        }
+
+        this.urlAddress = new PathURLAddress(protocol, username, password, path, host, port);
+        this.urlParam = URLParam.parse(parameters);
+        this.attributes = null;
     }
 
 
