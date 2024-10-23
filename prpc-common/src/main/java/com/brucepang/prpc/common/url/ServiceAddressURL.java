@@ -9,6 +9,8 @@ import java.util.Map;
  */
 public abstract class ServiceAddressURL extends URL {
 
+    protected final transient URL consumerURL;
+
     public ServiceAddressURL(
             String protocol,
             String username,
@@ -17,7 +19,8 @@ public abstract class ServiceAddressURL extends URL {
             int port,
             String path,
             Map<String, String> parameters,
-            URL consumerURL) {
+            URL consumerURL, URL consumerURL1) {
         super(protocol, username, password, host, port, path, parameters);
+        this.consumerURL = consumerURL1;
     }
 }
