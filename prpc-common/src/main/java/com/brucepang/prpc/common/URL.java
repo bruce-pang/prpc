@@ -92,6 +92,10 @@ public class URL implements Serializable {
         this.attributes = null;
     }
 
+    public URL(URLAddress urlAddress, URLParam urlParam) {
+        this(urlAddress, urlParam, null);
+    }
+
 
     /**
      * encode the URL encoded string using UTF-8.
