@@ -23,4 +23,9 @@ public abstract class ServiceAddressURL extends URL {
         super(protocol, username, password, host, port, path, parameters);
         this.consumerURL = consumerURL1;
     }
+
+    public ServiceAddressURL(URLAddress urlAddress, URLParam urlParam, URL consumerURL) {
+        super(urlAddress, urlParam);
+        this.consumerURL = consumerURL;
+    }
 }
