@@ -28,4 +28,8 @@ public abstract class ServiceAddressURL extends URL {
         super(urlAddress, urlParam);
         this.consumerURL = consumerURL;
     }
+
+    public URL getConsumerURL() {
+        return consumerURL;
+    }
 }
