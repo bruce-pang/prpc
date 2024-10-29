@@ -1,9 +1,10 @@
 package com.brucepang.prpc.config;
 
 /**
+ * ConfigurationUtils
  * @author BrucePang
  */
-public class ConfigurationUtils {
+public final class ConfigurationUtils {
 
     /**
      * Forbids instantiation.
