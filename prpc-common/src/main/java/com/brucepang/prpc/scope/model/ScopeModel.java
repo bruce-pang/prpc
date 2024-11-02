@@ -7,6 +7,7 @@ import com.brucepang.prpc.extension.ExtensionScope;
 import com.brucepang.prpc.logger.Logger;
 import com.brucepang.prpc.logger.LoggerFactory;
 import com.brucepang.prpc.util.ConcurrentHashSet;
+import org.omg.CORBA.Environment;
 
 import java.util.Collections;
 import java.util.Set;
@@ -79,4 +80,10 @@ public abstract class ScopeModel implements ExtensionAccessor {
     public Set<ClassLoader> getClassLoaders() {
         return Collections.unmodifiableSet(classLoaders);
     }
+
+    /**
+     *  Get current model's environment.
+     * @return
+     */
+    public abstract Environment modelEnvironment();
 }
