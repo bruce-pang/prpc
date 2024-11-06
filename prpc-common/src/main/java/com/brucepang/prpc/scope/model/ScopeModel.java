@@ -1,13 +1,13 @@
 package com.brucepang.prpc.scope.model;
 
 import com.brucepang.prpc.beans.factory.ScopeBeanFactory;
+import com.brucepang.prpc.config.Environment;
 import com.brucepang.prpc.extension.ExtensionAccessor;
 import com.brucepang.prpc.extension.ExtensionMgt;
 import com.brucepang.prpc.extension.ExtensionScope;
 import com.brucepang.prpc.logger.Logger;
 import com.brucepang.prpc.logger.LoggerFactory;
 import com.brucepang.prpc.util.ConcurrentHashSet;
-import org.omg.CORBA.Environment;
 
 import java.util.Collections;
 import java.util.Set;
