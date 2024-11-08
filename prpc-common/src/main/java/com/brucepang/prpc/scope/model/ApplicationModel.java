@@ -1,5 +1,7 @@
 package com.brucepang.prpc.scope.model;
 
+import com.brucepang.prpc.common.context.ApplicationExt;
+import com.brucepang.prpc.config.Environment;
 import com.brucepang.prpc.extension.ExtensionLoader;
 import com.brucepang.prpc.extension.ExtensionMgt;
 import com.brucepang.prpc.extension.ExtensionScope;
@@ -17,6 +19,7 @@ public class ApplicationModel extends ScopeModel {
     private Object moduleLock = new Object();
     private ModuleModel internalModule;
     private GlobalModel globalModel;
+    private volatile Environment environment;
 
 
     protected ApplicationModel(GlobalModel globalModel) {
@@ -85,5 +88,14 @@ public class ApplicationModel extends ScopeModel {
 
     public GlobalModel getGlobalModel(){
         return this.globalModel;
+    }
+
+    @Override
+    public Environment modelEnvironment() {
+        if (environment == null) {
+            environment =
+                    (Environment) this.getExtensionLoader(ApplicationExt.class).getExtension(Environment.NAME);
+        }
+        return environment;
     }
 }
