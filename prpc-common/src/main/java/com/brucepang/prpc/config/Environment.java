@@ -24,4 +24,8 @@ public class Environment extends LifecycleAdapter implements ApplicationExt {
     public void destroy() throws IllegalStateException {
 
     }
+
+    public Configuration getEnvironmentConfiguration() {
+        return null;
+    }
 }
