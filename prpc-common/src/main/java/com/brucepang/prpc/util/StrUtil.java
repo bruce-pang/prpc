@@ -3,6 +3,9 @@ package com.brucepang.prpc.util;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import static com.brucepang.prpc.common.constants.CommonConstants.DOT_REGEX;
+import static com.brucepang.prpc.common.constants.CommonConstants.UNDERLINE_SEPARATOR;
+
 /**
  * string util
  * @author BrucePang
@@ -87,4 +90,11 @@ public final class StrUtil {
         return c < hex2b.length ? hex2b[c] : -1;
     }
 
+    public static String toOSStyleKey(String key) {
+        key = key.toUpperCase().replaceAll(DOT_REGEX, UNDERLINE_SEPARATOR);
+        if (!key.startsWith("PRPC_")) {
+            key = "PRPC_" + key;
+        }
+        return key;
+    }
 }

@@ -21,5 +21,10 @@ public interface CommonConstants {
     Pattern EQUAL_SPLIT_PATTERN = Pattern.compile("\\s*[=]+\\s*");
 
     String PRPC_LABELS = "prpc.labels";
+
     String PRPC_ENV_KEYS = "prpc.env.keys";
+
+    String DOT_REGEX = "\\.";
+
+    String UNDERLINE_SEPARATOR = "_";
 }
