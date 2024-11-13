@@ -10,6 +10,10 @@ public class Environment extends LifecycleAdapter implements ApplicationExt {
 
     public static final String NAME = "environment";
 
+
+    // java system environment
+    private EnvironmentConfiguration environmentConfiguration;
+
     @Override
     public void initialize() throws IllegalStateException {
 
