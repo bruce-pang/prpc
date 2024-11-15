@@ -5,4 +5,5 @@ package com.brucepang.prpc.config;
  * @author BrucePang
  */
 public interface Configuration {
+    Object getInternalProperty(String key);
 }
