@@ -27,4 +27,9 @@ public interface CommonConstants {
     String DOT_REGEX = "\\.";
 
     String UNDERLINE_SEPARATOR = "_";
+
+    /**
+     * Default timeout value in milliseconds for server shutdown
+     */
+    int DEFAULT_SERVER_SHUTDOWN_TIMEOUT = 10000;
 }
