@@ -97,4 +97,8 @@ public final class StrUtil {
         }
         return key;
     }
+
+    public static String trim(String str) {
+        return str == null ? null : str.trim();
+    }
 }
