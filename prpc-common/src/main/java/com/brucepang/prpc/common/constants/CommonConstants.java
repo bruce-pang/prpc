@@ -36,4 +36,6 @@ public interface CommonConstants {
     String REMOVE_VALUE_PREFIX = "-";
 
     String DEFAULT_KEY = "default";
+
+    String DEFAULT_GROUP = "default";
 }
