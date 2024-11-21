@@ -23,4 +23,18 @@ public final class ConfigurationUtils {
         return realScopeModel;
     }
 
+    /**
+     * Used to get properties from the os environment
+     *
+     * @return
+     */
+    public static Configuration getEnvConfiguration(ScopeModel scopeModel) {
+        return getScopeModelOrDefaultApplicationModel(scopeModel)
+                .modelEnvironment()
+                .getEnvironmentConfiguration();
+    }
+
+    public static String getProperty(ApplicationModel applicationModel, String prpcLabels) {
+        return (String) getEnvConfiguration(applicationModel).getInternalProperty(prpcLabels);
+    }
 }
