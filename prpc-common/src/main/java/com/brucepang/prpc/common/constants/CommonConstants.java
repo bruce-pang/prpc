@@ -38,4 +38,6 @@ public interface CommonConstants {
     String DEFAULT_KEY = "default";
 
     String DEFAULT_GROUP = "default";
+
+    String PRPC_COMPACT_ENABLE = "prpc.compact.enable";
 }
