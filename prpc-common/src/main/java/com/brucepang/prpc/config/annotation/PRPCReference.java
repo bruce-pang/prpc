@@ -16,6 +16,6 @@ public @interface PRPCReference {
      */
     String interfaceName() default "";
 
-
+    boolean init() default true;
 
 }
