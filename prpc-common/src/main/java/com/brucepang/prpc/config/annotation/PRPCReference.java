@@ -10,4 +10,12 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.METHOD, ElementType.ANNOTATION_TYPE})
 public @interface PRPCReference {
+
+    /**
+     * Interface class name, default value is empty string
+     */
+    String interfaceName() default "";
+
+
+
 }
