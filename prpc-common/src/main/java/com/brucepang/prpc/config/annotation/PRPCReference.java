@@ -18,4 +18,6 @@ public @interface PRPCReference {
 
     boolean init() default true;
 
+    boolean generic() default false;
+
 }
