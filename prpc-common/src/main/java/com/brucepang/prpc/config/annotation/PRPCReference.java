@@ -21,4 +21,6 @@ public @interface PRPCReference {
     boolean generic() default false;
 
     String version() default "";
+
+    String group() default "";
 }
