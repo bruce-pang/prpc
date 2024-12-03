@@ -1,4 +1,4 @@
-package com.brucepang.prpc.common.rpc;
+package com.brucepang.prpc.common.rpc.exception;
 
 /**
  * @author BrucePang
