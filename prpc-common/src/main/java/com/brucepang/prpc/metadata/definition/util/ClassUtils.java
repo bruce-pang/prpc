@@ -1,8 +1,12 @@
 package com.brucepang.prpc.metadata.definition.util;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.security.CodeSource;
 import java.security.ProtectionDomain;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author BrucePang
@@ -32,5 +36,35 @@ public final class ClassUtils {
             return path.substring(path.lastIndexOf('/') + 1);
         }
         return path;
+    }
+
+    /**
+     * Get all non-static fields of the Class passed in or its super classes.
+     * <p>
+     *
+     * @param clazz Class to parse.
+     * @return field list
+     */
+    public static List<Field> getNonStaticFields(final Class<?> clazz) {
+        List<Field> result = new ArrayList<>();
+        Class<?> target = clazz;
+        while (target != null) {
+            if (JaketConfigurationUtils.isExcludedType(target)) {
+                break;
+            }
+
+            Field[] fields = target.getDeclaredFields();
+            for (Field field : fields) {
+                int modifiers = field.getModifiers();
+                if (Modifier.isStatic(modifiers) || Modifier.isTransient(modifiers)) {
+                    continue;
+                }
+
+                result.add(field);
+            }
+            target = target.getSuperclass();
+        }
+
+        return result;
     }
 }
