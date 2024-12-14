@@ -2,6 +2,8 @@ package com.brucepang.prpc.metadata.definition.util;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.net.URL;
 import java.security.CodeSource;
 import java.security.ProtectionDomain;
@@ -66,5 +68,55 @@ public final class ClassUtils {
         }
 
         return result;
+    }
+
+    public static String getCanonicalNameForParameterizedType(ParameterizedType parameterizedType) {
+        StringBuilder sb = new StringBuilder();
+        Type ownerType = parameterizedType.getOwnerType();
+        Class<?> rawType = (Class) parameterizedType.getRawType();
+        Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
+
+        if (ownerType != null) {
+            if (ownerType instanceof Class) {
+                sb.append(((Class) ownerType).getName());
+            } else {
+                sb.append(ownerType);
+            }
+
+            sb.append('.');
+
+            if (ownerType instanceof ParameterizedType) {
+                // Find simple name of nested type by removing the
+                // shared prefix with owner.
+                sb.append(rawType.getName()
+                        .replace(((Class) ((ParameterizedType) ownerType).getRawType()).getName() + "$", ""));
+            } else {
+                sb.append(rawType.getSimpleName());
+            }
+        } else {
+            sb.append(rawType.getCanonicalName());
+        }
+
+        if (actualTypeArguments != null && actualTypeArguments.length > 0) {
+            sb.append('<');
+            boolean first = true;
+            for (Type t : actualTypeArguments) {
+                if (!first) {
+                    sb.append(", ");
+                }
+                if (t instanceof Class) {
+                    Class c = (Class) t;
+                    sb.append(c.getCanonicalName());
+                } else if (t instanceof ParameterizedType) {
+                    sb.append(getCanonicalNameForParameterizedType((ParameterizedType) t));
+                } else {
+                    sb.append(t.toString());
+                }
+                first = false;
+            }
+            sb.append('>');
+        }
+
+        return sb.toString();
     }
 }
