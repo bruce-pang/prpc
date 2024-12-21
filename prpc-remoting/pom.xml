@@ -11,7 +11,7 @@
     <artifactId>prpc-remoting</artifactId>
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
-    <description>The remoting module of dubbo project</description>
+    <description>The remoting module of prpc project</description>
     <modules>
         <module>prpc-remoting-api</module>
         <module>prpc-remoting-netty4</module>

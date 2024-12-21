@@ -40,6 +40,24 @@ public class Assert {
         }
     }
 
+    public static void notEmptyString(String str, String message) {
+        if (StrUtil.isEmpty(str)) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
+    public static void assertTrue(boolean condition, String message) {
+        if (!condition) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
+    public static void assertTrue(boolean expression, Supplier<String> messageSupplier) {
+        if (!expression) {
+            throw new IllegalStateException(nullSafeGet(messageSupplier));
+        }
+    }
+
     private static String nullSafeGet(Supplier<String> messageSupplier) {
         return (messageSupplier != null ? messageSupplier.get() : null);
     }

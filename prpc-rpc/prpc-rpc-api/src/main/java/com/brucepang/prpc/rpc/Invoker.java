@@ -1,5 +1,8 @@
 package com.brucepang.prpc.rpc;
 
+import com.brucepang.prpc.common.Node;
+import com.brucepang.prpc.exception.PrpcException;
+
 public interface Invoker<T> extends Node {
 
     /**
@@ -12,17 +15,12 @@ public interface Invoker<T> extends Node {
     /**
      * invoke.
      *
-     * @param invocation
+     * @param invocation invocation.
      * @return result
-     * @throws RpcException
+     * @throws PrpcException
      */
-    Result invoke(Invocation invocation) throws RpcException;
+    Result invoke(Invocation invocation) throws PrpcException;
 
-    /**
-     * destroy all
-     */
-    default void destroyAll() {
-        destroy();
-    }
+
 
 }

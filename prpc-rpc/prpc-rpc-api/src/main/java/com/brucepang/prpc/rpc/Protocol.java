@@ -1,6 +1,6 @@
 package com.brucepang.prpc.rpc;
 
-import com.brucepang.prpc.URL;
+import com.brucepang.prpc.common.URL;
 import com.brucepang.prpc.extension.SPI;
 
 /**
@@ -31,4 +31,11 @@ public interface Protocol {
      * Destroy or close the protocol.
      */
     void destroy();
+
+    /**
+     * Get default port when user doesn't config the port.
+     *
+     * @return default port
+     */
+    int getDefaultPort();
 }

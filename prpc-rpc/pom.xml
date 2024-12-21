@@ -14,6 +14,7 @@
     <description>The rpc module of prpc project</description>
     <modules>
         <module>prpc-rpc-api</module>
+        <module>prpc-rpc-prpc</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

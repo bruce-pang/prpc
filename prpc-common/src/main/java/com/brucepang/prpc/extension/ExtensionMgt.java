@@ -1,7 +1,9 @@
 package com.brucepang.prpc.extension;
 
-import com.brucepang.prpc.scope.ScopeModel;
+import com.brucepang.prpc.scope.model.ScopeModel;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -19,6 +21,8 @@ public class ExtensionMgt implements ExtensionAccessor {
     private final ScopeModel scopeModel;
 
     private final ConcurrentMap<Class<?>, ExtensionScope> extensionScopeMap = new ConcurrentHashMap<>(64);
+
+    private final List<ExtensionPostProcessor> extensionPostProcessors = new ArrayList<>();
 
     public ExtensionMgt(ExtensionScope scope, ExtensionMgt parent, ScopeModel scopeModel) {
         this.scope = scope;
@@ -103,7 +107,21 @@ public class ExtensionMgt implements ExtensionAccessor {
         return type.isAnnotationPresent(SPI.class);
     }
 
-    public ExtensionInjector getExtensionInjector() { // todo: to delete
-        return null;
+    /**
+     * Add an extension post-processor
+     * @param processor the extension post-processor
+     */
+    public void addExtensionPostProcessor(ExtensionPostProcessor processor) {
+        if (!this.extensionPostProcessors.contains(processor)) {
+            this.extensionPostProcessors.add(processor);
+        }
+    }
+
+    /**
+     * Get the extension post-processors
+     * @return the extension post-processors
+     */
+    public List<ExtensionPostProcessor> getExtensionPostProcessors() {
+        return extensionPostProcessors;
     }
 }

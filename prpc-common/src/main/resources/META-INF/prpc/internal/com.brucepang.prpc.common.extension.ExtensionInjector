@@ -1,0 +1,2 @@
+adaptive=com.brucepang.prpc.extension.inject.AdaptiveExtensionInjector
+spi=com.brucepang.prpc.extension.inject.SpiExtensionInjector
