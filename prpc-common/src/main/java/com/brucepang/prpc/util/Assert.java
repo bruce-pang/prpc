@@ -1,5 +1,7 @@
 package com.brucepang.prpc.util;
 
+import java.util.function.Supplier;
+
 public class Assert {
 
     public static void assertEquals(Object expected, Object actual) {
@@ -36,6 +38,10 @@ public class Assert {
         if (obj == null) {
             throw new IllegalArgumentException(message);
         }
+    }
+
+    private static String nullSafeGet(Supplier<String> messageSupplier) {
+        return (messageSupplier != null ? messageSupplier.get() : null);
     }
 
 }
