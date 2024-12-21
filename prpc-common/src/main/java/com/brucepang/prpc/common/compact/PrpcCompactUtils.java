@@ -62,4 +62,9 @@ public class PrpcCompactUtils {
             return null;
         }
     }
+
+    public static boolean isEnabled() {
+        return enabled;
+    }
+
 }
