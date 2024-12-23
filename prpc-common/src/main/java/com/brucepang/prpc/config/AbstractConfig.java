@@ -2,9 +2,14 @@ package com.brucepang.prpc.config;
 
 import com.brucepang.prpc.logger.Logger;
 import com.brucepang.prpc.logger.LoggerFactory;
+import com.brucepang.prpc.scope.model.ScopeModel;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.lang.reflect.Method;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  *
@@ -16,5 +21,38 @@ public abstract class AbstractConfig implements Serializable {
     @Serial
     private static final long serialVersionUID = 6122104176448570797L;
 
+    /**
+     * The scope model of this config instance.
+     * <p>
+     * <b>NOTE:</b> the model maybe changed during config processing,
+     * the extension spi instance needs to be reinitialized after changing the model!
+     */
+    private transient volatile ScopeModel scopeModel;
 
+    public AbstractConfig() {
+        this(null);
+    }
+
+    public AbstractConfig(ScopeModel scopeModel) {
+        this.setScopeModel(scopeModel);
+    }
+
+    /**
+     * tag name cache, speed up get tag name frequently
+     */
+    private static final ConcurrentMap<Class, String> tagNameCache = new ConcurrentHashMap<>();
+
+    /**
+     * attributed getter method cache for equals(), hashCode() and toString()
+     */
+    private static final ConcurrentMap<Class, List<Method>> attributedMethodCache = new ConcurrentHashMap<>();
+
+
+    public ScopeModel getScopeModel() {
+        return scopeModel;
+    }
+
+    public void setScopeModel(ScopeModel scopeModel) {
+        this.scopeModel = scopeModel;
+    }
 }
