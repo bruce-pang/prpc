@@ -10,6 +10,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  *
@@ -46,6 +47,18 @@ public abstract class AbstractConfig implements Serializable {
      * attributed getter method cache for equals(), hashCode() and toString()
      */
     private static final ConcurrentMap<Class, List<Method>> attributedMethodCache = new ConcurrentHashMap<>();
+
+    /**
+     * The suffix container
+     */
+    private static final String[] SUFFIXES = new String[] {"Config", "Bean", "ConfigBase"};
+
+    /**
+     * The config id
+     */
+    private String id;
+
+    protected final AtomicBoolean refreshed = new AtomicBoolean(false);
 
 
     public ScopeModel getScopeModel() {
