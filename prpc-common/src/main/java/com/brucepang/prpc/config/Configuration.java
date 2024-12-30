@@ -81,4 +81,14 @@ public interface Configuration {
 
         return cls.cast(obj);
     }
+
+    /**
+     * Get a string associated with the given configuration key.
+     *
+     * @param key The configuration key.
+     * @return The associated string.
+     */
+    default String getString(String key) {
+        return convert(String.class, key, null);
+    }
 }
