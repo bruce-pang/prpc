@@ -91,4 +91,19 @@ public interface Configuration {
     default String getString(String key) {
         return convert(String.class, key, null);
     }
+
+    /**
+     * Get a string associated with the given configuration key.
+     * If the key doesn't map to an existing object, the default value
+     * is returned.
+     *
+     * @param key          The configuration key.
+     * @param defaultValue The default value.
+     * @return The associated string if key is found and has valid
+     * format, default value otherwise.
+     */
+    default String getString(String key, String defaultValue) {
+        return convert(String.class, key, defaultValue);
+    }
+
 }
