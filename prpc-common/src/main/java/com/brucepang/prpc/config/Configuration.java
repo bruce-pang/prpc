@@ -106,4 +106,12 @@ public interface Configuration {
         return convert(String.class, key, defaultValue);
     }
 
+    default Integer getInteger(String key, Integer defaultValue) {
+        try {
+            return convert(Integer.class, key, defaultValue);
+        } catch (NumberFormatException e) {
+            throw new IllegalStateException('\'' + key + "' doesn't map to a Integer object", e);
+        }
+    }
+
 }
