@@ -3,6 +3,8 @@ package com.brucepang.prpc.config;
 import com.brucepang.prpc.logger.Logger;
 import com.brucepang.prpc.logger.LoggerFactory;
 
+import java.util.NoSuchElementException;
+
 /**
  * Configuration interface, to fetch the value for the specified key.
  * @author BrucePang
@@ -111,6 +113,15 @@ public interface Configuration {
             return convert(Integer.class, key, defaultValue);
         } catch (NumberFormatException e) {
             throw new IllegalStateException('\'' + key + "' doesn't map to a Integer object", e);
+        }
+    }
+
+    default int getInt(String key) {
+        Integer i = this.getInteger(key, null);
+        if (i != null) {
+            return i;
+        } else {
+            throw new NoSuchElementException('\'' + key + "' doesn't map to an existing object");
         }
     }
 
