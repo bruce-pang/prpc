@@ -130,5 +130,14 @@ public interface Configuration {
         return i == null ? defaultValue : i;
     }
 
+    default Boolean getBoolean(String key, Boolean defaultValue) {
+        try {
+            return convert(Boolean.class, key, defaultValue);
+        } catch (Exception e) {
+            throw new IllegalStateException(
+                    "Try to get " + '\'' + key + "' failed, maybe because this key doesn't map to a Boolean object", e);
+        }
+    }
+
 
 }
