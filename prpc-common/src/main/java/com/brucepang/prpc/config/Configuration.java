@@ -125,4 +125,10 @@ public interface Configuration {
         }
     }
 
+    default int getInt(String key, int defaultValue) {
+        Integer i = this.getInteger(key, null);
+        return i == null ? defaultValue : i;
+    }
+
+
 }
