@@ -143,5 +143,9 @@ public interface Configuration {
         return bool ? Boolean.TRUE : Boolean.FALSE;
     }
 
+    default boolean getBoolean(String key, boolean defaultValue) {
+        return this.getBoolean(key, toBooleanObject(defaultValue));
+    }
+
 
 }
