@@ -148,4 +148,13 @@ public interface Configuration {
     }
 
 
+    default boolean getBoolean(String key) {
+        Boolean b = this.getBoolean(key, null);
+        if (b != null) {
+            return b;
+        } else {
+            throw new NoSuchElementException('\'' + key + "' doesn't map to an existing object");
+        }
+    }
+
 }
