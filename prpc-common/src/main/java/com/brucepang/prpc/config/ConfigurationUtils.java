@@ -2,6 +2,7 @@ package com.brucepang.prpc.config;
 
 import com.brucepang.prpc.scope.model.ApplicationModel;
 import com.brucepang.prpc.scope.model.ScopeModel;
+import com.brucepang.prpc.util.StrUtil;
 
 /**
  * ConfigurationUtils
@@ -37,4 +38,9 @@ public final class ConfigurationUtils {
     public static String getProperty(ApplicationModel applicationModel, String prpcLabels) {
         return (String) getEnvConfiguration(applicationModel).getInternalProperty(prpcLabels);
     }
+
+    public static boolean isEmptyValue(Object value) {
+        return value == null || value instanceof String && StrUtil.isBlank((String) value);
+    }
+
 }
