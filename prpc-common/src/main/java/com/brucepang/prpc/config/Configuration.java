@@ -157,4 +157,8 @@ public interface Configuration {
         }
     }
 
+    default boolean containsKey(String key) {
+        return !ConfigurationUtils.isEmptyValue(getProperty(key));
+    }
+
 }
