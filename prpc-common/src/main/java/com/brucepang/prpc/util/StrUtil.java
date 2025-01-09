@@ -101,4 +101,20 @@ public final class StrUtil {
     public static String trim(String str) {
         return str == null ? null : str.trim();
     }
+
+
+    /**
+     * Test str whether starts with the prefix ignore case.
+     *
+     * @param str
+     * @param prefix
+     * @return
+     */
+    public static boolean startsWithIgnoreCase(String str, String prefix) {
+        if (str == null || prefix == null || str.length() < prefix.length()) {
+            return false;
+        }
+        // return str.substring(0, prefix.length()).equalsIgnoreCase(prefix);
+        return str.regionMatches(true, 0, prefix, 0, prefix.length());
+    }
 }
