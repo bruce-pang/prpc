@@ -117,4 +117,8 @@ public final class StrUtil {
         // return str.substring(0, prefix.length()).equalsIgnoreCase(prefix);
         return str.regionMatches(true, 0, prefix, 0, prefix.length());
     }
+
+    protected static boolean isSnakeCase(String str) {
+        return str.contains("_") || str.equals(str.toLowerCase()) || str.equals(str.toUpperCase());
+    }
 }
