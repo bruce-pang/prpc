@@ -40,4 +40,8 @@ public interface CommonConstants {
     String DEFAULT_GROUP = "default";
 
     String PRPC_COMPACT_ENABLE = "prpc.compact.enable";
+
+    String SEPARATOR_REGEX = "_|-";
+
+    String GROUP_CHAR_SEPARATOR = ":";
 }
