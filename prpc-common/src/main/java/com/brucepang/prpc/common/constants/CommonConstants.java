@@ -44,4 +44,6 @@ public interface CommonConstants {
     String SEPARATOR_REGEX = "_|-";
 
     String GROUP_CHAR_SEPARATOR = ":";
+
+    String HIDE_KEY_PREFIX = ".";
 }
