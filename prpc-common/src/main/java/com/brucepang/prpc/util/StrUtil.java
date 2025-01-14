@@ -5,6 +5,8 @@ import java.io.StringWriter;
 
 import static com.brucepang.prpc.common.constants.CommonConstants.DOT_REGEX;
 import static com.brucepang.prpc.common.constants.CommonConstants.UNDERLINE_SEPARATOR;
+import static com.brucepang.prpc.common.constants.CommonConstants.SEPARATOR_REGEX;
+import static com.brucepang.prpc.common.constants.CommonConstants.HIDE_KEY_PREFIX;
 
 /**
  * string util
@@ -120,5 +122,9 @@ public final class StrUtil {
 
     protected static boolean isSnakeCase(String str) {
         return str.contains("_") || str.equals(str.toLowerCase()) || str.equals(str.toUpperCase());
+    }
+
+    public static String toURLKey(String key) {
+        return key.toLowerCase().replaceAll(SEPARATOR_REGEX, HIDE_KEY_PREFIX);
     }
 }
