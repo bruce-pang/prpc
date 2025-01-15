@@ -140,4 +140,25 @@ public final class StrUtil {
         return true;
     }
 
+    /**
+     * <p>Checks if the strings contain at least on empty or null element. <p/>
+     *
+     * <pre>
+     * StrUtils.isAnyEmpty(null)            = true
+     * StrUtils.isAnyEmpty("")              = true
+     * StrUtils.isAnyEmpty(" ")             = false
+     * StrUtils.isAnyEmpty("abc")           = false
+     * StrUtils.isAnyEmpty("abc", "def")    = false
+     * StrUtils.isAnyEmpty("abc", null)     = true
+     * StrUtils.isAnyEmpty("abc", "")       = true
+     * StrUtils.isAnyEmpty("abc", " ")      = false
+     * </pre>
+     *
+     * @param ss the strings to check
+     * @return {@code true} if at least one in the strings is empty or null
+     */
+    public static boolean isAnyEmpty(final String... ss) {
+        return !isNoneEmpty(ss);
+    }
+
 }
