@@ -127,4 +127,17 @@ public final class StrUtil {
     public static String toURLKey(String key) {
         return key.toLowerCase().replaceAll(SEPARATOR_REGEX, HIDE_KEY_PREFIX);
     }
+
+    public static boolean isNoneEmpty(final String... ss) {
+        if (ArrayUtils.isEmpty(ss)) {
+            return false;
+        }
+        for (final String s : ss) {
+            if (isEmpty(s)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }
