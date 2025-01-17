@@ -17,6 +17,8 @@ public final class StrUtil {
     private static final byte[] HEX2B = new byte[128];
     public static final String EMPTY_STRING = "";
 
+    public static final int INDEX_NOT_FOUND = -1;
+
     public static boolean isEmpty(String str) {
         return str == null || str.isEmpty();
     }
@@ -160,5 +162,32 @@ public final class StrUtil {
     public static boolean isAnyEmpty(final String... ss) {
         return !isNoneEmpty(ss);
     }
+
+    public static String replace(final String text, final String searchString, final String replacement, int max) {
+        if (isAnyEmpty(text, searchString) || replacement == null || max == 0) {
+            return text;
+        }
+        int start = 0;
+        int end = text.indexOf(searchString, start);
+        if (end == INDEX_NOT_FOUND) {
+            return text;
+        }
+        final int replLength = searchString.length();
+        int increase = replacement.length() - replLength;
+        increase = increase < 0 ? 0 : increase;
+        increase *= max < 0 ? 16 : max > 64 ? 64 : max;
+        final StringBuilder buf = new StringBuilder(text.length() + increase);
+        while (end != INDEX_NOT_FOUND) {
+            buf.append(text, start, end).append(replacement);
+            start = end + replLength;
+            if (--max == 0) {
+                break;
+            }
+            end = text.indexOf(searchString, start);
+        }
+        buf.append(text.substring(start));
+        return buf.toString();
+    }
+
 
 }
