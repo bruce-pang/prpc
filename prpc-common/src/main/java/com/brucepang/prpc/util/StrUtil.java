@@ -189,5 +189,8 @@ public final class StrUtil {
         return buf.toString();
     }
 
+    public static String replace(final String text, final String searchString, final String replacement) {
+        return replace(text, searchString, replacement, -1);
+    }
 
 }
