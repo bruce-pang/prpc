@@ -2,6 +2,7 @@ package com.brucepang.prpc.util;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.regex.Pattern;
 
 import static com.brucepang.prpc.common.constants.CommonConstants.DOT_REGEX;
 import static com.brucepang.prpc.common.constants.CommonConstants.UNDERLINE_SEPARATOR;
@@ -18,6 +19,8 @@ public final class StrUtil {
     public static final String EMPTY_STRING = "";
 
     public static final int INDEX_NOT_FOUND = -1;
+
+    private static final Pattern KVP_PATTERN = Pattern.compile("([_.a-zA-Z0-9][-_.a-zA-Z0-9]*)[=](.*)"); // key value pair pattern.
 
     public static boolean isEmpty(String str) {
         return str == null || str.isEmpty();
