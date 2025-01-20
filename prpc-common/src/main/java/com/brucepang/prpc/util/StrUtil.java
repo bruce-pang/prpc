@@ -204,4 +204,11 @@ public final class StrUtil {
         return snakeName;
     }
 
+    private static boolean isWord(char ch) {
+        if ((ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z') || (ch >= '0' && ch <= '9')) {
+            return true;
+        }
+        return false;
+    }
+
 }
