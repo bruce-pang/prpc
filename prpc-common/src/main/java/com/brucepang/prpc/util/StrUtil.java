@@ -196,4 +196,12 @@ public final class StrUtil {
         return replace(text, searchString, replacement, -1);
     }
 
+    public static String snakeToSplitName(String snakeName, String split) {
+        String lowerCase = snakeName.toLowerCase();
+        if (isSnakeCase(snakeName)) {
+            return replace(lowerCase, "_", split);
+        }
+        return snakeName;
+    }
+
 }
