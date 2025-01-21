@@ -211,4 +211,11 @@ public final class StrUtil {
         return false;
     }
 
+    private static boolean isWord(String str) {
+        if (str == null) {
+            return false;
+        }
+        return str.chars().allMatch(ch -> isWord((char) ch));
+    }
+
 }
