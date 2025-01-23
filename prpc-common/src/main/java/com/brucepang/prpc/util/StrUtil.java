@@ -218,4 +218,14 @@ public final class StrUtil {
         return str.chars().allMatch(ch -> isWord((char) ch));
     }
 
+
+    public static boolean isSplitCase(String str, char split) {
+        if (str == null) {
+            return false;
+        }
+        return str.chars().allMatch(ch -> ch == split || isWord((char) ch));
+    }
+
+
+
 }
