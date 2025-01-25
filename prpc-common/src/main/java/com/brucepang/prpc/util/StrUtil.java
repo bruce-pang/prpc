@@ -260,6 +260,20 @@ public final class StrUtil {
         return buf == null ? camelName.toLowerCase() : buf.toString().toLowerCase();
     }
 
+    /**
+     * Convert camelCase or snake_case/SNAKE_CASE to kebab-case
+     *
+     * @param str
+     * @param split
+     * @return
+     */
+    public static String convertToSplitName(String str, String split) {
+        if (isSnakeCase(str)) {
+            return snakeToSplitName(str, split);
+        } else {
+            return camelToSplitName(str, split);
+        }
+    }
 
 
 }
