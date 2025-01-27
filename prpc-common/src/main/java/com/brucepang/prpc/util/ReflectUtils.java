@@ -2,11 +2,18 @@ package com.brucepang.prpc.util;
 
 import java.lang.reflect.Method;
 
+import static com.brucepang.prpc.util.ArrayUtils.isEmpty;
+
 /**
  * A utility class for reflection.
+ *
  * @author BrucePang
  */
 public final class ReflectUtils {
+
+    public static final Class<?>[] EMPTY_CLASS_ARRAY = new Class<?>[0];
+
+
     private ReflectUtils() {
     }
 
@@ -29,6 +36,7 @@ public final class ReflectUtils {
 
     /**
      * Get a description of the Java method. This description includes the name of the method and the type of arguments
+     *
      * @param method method
      * @return
      */
@@ -44,4 +52,24 @@ public final class ReflectUtils {
         desc.append(")");
         return desc.toString();
     }
+
+
+    public static Class[] resolveTypes(Object... values) {
+
+        if (isEmpty(values)) {
+            return EMPTY_CLASS_ARRAY;
+        }
+
+        int size = values.length;
+
+        Class[] types = new Class[size];
+
+        for (int i = 0; i < size; i++) {
+            Object value = values[i];
+            types[i] = value == null ? null : value.getClass();
+        }
+
+        return types;
+    }
+
 }
