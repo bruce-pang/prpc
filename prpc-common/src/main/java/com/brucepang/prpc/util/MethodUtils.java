@@ -41,4 +41,30 @@ public interface MethodUtils {
         return method;
     }
 
+    static <T> T invokeMethod(Object object, String methodName, Object... methodParameters) {
+        Class type = object.getClass();
+        Class[] parameterTypes = ReflectUtils.resolveTypes(methodParameters);
+        Method method = findMethod(type, methodName, parameterTypes);
+        T value = null;
+
+        if (method == null) {
+            throw new IllegalStateException(
+                    String.format("cannot find method %s,class: %s", methodName, type.getName()));
+        }
+
+        try {
+            final boolean isAccessible = method.isAccessible();
+
+            if (!isAccessible) {
+                method.setAccessible(true);
+            }
+            value = (T) method.invoke(object, methodParameters);
+            method.setAccessible(isAccessible);
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e);
+        }
+
+        return value;
+    }
+
 }
