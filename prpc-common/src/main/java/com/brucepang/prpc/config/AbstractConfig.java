@@ -3,6 +3,8 @@ package com.brucepang.prpc.config;
 import com.brucepang.prpc.logger.Logger;
 import com.brucepang.prpc.logger.LoggerFactory;
 import com.brucepang.prpc.scope.model.ScopeModel;
+import com.brucepang.prpc.util.ConcurrentHashMapUtils;
+import com.brucepang.prpc.util.StrUtil;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -68,4 +70,18 @@ public abstract class AbstractConfig implements Serializable {
     public void setScopeModel(ScopeModel scopeModel) {
         this.scopeModel = scopeModel;
     }
+
+    public static String getTagName(Class<?> cls) {
+        return ConcurrentHashMapUtils.computeIfAbsent(tagNameCache, cls, (key) -> {
+            String tag = cls.getSimpleName();
+            for (String suffix : SUFFIXES) {
+                if (tag.endsWith(suffix)) {
+                    tag = tag.substring(0, tag.length() - suffix.length());
+                    break;
+                }
+            }
+            return StrUtil.camelToSplitName(tag, "-");
+        });
+    }
+
 }
