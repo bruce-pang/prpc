@@ -20,4 +20,18 @@ public class TypeDefinitionBuilder {
         Set<TypeBuilder> tbs = model.getExtensionLoader(TypeBuilder.class).getSupportedExtensionInstances();
         BUILDERS = new ArrayList<>(tbs);
     }
+
+    private static TypeBuilder getGenericTypeBuilder(Class<?> clazz) {
+        for (TypeBuilder builder : BUILDERS) {
+            try {
+                if (builder.accept(clazz)) {
+                    return builder;
+                }
+            } catch (NoClassDefFoundError cnfe) {
+                // ignore
+                logger.info("Throw classNotFound (" + cnfe.getMessage() + ") in " + builder.getClass());
+            }
+        }
+        return null;
+    }
 }
