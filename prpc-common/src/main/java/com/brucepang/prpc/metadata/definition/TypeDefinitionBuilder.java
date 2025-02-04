@@ -34,4 +34,9 @@ public class TypeDefinitionBuilder {
         }
         return null;
     }
+
+    public TypeDefinition build(Type type, Class<?> clazz) {
+        return build(type, clazz, typeCache);
+    }
+
 }
