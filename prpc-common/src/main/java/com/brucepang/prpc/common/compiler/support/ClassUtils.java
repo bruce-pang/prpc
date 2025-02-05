@@ -1,9 +1,16 @@
 package com.brucepang.prpc.common.compiler.support;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.net.URI;
 import java.net.URL;
 import java.security.CodeSource;
 import java.security.ProtectionDomain;
+import java.time.Duration;
+import java.util.Date;
+import java.util.Set;
+
+import static com.brucepang.prpc.util.CollectionUtils.ofSet;
 
 /**
  * ClassUtils. (Tool, Static, ThreadSafe)
@@ -18,6 +25,23 @@ public class ClassUtils {
 
     private ClassUtils() {
     }
+
+    public static final Set<Class<?>> SIMPLE_TYPES = ofSet(
+            Void.class,
+            Boolean.class,
+            Character.class,
+            Byte.class,
+            Short.class,
+            Integer.class,
+            Long.class,
+            Float.class,
+            Double.class,
+            String.class,
+            BigDecimal.class,
+            BigInteger.class,
+            Date.class,
+            Object.class,
+            Duration.class);
 
     public static Class<?> loadClass(String className, ClassLoader classLoader) throws ClassNotFoundException {
         return Class.forName(className, true, classLoader);
