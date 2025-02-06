@@ -186,4 +186,15 @@ public class ClassUtils {
         return path;
     }
 
+    /**
+     * The specified type is simple type or not
+     *
+     * @param type the type to test
+     * @return if <code>type</code> is one element of {@link #SIMPLE_TYPES}, return <code>true</code>, or <code>false</code>
+     * @see #SIMPLE_TYPES
+     */
+    public static boolean isSimpleType(Class<?> type) {
+        return SIMPLE_TYPES.contains(type);
+    }
+
 }
