@@ -1,5 +1,7 @@
 package com.brucepang.prpc.common.compiler.support;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URI;
@@ -7,7 +9,9 @@ import java.net.URL;
 import java.security.CodeSource;
 import java.security.ProtectionDomain;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import static com.brucepang.prpc.util.CollectionUtils.ofSet;
@@ -197,4 +201,21 @@ public class ClassUtils {
         return SIMPLE_TYPES.contains(type);
     }
 
+    /**
+     * Get all public, non-static methods of the Class passed in.
+     * @param clazz Class to parse.
+     * @return method list
+     */
+    public static List<Method> getPublicNonStaticMethods(final Class<?> clazz) {
+        List<Method> result = new ArrayList<>();
+
+        Method[] methods = clazz.getMethods();
+        for (Method method : methods) {
+            int mod = method.getModifiers();
+            if (Modifier.isPublic(mod) && !Modifier.isStatic(mod)) {
+                result.add(method);
+            }
+        }
+        return result;
+    }
 }
