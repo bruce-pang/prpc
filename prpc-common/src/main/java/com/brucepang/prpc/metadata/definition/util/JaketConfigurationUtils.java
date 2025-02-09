@@ -46,4 +46,18 @@ public class JaketConfigurationUtils {
 
         return true;
     }
+
+    public static boolean needAnalyzing(Class<?> clazz) {
+        String canonicalName = clazz.getCanonicalName();
+
+        if (closedTypes != null && closedTypes.length > 0) {
+            for (String type : closedTypes) {
+                if (canonicalName.startsWith(type)) {
+                    return false;
+                }
+            }
+        }
+
+        return !isExcludedType(clazz);
+    }
 }
