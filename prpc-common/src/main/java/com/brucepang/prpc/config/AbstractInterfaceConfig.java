@@ -10,4 +10,9 @@ public abstract class AbstractInterfaceConfig extends AbstractMethodConfig {
      * The interface name of the exported service
      */
     protected String interfaceName;
+
+    /**
+     * The classLoader of interface belong to
+     */
+    protected transient ClassLoader interfaceClassLoader;
 }
